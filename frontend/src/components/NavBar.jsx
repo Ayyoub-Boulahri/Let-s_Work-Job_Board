@@ -28,10 +28,10 @@ function NavBar() {
   ];
 
   return (
-    <div className="bg-background w-full overflow-hidden">
+    <div className="bg-background w-full overflow-hidden fixed">
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
-          <nav className="w-full flex py-6 justify-between items-center navbar">
+          <nav className="w-full flex justify-between items-center navbar">
             <h1 className="text-primary-600 text-[24px] font-poppins font-bold">Let's Work</h1>
 
             {/* computer size items */}
