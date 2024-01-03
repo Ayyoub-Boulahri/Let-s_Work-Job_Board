@@ -28,7 +28,7 @@ function NavBar() {
   ];
 
   return (
-    <div className="bg-background w-full overflow-hidden fixed">
+    <div className="w-full overflow-hidden z-[1110] bg-black bg-opacity-90 mb-20 fixed">
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <nav className="w-full flex justify-between items-center navbar">
