@@ -10,7 +10,7 @@ function NavBar() {
         <Navbar onMenuOpenChange={setIsMenuOpen} >
             <NavbarContent>
                 <NavbarBrand>
-                    <p className="text-primary-500 font-extrabold text-lg text-[24px] cursor-pointer">Let's Work</p>
+                    <p className="text-primary-500 font-extrabold text-[22px] cursor-pointer">Let's Work</p>
                 </NavbarBrand>
             </NavbarContent>
 

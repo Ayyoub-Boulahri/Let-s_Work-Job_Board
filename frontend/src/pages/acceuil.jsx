@@ -6,14 +6,15 @@ function Acceuil() {
   return (
     <div>
       <div className='header'>
-        <div className='stack'>
-          <div className='content'>
-          </div>
-        </div>
+      </div>
+      <div>
+        klqsjflmd
+        <br />
+        jkljmdqsf
+        <br />
+        jmslqkdjf
       </div>
     </div>
-
-
   )
 }
 
