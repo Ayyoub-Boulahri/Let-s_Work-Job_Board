@@ -14,17 +14,17 @@ function NavBar() {
       title: "Home",
     },
     {
-      id: "features",
-      title: "Features",
+      id: "contact",
+      title: "About",
     },
     {
-      id: "product",
-      title: "Product",
+      id: "about",
+      title: "Contact",
     },
   ];
 
   return (
-    <div className="w-full overflow-hidden z-[1110] bg-background bg-opacity-95 mb-20 fixed">
+    <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-30 mb-20 fixed">
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <nav className="w-full flex justify-between items-center navbar">
@@ -34,7 +34,7 @@ function NavBar() {
             <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
               {navLinks.map((nav, index) => (
                 <li key={nav.id}
-                  className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} text-white`}>
+                  className={`font-poppins font-normal cursor-pointer text-[18px] ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} text-white`}>
                   <a href={`#${nav.id}`}>
                     {nav.title}
                   </a>
@@ -43,7 +43,6 @@ function NavBar() {
             </ul>
             {/* mobile size items */}
             <div className='flex flex-row'>
-
               <button className="bn632-hover bn26 mr-10 font-poppins">Sing Up</button>
               <div className='sm:hidden flex justify-end items-center'>
                 <img

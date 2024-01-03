@@ -1,6 +1,5 @@
 import React from 'react'
 import work_boy from "../assets/work_boy.png"
-import { TextField } from "@radix-ui/themes"
 import { IoArrowForwardOutline, IoLogInOutline  } from "react-icons/io5";
 import styles from '../style';
 
