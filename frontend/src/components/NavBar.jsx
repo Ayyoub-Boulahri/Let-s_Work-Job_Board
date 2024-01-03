@@ -21,18 +21,14 @@ function NavBar() {
       id: "product",
       title: "Product",
     },
-    {
-      id: "clients",
-      title: "Clients",
-    },
   ];
 
   return (
-    <div className="w-full overflow-hidden z-[1110] bg-black bg-opacity-95 mb-20 fixed">
+    <div className="w-full overflow-hidden z-[1110] bg-background bg-opacity-95 mb-20 fixed">
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <nav className="w-full flex justify-between items-center navbar">
-            <h1 className="text-primary-600 text-[24px] font-poppins font-bold">Let's Work</h1>
+            <h1 className="text-primary-600 text-[26px] font-poppins font-bold">Let's Work</h1>
 
             {/* computer size items */}
             <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
@@ -48,7 +44,7 @@ function NavBar() {
             {/* mobile size items */}
             <div className='flex flex-row'>
 
-              <button className="bn632-hover bn26 mr-10 font-poppins">Sing IN</button>
+              <button className="bn632-hover bn26 mr-10 font-poppins">Sing Up</button>
               <div className='sm:hidden flex justify-end items-center'>
                 <img
                   src={toggle ? close : menu}

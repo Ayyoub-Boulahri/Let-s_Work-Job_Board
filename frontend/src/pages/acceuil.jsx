@@ -1,15 +1,14 @@
 import React from 'react'
-import "../css/acceuil.css"
-import { IoAirplaneSharp } from "react-icons/io5";
-import { Box } from '@radix-ui/themes';
 import styles from '../style';
-import "../css/acceuil.css"
+import "../css/acceuil.css";
+import "../css/button.css";
+import Leading from "../components/Leading"
 
 function Acceuil() {
   return (
-    <div className='pt-20 h-[600px] slider'>
-      <div>
-        acceuil
+    <div className={`bg-background ${styles.flexStart} pt-20 slider`}>
+      <div className={`${styles.boxWidth} z-[1100]`}>
+        <Leading />
       </div>
     </div>
   )

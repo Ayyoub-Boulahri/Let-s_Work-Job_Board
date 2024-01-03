@@ -30,7 +30,7 @@ export default {
         "blue-dark": {
           extend: "dark", // <- inherit default values from dark theme
           colors: {
-            background: "#121212", // Dark blue background color
+            background: "#080808", // Dark blue background color
             foreground: "#ffffff", // Light text color
             primary: {
               50: "#001F3F",
