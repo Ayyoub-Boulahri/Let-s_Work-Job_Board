@@ -10,12 +10,6 @@ export default {
   ],
   theme: {
     extend: {
-      colors: {
-        primary: "#00040f",
-        secondary: "#00f6ff",
-        dimWhite: "rgba(255, 255, 255, 0.7)",
-        dimBlue: "rgba(9, 151, 124, 0.1)",
-      },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
       },
@@ -49,7 +43,7 @@ export default {
               700: "#66ACFF",
               800: "#99BAFF",
               900: "#CCE2FF",
-              DEFAULT: "#0099FF", // Default primary color
+              DEFAULT: "#0099FF",
               foreground: "#ffffff",
             },
             focus: "#33A1FD", // Focus color
