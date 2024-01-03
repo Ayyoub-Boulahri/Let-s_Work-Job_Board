@@ -1,6 +1,29 @@
 .header {
-  background-image: url("../assets/banner-bg.png");
+  position: relative;
   height: 600px;
+  overflow: hidden;
+}
+
+.stack {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url("../assets/banner-bg.png");
   background-size: cover;
-  background-repeat: no-repeat;
+  background-repeat: no-repeat; /* Adjust the alpha value for overlay opacity */
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff; /* Text color for stacked content */
+  font-size: 24px; /* Adjust the font size as needed */
+  z-index: 1000;
+  background-color: rgba(0, 0, 0, 0.6); /* Adjust the alpha value for overlay opacity */
+  width: 100%;
+  height: 100%;
 }
