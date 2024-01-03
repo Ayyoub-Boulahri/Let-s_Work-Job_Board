@@ -5,7 +5,7 @@ here is you will find all the libraries we will use :
     - git clone ....
     - git pull origin master
     - git checkout -b name_branche
-    - git add .
+    - git add 
     - git commit -m "message"
     - git push origin name_branche
     - then check the github
