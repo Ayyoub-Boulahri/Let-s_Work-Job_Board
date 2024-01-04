@@ -28,7 +28,7 @@ function NavBar() {
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <nav className="w-full flex justify-between items-center navbar">
-            <h1 className="text-primary-600 text-[26px] font-poppins font-bold">Let's Work</h1>
+            <h1 className="text-primary-600 text-[30px] font-poppins font-extrabold">Let's Work</h1>
 
             {/* computer size items */}
             <ul className='list-none sm:flex hidden justify-center items-center flex-1'>

@@ -11,7 +11,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ["Poppins", "sans-serif"],
+        poppins: ["Tajawal", "sans-serif"],
       },
     },
     screens: {
@@ -30,6 +30,8 @@ export default {
         "blue-dark": {
           extend: "dark", // <- inherit default values from dark theme
           colors: {
+            'section-bright-bg': "#1A1F24",
+            'section-dark-bg': "#0D1117",
             background: "#080808", // Dark blue background color
             foreground: "#ffffff", // Light text color
             primary: {

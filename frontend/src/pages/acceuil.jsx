@@ -6,7 +6,7 @@ import Leading from "../components/Leading"
 
 function Acceuil() {
   return (
-    <div className={`bg-background ${styles.flexStart} pt-20 slider`}>
+    <div className={`bg-background ${styles.flexStart} pt-20 slider xl:pb-6`}>
       <div className={`${styles.boxWidth} z-[1100]`}>
         <Leading />
       </div>
