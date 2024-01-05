@@ -4,10 +4,12 @@ import close from '../assets/close.svg';
 import menu from '../assets/menu.svg';
 import { useState } from 'react';
 import "../css/button.css";
+import "../css/navbar.css";
 import { Button } from '@radix-ui/themes'
 
 function NavBar() {
   const [toggle, setToggle] = useState(false)
+  const [navLinkId, setNavLinkId] = useState(0)
   const navLinks = [
     {
       id: "home",
@@ -23,8 +25,12 @@ function NavBar() {
     },
   ];
 
+  const handleActiveLink = (id) => {
+    setNavLinkId(id)
+  }
+
   return (
-    <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-30 mb-20 fixed">
+    <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-50 mb-20 fixed">
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <nav className="w-full flex justify-between items-center navbar">
@@ -33,8 +39,8 @@ function NavBar() {
             {/* computer size items */}
             <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
               {navLinks.map((nav, index) => (
-                <li key={nav.id}
-                  className={`font-poppins font-normal cursor-pointer text-[18px] ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} text-white`}>
+                <li key={nav.id} onClick={() => handleActiveLink(nav.id)}
+                  className={`font-poppins cursor-pointer text-[18px] nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} ${nav.id === navLinkId ? 'isActive' : 'font-normal'} px-3 py-2`}>
                   <a href={`#${nav.id}`}>
                     {nav.title}
                   </a>
