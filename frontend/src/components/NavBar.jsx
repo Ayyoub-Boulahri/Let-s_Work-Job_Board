@@ -6,8 +6,10 @@ import { useState } from 'react';
 import "../css/button.css";
 import "../css/navbar.css";
 import { Button } from '@radix-ui/themes'
+import { useEffect } from 'react';
 
 function NavBar() {
+  
   const [toggle, setToggle] = useState(false)
   const [navLinkId, setNavLinkId] = useState(0)
   const navLinks = [
@@ -25,12 +27,22 @@ function NavBar() {
     },
   ];
 
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if(window.scrollY > 0)
+        navbar.classList.add('bg-opacity-80')
+      else
+      navbar.classList.remove('bg-opacity-80')
+    })
+  }, [])
+
   const handleActiveLink = (id) => {
     setNavLinkId(id)
   }
 
   return (
-    <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-50 mb-20 fixed">
+    <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-50 mb-20 fixed duration-200" id='navbar'>
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <nav className="w-full flex justify-between items-center navbar">
