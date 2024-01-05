@@ -11,7 +11,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        poppins: ["Tajawal", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
       },
     },
     screens: {
