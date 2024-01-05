@@ -16,11 +16,11 @@ function NavBar() {
       title: "Home",
     },
     {
-      id: "contact",
+      id: "about",
       title: "About",
     },
     {
-      id: "about",
+      id: "conatact",
       title: "Contact",
     },
   ];
