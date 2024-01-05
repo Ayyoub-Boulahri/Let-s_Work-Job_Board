@@ -25,7 +25,7 @@ function Leading() {
                             </p>
                         </div>
                         <div className='flex flex-row mt-4'>
-                            <button type="button" className="inline-flex mr-6 items-center px-4 py-2 border border-transparent text-base leading-6 font-medium font-poppins rounded-md text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-700 active:bg-rose-700 transition ease-in-out duration-150 cursor-pointer">
+                            <button type="button" className="inline-flex mr-6 items-center px-4 py-2 border border-transparent text-base leading-6 font-bold font-poppins rounded-md text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-700 active:bg-rose-700 transition ease-in-out duration-150 cursor-pointer">
                                 Get Started <IoArrowForwardOutline className='ml-2 text-[18px] font-bold' />
                             </button>
 

@@ -1,0 +1,8 @@
+.form input, .form textarea {
+    background-color: #121212;
+    padding: 0.65rem 0.75rem;
+    outline: none;
+    color: rgba(243, 244, 246, 1);
+    border-radius: 4px;
+    resize: none;
+}

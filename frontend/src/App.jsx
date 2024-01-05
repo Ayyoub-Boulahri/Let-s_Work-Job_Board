@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Acceuil from './pages/acceuil'
 import Profile from './pages/profile'
 import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path='/profile' element={<Profile />}/>
         </Routes>
       </BrowserRouter>
+      <Footer />
     </>
   )
 }

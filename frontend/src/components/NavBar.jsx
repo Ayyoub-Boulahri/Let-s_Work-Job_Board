@@ -5,7 +5,6 @@ import menu from '../assets/menu.svg';
 import { useState } from 'react';
 import "../css/button.css";
 import "../css/navbar.css";
-import { Button } from '@radix-ui/themes'
 import { useEffect } from 'react';
 
 function NavBar() {
@@ -22,7 +21,7 @@ function NavBar() {
       title: "About",
     },
     {
-      id: "conatact",
+      id: "contact",
       title: "Contact",
     },
   ];
@@ -37,10 +36,6 @@ function NavBar() {
     })
   }, [])
 
-  const handleActiveLink = (id) => {
-    setNavLinkId(id)
-  }
-
   return (
     <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-50 mb-20 fixed duration-200" id='navbar'>
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
@@ -51,7 +46,7 @@ function NavBar() {
             {/* computer size items */}
             <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
               {navLinks.map((nav, index) => (
-                <li key={nav.id} onClick={() => handleActiveLink(nav.id)}
+                <li key={nav.id} onClick={() => setNavLinkId(id)}
                   className={`font-poppins cursor-pointer text-[18px] nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} ${nav.id === navLinkId ? 'isActive' : 'font-normal'} px-3 py-2`}>
                   <a href={`#${nav.id}`}>
                     {nav.title}
@@ -73,7 +68,7 @@ function NavBar() {
                   <ul className='list-none flex flex-col justify-center items-center flex-1'>
                     {navLinks.map((nav, index) => (
                       <li key={nav.id}
-                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`}>
+                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setNavLinkId(id)}>
                         <a href={`#${nav.id}`}>
                           {nav.title}
                         </a>

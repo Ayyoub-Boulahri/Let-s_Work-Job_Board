@@ -1,12 +1,13 @@
 import React from 'react'
 import { Dialog, Button } from '@radix-ui/themes';
 import { IoLogInOutline } from "react-icons/io5";
+import "../css/signInForm.css";
 
 function SignInForm() {
     return (
         <Dialog.Root>
             <Dialog.Trigger>
-                <Button className="inline-flex items-center px-4 py-6 border border-transparent text-base leading-6 font-medium font-poppins rounded-md text-white bg-primary-400 hover:bg-primary-500 focus:border-primary-500 active:bg-primary-500 transition ease-in-out duration-150 cursor-pointer">Sign In <IoLogInOutline className='text-[18px]' /></Button>
+                <Button className="inline-flex items-center px-4 py-6 border border-transparent text-base leading-6 font-poppins rounded-md text-white bg-primary-400 hover:bg-primary-500 focus:border-primary-500 active:bg-primary-500 transition ease-in-out duration-150 cursor-pointer font-bold">Sign In <IoLogInOutline className='text-[18px]' /></Button>
             </Dialog.Trigger>
 
             <Dialog.Content style={{ maxWidth: 450, backgroundColor: "#0D1117" }}>
