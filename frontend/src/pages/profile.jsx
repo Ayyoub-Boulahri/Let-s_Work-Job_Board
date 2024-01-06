@@ -38,7 +38,7 @@ function Profile() {
             <ul className='flex flex-col list-none mt-6'>
               {tabs.map((tab, index) => (
                 <>
-                  <button className={`flex font-poppins text-[18px] text-gray-300 font-medium rounded-md hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
+                  <button className={`flex font-poppins text-[18px] text-gray-300 font-medium  hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
                     <li key={tab.id} className="">{tab.title}</li>
                   </button>
                   {index !== tabs.length - 1 && <Divider className="my-4" />}
@@ -48,7 +48,7 @@ function Profile() {
           </div>
 
           {/* Component Section */}
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col w-[58%] mr-20 bg-section-bright-bg items-center p-6 rounded-lg">
             {tabs.map(tab => (
               indexTab === tab.id && tab.component
             ))}
