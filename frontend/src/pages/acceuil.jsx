@@ -3,13 +3,16 @@ import styles from '../style';
 import "../css/acceuil.css";
 import "../css/button.css";
 import Leading from "../components/Leading"
+import About from '../components/About';
+import Contact from '../components/Contact'
 
 function Acceuil() {
+
   return (
-    <div className={`bg-background ${styles.flexStart} pt-20 slider xl:pb-6`}>
-      <div className={`${styles.boxWidth} z-[1100]`}>
-        <Leading />
-      </div>
+    <div>
+      <Leading />
+      <About />
+      <Contact />
     </div>
   )
 }

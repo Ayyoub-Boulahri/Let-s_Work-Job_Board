@@ -1,0 +1,10 @@
+.nav-link {
+    border-radius: 4px;
+    transition: 0.5s;
+}
+
+.nav-link:hover, .isActive {
+    color: black;
+    background-color: white;
+    font-weight: bold;
+}

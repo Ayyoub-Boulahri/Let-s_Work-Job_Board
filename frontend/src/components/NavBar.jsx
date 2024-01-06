@@ -4,27 +4,40 @@ import close from '../assets/close.svg';
 import menu from '../assets/menu.svg';
 import { useState } from 'react';
 import "../css/button.css";
-import { Button } from '@radix-ui/themes'
+import "../css/navbar.css";
+import { useEffect } from 'react';
 
 function NavBar() {
+  
   const [toggle, setToggle] = useState(false)
+  const [navLinkId, setNavLinkId] = useState(0)
   const navLinks = [
     {
       id: "home",
       title: "Home",
     },
     {
-      id: "contact",
+      id: "about",
       title: "About",
     },
     {
-      id: "about",
+      id: "contact",
       title: "Contact",
     },
   ];
 
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if(window.scrollY > 0)
+        navbar.classList.add('bg-opacity-80')
+      else
+      navbar.classList.remove('bg-opacity-80')
+    })
+  }, [])
+
   return (
-    <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-30 mb-20 fixed">
+    <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-50 mb-20 fixed duration-200" id='navbar'>
       <div className={`${styles.paddingX} ${styles.flexCenter}`}>
         <div className={`${styles.boxWidth}`}>
           <nav className="w-full flex justify-between items-center navbar">
@@ -33,8 +46,8 @@ function NavBar() {
             {/* computer size items */}
             <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
               {navLinks.map((nav, index) => (
-                <li key={nav.id}
-                  className={`font-poppins font-normal cursor-pointer text-[18px] ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} text-white`}>
+                <li key={nav.id} onClick={() => setNavLinkId(id)}
+                  className={`font-poppins cursor-pointer text-[18px] nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} ${nav.id === navLinkId ? 'isActive' : 'font-normal'} px-3 py-2`}>
                   <a href={`#${nav.id}`}>
                     {nav.title}
                   </a>
@@ -55,7 +68,7 @@ function NavBar() {
                   <ul className='list-none flex flex-col justify-center items-center flex-1'>
                     {navLinks.map((nav, index) => (
                       <li key={nav.id}
-                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`}>
+                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setNavLinkId(id)}>
                         <a href={`#${nav.id}`}>
                           {nav.title}
                         </a>
