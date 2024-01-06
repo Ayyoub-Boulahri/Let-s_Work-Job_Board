@@ -1,10 +1,28 @@
+li {
+    overflow: hidden;
+}
+
 .nav-link {
-    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.nav-link::before {
+    content: "";
+    background-color: white;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: 80%;
+    left: -100%;
     transition: 0.5s;
 }
 
 .nav-link:hover, .isActive {
-    color: black;
-    background-color: white;
-    font-weight: bold;
+    font-size: 20px;
+}
+
+.nav-link:hover::before, .isActive::before{
+    left: 0;
 }

@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 function NavBar() {
   
   const [toggle, setToggle] = useState(false)
-  const [navLinkId, setNavLinkId] = useState(0)
+  const [navLinkId, setNavLinkId] = useState(1)
   const navLinks = [
     {
       id: "home",
@@ -46,10 +46,9 @@ function NavBar() {
             {/* computer size items */}
             <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
               {navLinks.map((nav, index) => (
-                <li key={nav.id} onClick={() => setNavLinkId(id)}
-                  className={`font-poppins cursor-pointer text-[18px] nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-10'} ${nav.id === navLinkId ? 'isActive' : 'font-normal'} px-3 py-2`}>
-                  <a href={`#${nav.id}`}>
-                    {nav.title}
+                <li key={nav.id} onClick={() => setNavLinkId(index+1)} >
+                  <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index+1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`}>
+                    {nav.title} 
                   </a>
                 </li>
               ))}
@@ -68,7 +67,7 @@ function NavBar() {
                   <ul className='list-none flex flex-col justify-center items-center flex-1'>
                     {navLinks.map((nav, index) => (
                       <li key={nav.id}
-                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setNavLinkId(id)}>
+                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setNavLinkId(index+1)}>
                         <a href={`#${nav.id}`}>
                           {nav.title}
                         </a>
