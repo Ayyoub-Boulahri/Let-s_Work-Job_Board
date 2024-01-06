@@ -6,7 +6,12 @@ import "../css/profile.css"
 import { useState } from 'react'
 import { Avatar, Divider} from "@nextui-org/react";
 import profile from '../assets/profile.webp'
-
+import { GiSkills } from "react-icons/gi";
+import { PiAddressBookThin } from "react-icons/pi";
+import { MdOutlinePrivacyTip } from "react-icons/md";
+import { GrAchievement } from "react-icons/gr";
+import { FaBook } from "react-icons/fa";
+import ExperiencesSkills from '../components/ExperiencesSkills'
 
 
 function Profile() {
@@ -16,11 +21,25 @@ function Profile() {
     {
       id: 1,
       title: "Personnel Informations",
+      logo:<PiAddressBookThin />,
       component: <PersonnelInfos />
     },
     {
       id: 2,
       title: "Login Informations",
+      logo: <MdOutlinePrivacyTip />,
+      component: <LoginInfos />
+    },
+    {
+      id: 3,
+      title: "Skills & Experiences",
+      logo :<GrAchievement />,
+      component: <ExperiencesSkills />
+    },
+    {
+      id: 4,
+      title: "Degrees",
+      logo :<FaBook /> ,
       component: <LoginInfos />
     }
   ]
@@ -35,16 +54,19 @@ function Profile() {
           <div className='flex flex-col w-[28%] items-center py-6 rounded-lg'>
             <Avatar isBordered color="primary" src={profile} className="w-[160px] h-[160]" />
             <h1 className={`${styles.heading3} text-center`}>Ayyoub Boulahri</h1>
-            <ul className='flex flex-col list-none mt-6'>
+            <div className='flex flex-col list-none mt-6'>
               {tabs.map((tab, index) => (
                 <>
                   <button className={`flex font-poppins text-[18px] text-gray-300 font-medium  hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
-                    <li key={tab.id} className="">{tab.title}</li>
+                    <div key={tab.id} className='flex flex-row'>
+                      <div>{tab.logo}</div>
+                      <div  className="text-sm pl-1">{tab.title}</div>
+                    </div>
                   </button>
                   {index !== tabs.length - 1 && <Divider className="my-4 bg-[#3D3D3D]" />}
                 </>
               ))}
-            </ul>
+            </div>
           </div>
           <Divider orientation='vertical' className='h-1000 w-[2px] bg-[#3D3D3D]' />
           {/* Component Section */}

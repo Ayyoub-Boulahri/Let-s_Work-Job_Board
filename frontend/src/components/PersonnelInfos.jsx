@@ -3,39 +3,40 @@ import styles from '../style'
 import profile from '../assets/work_boy.png'
 import "../css/profile.css"
 import { Avatar, Divider} from "@nextui-org/react";
+import { FaRegEdit } from "react-icons/fa";
 
 
-const List = [
-  {
-    id:1,
-    name : "First_name",
-    text : "khalaf"
-  },
-  {
-    id:2,
-    name : "Last_name",
-    text : "drhourhi"
-  },
-  {
-    id:3,
-    name : "adresse",
-    text : "mansour agouray"
-  },
-  {
-    id:4,
-    name : "phone",
-    text : "0631887261"
-  },
-  {
-    id:5,
-    name : "city",
-    text : "Meknes(Maroc)"
-  }
-]
 
 function PersonnelInfos() {
+  const List = [
+    {
+      id:1,
+      name : "First_name",
+      text : "khalaf"
+    },
+    {
+      id:2,
+      name : "Last_name",
+      text : "drhourhi"
+    },
+    {
+      id:3,
+      name : "adresse",
+      text : "mansour agouray"
+    },
+    {
+      id:4,
+      name : "phone",
+      text : "0631887261"
+    },
+    {
+      id:5,
+      name : "city",
+      text : "Meknes(Maroc)"
+    }
+  ]
   return (
-    <div className='flex flex-col'>
+    <div className='flex flex-col '>
       <div className='flex'>
           <div className='p-2 text-sm h-[30%]'>
               <h1 className=' font-medium text-blue-600 dark:text-blue-500 '>Profile</h1>
@@ -46,7 +47,9 @@ function PersonnelInfos() {
           </span>
       </div>
       <Divider className="my-4" />
-      <h1>My Informations</h1>
+      <div className='flex flex-row'>
+      <h1>My Informations</h1><a href=""><FaRegEdit /></a>
+      </div>
       {List.map(tab => (
           <div key={tab.id}>
               <div className='text-[14px] pt-3'>
