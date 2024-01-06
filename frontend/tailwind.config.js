@@ -31,8 +31,8 @@ export default {
         "blue-dark": {
           extend: "dark", // <- inherit default values from dark theme
           colors: {
-            'section-bright-bg': "#161B22",
-            'section-dark-bg': "#0D1117",
+            'section-bright-bg': "#252526",
+            'section-dark-bg': "#0F0F0F",
             background: "#080808", // Dark blue background color
             foreground: "#ffffff", // Light text color
             primary: {
