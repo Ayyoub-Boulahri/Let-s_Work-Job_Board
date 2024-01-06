@@ -32,7 +32,7 @@ function Profile() {
 
           {/* Tabs Section */}
 
-          <div className='flex flex-col w-[28%] mr-20 bg-section-bright-bg items-center p-6 rounded-lg'>
+          <div className='flex flex-col w-[28%] items-center py-6 rounded-lg'>
             <Avatar isBordered color="primary" src={profile} className="w-[160px] h-[160]" />
             <h1 className={`${styles.heading3} text-center`}>Ayyoub Boulahri</h1>
             <ul className='flex flex-col list-none mt-6'>
@@ -41,14 +41,14 @@ function Profile() {
                   <button className={`flex font-poppins text-[18px] text-gray-300 font-medium  hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
                     <li key={tab.id} className="">{tab.title}</li>
                   </button>
-                  {index !== tabs.length - 1 && <Divider className="my-4" />}
+                  {index !== tabs.length - 1 && <Divider className="my-4 bg-[#3D3D3D]" />}
                 </>
               ))}
             </ul>
           </div>
-
+          <Divider orientation='vertical' className='h-1000 w-[2px] bg-[#3D3D3D]' />
           {/* Component Section */}
-          <div className="flex flex-col w-[58%] mr-20 bg-section-bright-bg items-center p-6 rounded-lg">
+          <div className="flex flex-col w-[58%] mr-20 items-center p-6 rounded-lg">
             {tabs.map(tab => (
               indexTab === tab.id && tab.component
             ))}
