@@ -1,9 +1,8 @@
 import React from 'react';
 import profile from '../assets/work_boy.png';
 import { Divider } from "@nextui-org/react";
-import { MdEdit, MdOutlineDelete } from "react-icons/md";
-import '../css/animation.css'
 import { MdOutlinePlaylistAdd } from "react-icons/md";
+import SkillItem from './SkillItem';
 
 function ExperiencesSkills() {
     const Skills = [
@@ -54,12 +53,12 @@ function ExperiencesSkills() {
                     <h1>Skills</h1>
                 </div>
                 <div>
-                <MdOutlinePlaylistAdd size={25}/>
+                    <MdOutlinePlaylistAdd size={25} />
                 </div>
             </div>
             <div className='flex flex-wrap mt-3'>
                 {Skills.map(tab => (
-                    <div key={tab.id} className='pl-4 pr-4 pt-2 pb-2 bg-zinc-800 rounded-xl m-2'>
+                    <div key={tab.id}>
                         <SkillItem skill={tab.skill} />
                     </div>
                 ))}
@@ -70,31 +69,11 @@ function ExperiencesSkills() {
                     <h1>Experiences</h1>
                 </div>
                 <div>
-                <MdOutlinePlaylistAdd size={25}/>
+                    <MdOutlinePlaylistAdd size={25} />
                 </div>
             </div>
         </div>
     );
 }
-
-const SkillItem = ({ skill }) => {
-    const [isHovered, setIsHovered] = React.useState(false);
-
-    return (
-        <div
-            className={`cursor-pointer skill-item ${isHovered ? 'w-[120%]' : ''} flex duration-300`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            {skill}
-            {isHovered && (
-                <div className="flex ml-2 align-middle items-center">
-                    <MdOutlineDelete className="mr-2 cursor-pointer " />
-                    <MdEdit className="cursor-pointer" />
-                </div>
-            )}
-        </div>
-    );
-};
 
 export default ExperiencesSkills;
