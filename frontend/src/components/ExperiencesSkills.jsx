@@ -6,7 +6,7 @@ import '../css/animation.css'
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 
 function ExperiencesSkills() {
-    const List = [
+    const Skills = [
         {
             id: 1,
             skill: "c++"
@@ -58,13 +58,21 @@ function ExperiencesSkills() {
                 </div>
             </div>
             <div className='flex flex-wrap mt-3'>
-                {List.map(tab => (
+                {Skills.map(tab => (
                     <div key={tab.id} className='pl-4 pr-4 pt-2 pb-2 bg-zinc-800 rounded-xl m-2'>
                         <SkillItem skill={tab.skill} />
                     </div>
                 ))}
             </div>
             <Divider className="my-4" />
+            <div className='flex justify-between mt-4'>
+                <div>
+                    <h1>Experiences</h1>
+                </div>
+                <div>
+                <MdOutlinePlaylistAdd size={25}/>
+                </div>
+            </div>
         </div>
     );
 }
