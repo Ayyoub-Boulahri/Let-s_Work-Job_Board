@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Select, SelectItem } from "@nextui-org/react";
 
 function PersonnelInfosForm() {
-    const [phoneValue, setPhoneValue] = useState('ayyoub');
 
     return (
         <div className="slideshow flex flex-col gap-2">

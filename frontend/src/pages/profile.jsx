@@ -60,7 +60,7 @@ function Profile() {
                   <button className={`flex font-poppins text-[18px] text-gray-300 font-medium  hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
                     <div key={tab.id} className='flex flex-row'>
                       <div>{tab.logo}</div>
-                      <div  className="text-sm pl-1">{tab.title}</div>
+                      <div  className="text-sm pl-3">{tab.title}</div>
                     </div>
                   </button>
                   {index !== tabs.length - 1 && <Divider className="my-4 bg-[#3D3D3D]" />}
