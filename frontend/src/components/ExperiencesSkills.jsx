@@ -54,7 +54,7 @@ function ExperiencesSkills() {
                     <h1>Skills</h1>
                 </div>
                 <div>
-                <MdOutlinePlaylistAdd />
+                <MdOutlinePlaylistAdd size={25}/>
                 </div>
             </div>
             <div className='flex flex-wrap mt-3'>
