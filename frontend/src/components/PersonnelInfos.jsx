@@ -11,12 +11,12 @@ function PersonnelInfos() {
   const List = [
     {
       id:1,
-      name : "First_name",
+      name : "First name",
       text : "khalaf"
     },
     {
       id:2,
-      name : "Last_name",
+      name : "Last name",
       text : "drhourhi"
     },
     {
@@ -38,24 +38,25 @@ function PersonnelInfos() {
   return (
     <div className='flex flex-col '>
       <div className='flex'>
-          <div className='p-2 text-sm h-[30%]'>
+          <div className='p-2 text-sm h-[30%] text-[20px]'>
               <h1 className=' font-medium text-blue-600 dark:text-blue-500 '>Profile</h1>
               <p className='mt-2'>Optimisez votre expérience sur <b>let's work</b> en mettant à jour vos données professionnelles</p>
           </div>
-          <span>
+          <span className='w-[40%]'>
               <img src={profile} alt="" className='w-32 '/>
           </span>
       </div>
       <Divider className="my-4" />
-      <div className='flex flex-row'>
-      <h1>My Informations</h1><a href=""><FaRegEdit /></a>
+      <div className='flex flex-row text-[24px] text-gray-500'>
+      <h1>My Informations</h1>
+      <div className='flex items-center pl-3 hover:text-blue-500'><a href=""><FaRegEdit /></a></div>
       </div>
       {List.map(tab => (
           <div key={tab.id}>
-              <div className='text-[14px] pt-3'>
-                {tab.name}*
+              <div className='text-[14px] pt-3 text-lg font-extrabold'>
+                {tab.name}
               </div >
-              <p className='text-[12px]'>
+              <p className='text-[12px] font-thin'>
                 {tab.text}
               </p>
           </div> 
