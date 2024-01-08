@@ -7,7 +7,7 @@ import About from '../components/About';
 import Contact from '../components/Contact'
 
 function Acceuil() {
-
+  
   return (
     <div>
       <Leading />

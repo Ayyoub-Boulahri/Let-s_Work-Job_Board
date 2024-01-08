@@ -32,7 +32,8 @@ function PersonnelInfos() {
       text: 'Meknes(Maroc)',
     },
   ];
-  const [isFormVisible, setVisible] = useState(false);
+  
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
   return (
     <div className='flex flex-col '>
@@ -49,13 +50,20 @@ function PersonnelInfos() {
       </div>
       <Divider className='my-4' />
       <div className='flex flex-row text-[24px] text-gray-300'>
+        <h1>About Me</h1>
+        <div className='flex items-center pl-3 hover:text-blue-500'>
+            <FaRegEdit onClick={() => setIsFormVisible((prev) => !prev)} />
+        </div>
+      </div>
+      <div className='py-5 text-justify'>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos voluptas repellendus veniam perspiciatis inventore dicta ipsam eveniet est! Soluta debitis laborum tempora deserunt facilis nulla expedita a maxime esse molestiae.
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatem corporis voluptatum iste numquam doloremque nihil suscipit explicabo modi harum ad error nostrum, eveniet reiciendis ducimus repellat? Praesentium, exercitationem nemo!
+      </div>
+      <Divider className='my-4' />
+      <div className='flex flex-row text-[24px] text-gray-300'>
         <h1>My Informations</h1>
         <div className='flex items-center pl-3 hover:text-blue-500'>
-          <button href='' onClick={() => {
-            setVisible(!isFormVisible);
-          }}>
-            <FaRegEdit />
-          </button>
+          <FaRegEdit onClick={() => setIsFormVisible((prev) => !prev)} />
         </div>
       </div>
       {!isFormVisible ?
