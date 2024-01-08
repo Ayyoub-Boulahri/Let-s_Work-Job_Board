@@ -3,6 +3,8 @@ import work_boy from "../assets/work_boy.png"
 import styles from '../style';
 import SignInForm from './SignInForm';
 import SignUpForm from './SignUpForm';
+import { Provider } from 'react-redux';
+import { signUpStore } from '../stores/signUpStore';
 
 function Leading() {
     return (
@@ -25,7 +27,9 @@ function Leading() {
                             </p>
                         </div>
                         <div className='flex flex-row mt-4'>
-                            <SignUpForm />
+                            <Provider store={signUpStore}>
+                                <SignUpForm />
+                            </Provider>
 
                             <SignInForm />
 

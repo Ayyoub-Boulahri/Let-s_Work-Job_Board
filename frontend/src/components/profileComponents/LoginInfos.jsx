@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../../style'
-import profile from '../assets/work_boy.png'
-import "../css/profile.css"
+import profile from '../../assets/work_boy.png'
+import "../../css/profile.css"
 import { Avatar, Divider } from "@nextui-org/react";
 import { FaRegEdit } from "react-icons/fa";
 

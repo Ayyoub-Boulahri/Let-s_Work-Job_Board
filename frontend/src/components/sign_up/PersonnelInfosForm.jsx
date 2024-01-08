@@ -1,11 +1,10 @@
 import React from 'react'
-import { useState } from 'react';
-import { Select, SelectItem } from "@nextui-org/react";
 
 function PersonnelInfosForm() {
 
     return (
         <div className="slideshow flex flex-col gap-2">
+            <p className="title py-4">Personnel Informations</p>
             <div className='input-group flex gap-4'>
                 <div>
                     <label htmlFor="cin">CIN</label>

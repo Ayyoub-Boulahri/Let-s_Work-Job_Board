@@ -6,7 +6,7 @@ import { AiFillInstagram } from "react-icons/ai";
 
 function TeamCard(props) {
     return (
-        <div className='flex flex-col bg-[#17191C] rounded-lg py-3 px-4' key={props.member.id}>
+        <div className='flex flex-col bg-[#17191C] rounded-lg py-3 px-4'>
             <div className='flex justify-between'>
                 <Avatar isBordered color="primary" src={props.member.image} className="w-[60px] h-[60]" />
                 <div className='ml-6'>

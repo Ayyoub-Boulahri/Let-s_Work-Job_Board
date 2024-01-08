@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import profile from '../assets/work_boy.png';
+import profile from '../../assets/work_boy.png';
 import { Divider } from "@nextui-org/react";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import SkillItem from '../SkillItem';
