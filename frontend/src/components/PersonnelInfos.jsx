@@ -34,7 +34,7 @@ function PersonnelInfos() {
     },
   ];
   const [isFormVisible, setVisible] = useState(false);
-  
+
   return (
     <div className='flex flex-col '>
       <div className='flex'>
@@ -49,17 +49,17 @@ function PersonnelInfos() {
         </span>
       </div>
       <Divider className='my-4' />
-      <div className='flex flex-row text-[24px] text-gray-500'>
+      <div className='flex flex-row text-[24px] text-gray-300'>
         <h1>My Informations</h1>
         <div className='flex items-center pl-3 hover:text-blue-500'>
           <button href='' onClick={() => {
-    setVisible(!isFormVisible);
-  }}>
+            setVisible(!isFormVisible);
+          }}>
             <FaRegEdit />
           </button>
         </div>
       </div>
-      {!isFormVisible && (
+      {!isFormVisible ?
         <div>
           {List.map((tab) => (
             <div key={tab.id}>
@@ -67,9 +67,7 @@ function PersonnelInfos() {
               <p className='text-[12px] font-thin'>{tab.text}</p>
             </div>
           ))}
-        </div>
-      )}
-      {isFormVisible && (
+        </div> :
         <div>
           {List.map((tab) => (
             <div key={tab.id}>
@@ -78,7 +76,7 @@ function PersonnelInfos() {
             </div>
           ))}
         </div>
-      )}
+      }
     </div>
   );
 }
