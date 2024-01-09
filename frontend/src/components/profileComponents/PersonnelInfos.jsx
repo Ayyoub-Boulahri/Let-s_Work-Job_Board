@@ -101,7 +101,7 @@ function PersonnelInfos() {
               <Input type="email" variant={"underlined"} className='w-[50%]' label={tab.name} />
             </div>
           ))}
-          <div className='flex justify-start gap-20 mt-8 items-center'>
+          <div className='flex justify-start  mt-8 justify-evenly'>
             <button className="bg-rose-500 font-semibold px-4 py-2 rounded-md">Cancel</button>
             <button className="bg-[#0099FF] font-semibold px-4 py-2 rounded-md">Save</button>
           </div>
