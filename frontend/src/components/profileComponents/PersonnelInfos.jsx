@@ -3,6 +3,9 @@ import profile from '../../assets/work_boy.png';
 import '../../css/profile.css';
 import { Divider } from '@nextui-org/react';
 import { FaRegEdit } from 'react-icons/fa';
+import {Input} from "@nextui-org/react";
+import {Textarea} from "@nextui-org/react";
+import {Button} from "@nextui-org/react";
 
 function PersonnelInfos() {
   const List = [
@@ -34,6 +37,7 @@ function PersonnelInfos() {
   ];
   
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [isAboutME,setIsAboutMe] = useState(true);
 
   return (
     <div className='flex flex-col '>
@@ -52,13 +56,29 @@ function PersonnelInfos() {
       <div className='flex flex-row text-[24px] text-gray-300'>
         <h1>About Me</h1>
         <div className='flex items-center pl-3 hover:text-blue-500'>
-            <FaRegEdit onClick={() => setIsFormVisible((prev) => !prev)} />
+            <FaRegEdit onClick={() => setIsAboutMe((prev) => !prev)} />
         </div>
       </div>
-      <div className='py-5 text-justify'>
+      {isAboutME == true ?
+      <div className='py-5 '>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos voluptas repellendus veniam perspiciatis inventore dicta ipsam eveniet est! Soluta debitis laborum tempora deserunt facilis nulla expedita a maxime esse molestiae.
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatem corporis voluptatum iste numquam doloremque nihil suscipit explicabo modi harum ad error nostrum, eveniet reiciendis ducimus repellat? Praesentium, exercitationem nemo!
       </div>
+      :
+      <div className='mt-4'>
+        <Textarea 
+      label="Description"
+      variant="bordered"
+      placeholder="Enter your description"
+      disableAnimation
+      disableAutosize
+      classNames={{
+        base: "max-w-xs",
+        input: "resize-y min-h-[40px]",
+      }}
+    />
+      </div>
+      }
       <Divider className='my-4' />
       <div className='flex flex-row text-[24px] text-gray-300'>
         <h1>My Informations</h1>
@@ -79,10 +99,18 @@ function PersonnelInfos() {
           {List.map((tab) => (
             <div key={tab.id}>
               <div className='text-[14px] pt-3 text-lg font-extrabold'>{tab.name}</div>
-              <p className='text-[12px] font-thin'>{tab.name}</p>
+              <Input type="email" variant={"underlined"} className='w-[50%]' label={tab.name} />
             </div>
           ))}
+        <div className='flex items-center justify-around pt-4'>
+          <Button color="primary" variant="bordered">
+            Confirm
+          </Button> 
+          <Button color="primary" variant="light">
+            Cancel
+          </Button>
         </div>
+      </div>
       }
     </div>
   );
