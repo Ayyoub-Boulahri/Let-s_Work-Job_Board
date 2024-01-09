@@ -1,27 +1,33 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Dialog } from '@radix-ui/themes';
 import { IoArrowForwardOutline } from "react-icons/io5";
 import "../css/signUpForm.css";
 import { usePagination, PaginationItemType } from "@nextui-org/react";
 import PersonnelInfosForm from './sign_up/PersonnelInfosForm';
 import AccountType from './sign_up/AccountType';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import SecurityInfos from './sign_up/SecurityInfos';
 import AddSkills from './sign_up/AddSkills';
 import AddExperiences from './sign_up/AddExperiences';
 import AddDegrees from './sign_up/AddDegrees';
 import AlmostThere from './sign_up/AlmostThere';
-import ResumeUploader from './sign_up/ResumeUploader';
+import ResumeUploader from './sign_up/FileUploader';
 import ImageUpload from './sign_up/ImageUpload ';
+import AboutEmployee from './sign_up/AboutEmployee';
+import CompanyInfos from './sign_up/CompanyInfos';
+import CompanyDesc from './sign_up/CompanyDesc';
 
 function SignUpForm() {
+    const typeUser = useSelector((state) => state.typeUser.value);
+
+    const [nbPages, setNbPages] = useState(5)
+
     const { activePage, range, setPage, onNext, onPrevious } = usePagination({
-        total: 9,
+        total: nbPages,
         showControls: true,
         siblings: 10,
         boundaries: 10,
     });
-    const typeUser = useSelector((state) => state.typeUser.value);
 
 
     const Employeeitems = [
@@ -32,16 +38,25 @@ function SignUpForm() {
         <AddDegrees />,
         <AlmostThere />,
         <ResumeUploader />,
-        <ImageUpload />
+        <ImageUpload />,
+        <AboutEmployee />
     ];
 
     const companyItems = [
-        <div>company1</div>,
-        <div>company22</div>,
-        <div>company3</div>,
-        <div>company4</div>,
-        <div>company5</div>,
+        <CompanyInfos />,
+        <SecurityInfos />,
+        <CompanyDesc />,
+        <ImageUpload />,
+        <ResumeUploader />
     ];
+
+    const handleNext = () => {
+        if(typeUser == "employee")
+            setNbPages(Employeeitems.length + 1)
+        else
+            setNbPages(companyItems.length + 1)
+        onNext();
+    }
 
 
     return (
@@ -84,8 +99,8 @@ function SignUpForm() {
 
                         <div className='flex justify-end gap-4 mt-4'>
                             {activePage != 1 && <button onClick={onPrevious} className='font-semibold bg-rose-600 px-4 py-2 rounded-md'>Back</button>}
-                            <button onClick={onNext} className="bg-[#0099FF] font-semibold px-4 py-2 rounded-md">
-                                {activePage !== Employeeitems.length + 1 ? "Next" : "Sign Up"}
+                            <button onClick={handleNext} className="bg-[#0099FF] font-semibold px-4 py-2 rounded-md">
+                                {activePage !== nbPages ? "Next" : "Sign Up"}
                             </button>
                         </div>
                     </div>

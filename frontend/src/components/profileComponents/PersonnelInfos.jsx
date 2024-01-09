@@ -3,9 +3,9 @@ import profile from '../../assets/work_boy.png';
 import '../../css/profile.css';
 import { Divider } from '@nextui-org/react';
 import { FaRegEdit } from 'react-icons/fa';
-import {Input} from "@nextui-org/react";
-import {Textarea} from "@nextui-org/react";
-import {Button} from "@nextui-org/react";
+import { Input } from "@nextui-org/react";
+import { Textarea } from "@nextui-org/react";
+import { Button } from "@nextui-org/react";
 
 function PersonnelInfos() {
   const List = [
@@ -35,9 +35,9 @@ function PersonnelInfos() {
       text: 'Meknes(Maroc)',
     },
   ];
-  
+
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isAboutME,setIsAboutMe] = useState(true);
+  const [isAboutME, setIsAboutMe] = useState(true);
 
   return (
     <div className='flex flex-col '>
@@ -55,34 +55,33 @@ function PersonnelInfos() {
       <Divider className='my-4' />
       <div className='flex flex-row text-[24px] text-gray-300'>
         <h1>About Me</h1>
-        <div className='flex items-center pl-3 hover:text-blue-500'>
-            <FaRegEdit onClick={() => setIsAboutMe((prev) => !prev)} />
+        <div className='flex items-center pl-3 hover:text-blue-500 duration-300 cursor-pointer'>
+          <FaRegEdit onClick={() => setIsAboutMe((prev) => !prev)} />
         </div>
       </div>
       {isAboutME == true ?
-      <div className='py-5 '>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos voluptas repellendus veniam perspiciatis inventore dicta ipsam eveniet est! Soluta debitis laborum tempora deserunt facilis nulla expedita a maxime esse molestiae.
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatem corporis voluptatum iste numquam doloremque nihil suscipit explicabo modi harum ad error nostrum, eveniet reiciendis ducimus repellat? Praesentium, exercitationem nemo!
-      </div>
-      :
-      <div className='mt-4'>
-        <Textarea 
-      label="Description"
-      variant="bordered"
-      placeholder="Enter your description"
-      disableAnimation
-      disableAutosize
-      classNames={{
-        base: "max-w-xs",
-        input: "resize-y min-h-[40px]",
-      }}
-    />
-      </div>
+        <div className='py-5 '>
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos voluptas repellendus veniam perspiciatis inventore dicta ipsam eveniet est! Soluta debitis laborum tempora deserunt facilis nulla expedita a maxime esse molestiae.
+          &#13;Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatem corporis voluptatum iste numquam doloremque nihil suscipit explicabo modi harum ad error nostrum, eveniet reiciendis ducimus repellat? Praesentium, exercitationem nemo!
+        </div>
+        :
+        <div className='mt-4'>
+          <Textarea
+            label="Description"
+            variant="bordered"
+            placeholder="Enter your description"
+            disableAnimation
+            classNames={{
+              input: "resize-none min-h-[100px] text-gray-400",
+            }}
+            defaultValue='Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos voluptas repellendus veniam perspiciatis inventore dicta ipsam eveniet est! Soluta debitis laborum tempora deserunt facilis nulla expedita a maxime esse molestiae.&#13;Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatem corporis voluptatum iste numquam doloremque nihil suscipit explicabo modi harum ad error nostrum, eveniet reiciendis ducimus repellat? Praesentium, exercitationem nemo!'
+          />
+        </div>
       }
       <Divider className='my-4' />
       <div className='flex flex-row text-[24px] text-gray-300'>
         <h1>My Informations</h1>
-        <div className='flex items-center pl-3 hover:text-blue-500'>
+        <div className='flex items-center pl-3 hover:text-blue-500 duration-300 cursor-pointer'>
           <FaRegEdit onClick={() => setIsFormVisible((prev) => !prev)} />
         </div>
       </div>
@@ -102,15 +101,11 @@ function PersonnelInfos() {
               <Input type="email" variant={"underlined"} className='w-[50%]' label={tab.name} />
             </div>
           ))}
-        <div className='flex items-center justify-around pt-4'>
-          <Button color="primary" variant="bordered">
-            Confirm
-          </Button> 
-          <Button color="primary" variant="light">
-            Cancel
-          </Button>
+          <div className='flex justify-start gap-20 mt-8 items-center'>
+            <button className="bg-rose-500 font-semibold px-4 py-2 rounded-md">Cancel</button>
+            <button className="bg-[#0099FF] font-semibold px-4 py-2 rounded-md">Save</button>
+          </div>
         </div>
-      </div>
       }
     </div>
   );

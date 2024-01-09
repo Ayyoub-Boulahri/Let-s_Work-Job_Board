@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { FaPlusCircle } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import profile from "../../assets/profile.png"
+import { useSelector } from 'react-redux';
 
 const ImageUpload = () => {
     const [previewImage, setPreviewImage] = useState(profile);
+    const typeUser = useSelector((state) => state.typeUser.value);
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -23,7 +25,9 @@ const ImageUpload = () => {
 
     return (
         <div className="container">
-            <p className="title pt-4">Upload Your Photo</p>
+            <p className="title pt-4">
+                {typeUser == "employee" ? "Upload Your Photo" : "Company Logo or Photo"}
+            </p>
             <div className="avatar-upload">
                 <div className="avatar-edit">
                     <input

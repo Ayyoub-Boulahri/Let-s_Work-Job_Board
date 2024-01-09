@@ -45,7 +45,7 @@ function Profile() {
   ]
 
   return (
-    <div className={`pt-20 bg-section-dark-bg h-[1000px] ${styles.flexStart} ${styles.paddingX}`}>
+    <div className={`pt-20 bg-section-dark-bg ${styles.flexStart} ${styles.paddingX}`}>
       <div className={`${styles.boxWidth} ${styles.paddingY}`}>
         <div className={` flex justify-between`}>
 

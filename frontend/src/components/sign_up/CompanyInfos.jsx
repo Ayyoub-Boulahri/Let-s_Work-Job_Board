@@ -1,37 +1,17 @@
 import React from 'react'
 
-function PersonnelInfosForm() {
-
+function CompanyInfos() {
     return (
         <div className="slideshow flex flex-col gap-2">
-            <p className="title py-4">Personnel Informations</p>
-            <div className='input-group flex gap-4'>
-                <div>
-                    <label htmlFor="cin">CIN</label>
-                    <input type="text" id="cin" name="cin" placeholder='CIN' />
-                </div>
-
-                <div>
-                    <label htmlFor="firstName">First Name</label>
-                    <input type="text" id="firstName" name="firstName" placeholder='First Name' />
-                </div>
-
-                <div>
-                    <label htmlFor="lastName">Last Name</label>
-                    <input type="text" id="lastName" name="lastName" placeholder='Last Name' />
-                </div>
+            <p className="title py-4">Company Informations</p>
+            <div className='input-group flex flex-col'>
+                <label htmlFor="">Company Name</label>
+                <input type="text" id="" name="" placeholder='Company Nam' />
             </div>
 
-            <div className='input-group flex gap-6 w-full'>
-                <div className='w-full'>
-                    <label htmlFor="phoneNumber">Phone Number</label>
-                    <input type="tel" id="phoneNumber" name="phoneNumber" placeholder='Phone Number' defaultValue={"+212 "} />
-                </div>
-
-                <div className='w-full'>
-                    <label htmlFor="dob">Date of Birth</label>
-                    <input type="date" id="dob" name="dob" />
-                </div>
+            <div className='input-group flex w-full flex-col'>
+                <label htmlFor="phoneNumber">Phone Number</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder='Phone Number' defaultValue={"+212 "} />
             </div>
 
             <div className='input-group flex gap-6 w-full'>
@@ -76,4 +56,4 @@ function PersonnelInfosForm() {
     )
 }
 
-export default PersonnelInfosForm
+export default CompanyInfos
