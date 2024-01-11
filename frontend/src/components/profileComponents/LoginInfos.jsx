@@ -6,6 +6,7 @@ import { Avatar, Divider } from "@nextui-org/react";
 import { FaRegEdit } from "react-icons/fa";
 import {Input} from "@nextui-org/react";
 import { MdOutlineAlternateEmail } from "react-icons/md";
+import PasswordInput from '../PasswordInput';
 
 function LoginInfos() {
   const List = [
@@ -21,6 +22,7 @@ function LoginInfos() {
     }
   ]
   const [changeEmail,setChangeEmail] = useState(false);
+  const [changePassword,setChangePassword] = useState(false);
   return (
     <div className='flex flex-col '>
       <div className='flex'>
@@ -48,7 +50,7 @@ function LoginInfos() {
         </div> 
     { changeEmail &&
         <div>
-          <h1 className='mb-3'>new email</h1>
+          <h1 className='mb-3 text-[16px]'>New email</h1>
             <Input
           type="email"
          
@@ -59,6 +61,8 @@ function LoginInfos() {
             <MdOutlineAlternateEmail />
           }
         />
+          <h1 className='pt-4 pb-4'>Confirm that it's you</h1>
+          <PasswordInput label="Password" />
         <div className='flex justify-start  mt-8 justify-evenly'>
             <button className="bg-rose-500 font-semibold px-8 py-2 rounded-md" onClick={() => setChangeEmail((prev) => !prev)}>Cancel</button>
             <button className="bg-[#0099FF] font-semibold px-8 py-2 rounded-md">Save</button>
@@ -67,11 +71,34 @@ function LoginInfos() {
     }
       
       <Divider className="my-4" />
-      <div className='flex flex-row text-[20px] text-yellow-50'>
-        <h1>Password</h1>
-        <div className='flex items-center pl-3 hover:text-blue-500'><a href=""><FaRegEdit /></a></div>
-      </div>
-      *********
+      <div className='mb-5 flex justify-between'>
+        <div>
+          <div className='flex items-center flex-row text-[20px] text-gray-300 mt-5 '>
+            {
+              !changePassword ? <h1>Password</h1> : <h1>Current Password</h1>
+            }
+          </div>
+          <div className='text-[14px]'>
+            <h1>**************************</h1>
+          </div>
+        </div>
+          {!changePassword &&
+          <div className='flex items-center pl-3 hover:text-blue-500 ' ><button  onClick={() => setChangePassword((prev) => !prev)}><FaRegEdit className='size-6'/></button></div>}
+        </div> 
+      {changePassword &&
+        <div>
+          <h1 className='pt-2 pb-3'>Confirm you're current password</h1>
+          <PasswordInput label="current password" />
+          <h1 className='pt-2 pb-3'>You're new password</h1>
+          <PasswordInput label="New password"/>
+          <h1 className='pt-2 pb-3'>Confirm you're new password</h1>
+          <PasswordInput label="Confirm new password"/>
+          <div className='flex justify-start  mt-8 justify-evenly'>
+            <button className="bg-rose-500 font-semibold px-8 py-2 rounded-md" onClick={() => setChangePassword((prev) => !prev)}>Cancel</button>
+            <button className="bg-[#0099FF] font-semibold px-8 py-2 rounded-md">Save</button>
+          </div>
+        </div>
+      }
     </div>
   )
 }

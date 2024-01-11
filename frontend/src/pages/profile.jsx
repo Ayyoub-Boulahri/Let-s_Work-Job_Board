@@ -47,28 +47,28 @@ function Profile() {
   return (
     <div className={`pt-20 bg-section-dark-bg ${styles.flexStart} ${styles.paddingX}`}>
       <div className={`${styles.boxWidth} ${styles.paddingY}`}>
-        <div className={` flex justify-between`}>
+        <div className={` flex sm:flex-row  flex-col justify-between`}>
 
           {/* Tabs Section */}
 
-          <div className='flex flex-col w-[28%] items-center py-6 rounded-lg'>
+          <div className='flex sm:flex-col flex-col w-[28%] items-center py-6 rounded-lg'>
             <Avatar isBordered color="primary" src={profile} className="w-[160px] h-[160]" />
             <h1 className={`${styles.heading3} text-center`}>Ayyoub Boulahri</h1>
-            <div className='flex flex-col list-none mt-6'>
+            <div className='flex sm:flex-col flex-row   list-none mt-6 '>
               {tabs.map((tab, index) => (
                 <>
                   <button className={`flex font-poppins text-[18px] text-gray-300 font-medium  hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
                     <div key={tab.id} className='flex flex-row'>
-                      <div>{tab.logo}</div>
+                      <div className='sm:block hidden'>{tab.logo}</div>
                       <div  className="text-sm pl-3">{tab.title}</div>
                     </div>
                   </button>
-                  {index !== tabs.length - 1 && <Divider className="my-4 bg-[#3D3D3D]" />}
+                  {index !== tabs.length - 1 && <Divider className="my-4 bg-[#3D3D3D] sm:block hidden" />}
                 </>
               ))}
             </div>
           </div>
-          <Divider orientation='vertical' className='h-1000 w-[2px] bg-[#3D3D3D]' />
+          <Divider orientation='vertical' className='h-1000 w-[2px] bg-[#3D3D3D] ' />
           {/* Component Section */}
           <div className="flex flex-col w-[58%] mr-20 items-center p-6 rounded-lg">
             {tabs.map(tab => (

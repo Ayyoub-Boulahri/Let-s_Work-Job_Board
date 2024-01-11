@@ -7,7 +7,7 @@ import { Input } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
 
-function PersonnelInfos() {
+  function PersonnelInfos() {
   const List = [
     {
       id: 1,
