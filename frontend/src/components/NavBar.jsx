@@ -16,14 +16,17 @@ import NotificationDropdown from './navbarComponents/notificationDropdown';
 import AvatarDropdown from './navbarComponents/AvatarDropdown';
 import { useContext } from 'react';
 import { SignInContext } from '../App';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function NavBar() {
   const { isSignIn, userType } = useContext(SignInContext)
 
   const [toggle, setToggle] = useState(false)
   const [navLinkId, setNavLinkId] = useState(1)
-  const navLinks = [
+  const [navLinks, setNavLinks] = useState([])
+  const navigate = useNavigate()
+
+  const acceuilNavLinks = [
     {
       id: "home",
       title: "Home",
@@ -38,7 +41,44 @@ function NavBar() {
     },
   ];
 
+  const employeeNavLinks = [
+    {
+      id: "jobs",
+      title: "Jobs",
+    },
+    {
+      id: "companies",
+      title: "Companies",
+    },
+    {
+      id: "requests",
+      title: "job requests",
+    },
+  ];
+
+  const companyNavLinks = [
+    {
+      id: "profiles",
+      title: "Profiles",
+    },
+    {
+      id: "jobListings",
+      title: "Job Listings",
+    },
+    {
+      id: "newOffer",
+      title: "New Offer",
+    },
+  ];
+
   useEffect(() => {
+    if (userType == "employee" && isSignIn)
+      setNavLinks(employeeNavLinks)
+    else if (userType == "company" && isSignIn)
+      setNavLinks(companyNavLinks);
+    else
+      setNavLinks(acceuilNavLinks)
+
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
       if (window.scrollY > 0)
@@ -46,7 +86,7 @@ function NavBar() {
       else
         navbar.classList.remove('bg-opacity-80')
     })
-  }, [])
+  }, [isSignIn, userType])
 
   return (
     <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-50 mb-20 fixed duration-200" id='navbar'>
@@ -56,16 +96,27 @@ function NavBar() {
             <h1 className="text-primary-600 text-[30px] font-poppins font-extrabold py-5">Let's Work</h1>
 
             {/* computer size items */}
-            <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
+            {
+              !isSignIn ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
+                {navLinks.map((nav, index) => (
+                  <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
+                    <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`}>
+                      {nav.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+              :
+              <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
               {navLinks.map((nav, index) => (
                 <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
-                  <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`}>
+                  <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
                     {nav.title}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
-
+            }
             {/* notification Dropdown */}
 
             {isSignIn && <NotificationDropdown />}
@@ -78,7 +129,7 @@ function NavBar() {
             {/* Sign Up Button */}
 
             {
-              !isSignIn && 
+              !isSignIn &&
               <Provider store={signUpStore}>
                 <SignUpForm buttonTxt="Sign Up" />
               </Provider>

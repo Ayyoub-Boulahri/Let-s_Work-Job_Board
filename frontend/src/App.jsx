@@ -5,7 +5,7 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Jobs from './pages/Jobs'
 import { createContext, useState } from 'react'
-
+import Companies from './pages/companies'
 export const SignInContext = createContext()
 
 function App() {
@@ -21,6 +21,7 @@ function App() {
             <Route path='/' element={<Acceuil />} />
             <Route path='/profile' element={<Profile />} />
             <Route path='/jobs' element={<Jobs />} />
+            <Route path='/companies' element={<Companies />} />
           </Routes>
           <Footer />
         </BrowserRouter>
