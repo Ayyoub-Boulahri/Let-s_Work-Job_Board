@@ -11,7 +11,7 @@ export class SearchSection extends Component {
           industry: "Technology",
           founded_year: 2005,
           hq_location: "Silicon Valley, CA",
-          website: "http://techinnovators.com"
+          website: "http://techinnovators.com",
         },
         {
           id: 2,
