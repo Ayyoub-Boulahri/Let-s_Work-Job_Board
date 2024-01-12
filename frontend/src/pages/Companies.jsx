@@ -5,7 +5,7 @@ function Companies() {
     <div className={`${styles.flexStart} pt-20 xl:pb-4`}>
       <div className={`${styles.boxWidth}`}>
 
-        <div className='bg-white'>
+        <div>
           companies
         </div>
       </div>
