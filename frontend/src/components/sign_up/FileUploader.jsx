@@ -1,26 +1,59 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState,  useRef } from 'react';
 import { FaFileUpload } from "react-icons/fa";
 import "../../css/CheckAnimationSuccess.css"
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { PaginationItemType } from "@nextui-org/react";
+import { setCv, setFile } from '../../stores/signUpStore';
+import { set } from 'react-hook-form';
 
-const FileUploader = () => {
+const FileUploader = (props) => {
     const fileInputRef = useRef(null)
-    const [file, setfile] = useState("")
     const typeUser = useSelector((state) => state.typeUser.value);
+    const dispatch = useDispatch();
+    const employeeData = useSelector((state) => state.employeeData.value);
+    const companyData = useSelector((state) => state.companyData.value);
+    const [fileName, setFileName] = useState("")
+
+    useEffect(() => {
+        if(typeUser == "employee") {
+            setFileName(employeeData.cv.name)
+        }else {
+            setFileName(companyData.file.name)
+        }
+    }, [])
 
     const handleFile = (event) => {
-        setfile(event.target.files[0].name)
-        console.log(event.target.files[0].name)
-        console.log(file)
+        const file = event.target.files[0];
+        setFileName(file.name)
+        if (file) {
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+                if(typeUser == "employee") 
+                    dispatch(setCv({name: file.name, blobObj: formData}))
+                else
+                    dispatch(setFile({name: file.name, blobObj: formData}))
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        }
     }
 
     const handleSelectClick = () => {
-        // Trigger the file input click event
         fileInputRef.current.click();
     };
 
+    const handelSubmit = () => {
+        if(fileName != "" && typeUser == "employee")
+            props.pagination.onNext()
+        else if(typeUser == "company") {
+            console.log(companyData)
+            props.pagination.onNext()
+        }
+    }
+
     return (
-        <div>
+        <div className='slideshow'>
             <p className="title py-4">
                 {typeUser == "employee" ? "Upload Your CV" : "Upload File"}
             </p>
@@ -34,14 +67,13 @@ const FileUploader = () => {
             >
                 <div className='flex flex-col items-center gap-4'>
 
-                    {file == ""
+                    {fileName == ""
                         ? <FaFileUpload color='#596475' size={60} />
-                        : <div class="success-animation">
-                            <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+                        : <div className="success-animation">
+                            <svg className="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle className="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path className="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
                         </div>
                     }
-
-                    {file ? file
+                    {!fileName == "" ? fileName
                         : <p className="mb-4">Click to select a file</p>
                     }
                     <input
@@ -49,8 +81,31 @@ const FileUploader = () => {
                         className="hidden"
                         onChange={handleFile}
                         ref={fileInputRef}
+                        accept=".pdf, .doc, .docx"
                     />
                 </div>
+            </div>
+            <div className='mt-6'>
+                <ul className="flex gap-2 items-center justify-center">
+                    {props.pagination.range.map((page) => {
+                        if (page !== PaginationItemType.NEXT && page !== PaginationItemType.PREV && page !== PaginationItemType.DOTS) {
+                            return (
+                                <li key={page} aria-label={`page ${page}`}>
+                                    <button
+                                        className={`w-3 h-3 bg-default-300 rounded-full ${props.pagination.activePage === page ? 'bg-rose-500' : ''}`}
+                                    />
+                                </li>
+                            );
+                        }
+                    })}
+                </ul>
+            </div>
+
+            <div className='flex justify-end gap-4 mt-4'>
+                {props.pagination.activePage != 1 && <button onClick={props.pagination.onPrevious} className='font-semibold bg-rose-600 px-4 py-2 rounded-md'>Back</button>}
+                <button onClick={handelSubmit} className="bg-[#0099FF] font-semibold px-4 py-2 rounded-md">
+                    {typeUser == "employee" ? "Next" : "Sign Up"}
+                </button>
             </div>
         </div>
     )

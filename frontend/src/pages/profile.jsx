@@ -51,13 +51,13 @@ function Profile() {
 
           {/* Tabs Section */}
 
-          <div className='flex sm:flex-col flex-col w-[28%] items-center py-6 rounded-lg'>
+          <div className='flex flex-col sm:w-[28%] items-center py-6 rounded-lg '>
             <Avatar isBordered color="primary" src={profile} className="w-[160px] h-[160]" />
             <h1 className={`${styles.heading3} text-center`}>Ayyoub Boulahri</h1>
-            <div className='flex sm:flex-col flex-row   list-none mt-6 '>
+            <div className='flex sm:flex-col flex-row list-none mt-6 '>
               {tabs.map((tab, index) => (
                 <>
-                  <button className={`flex font-poppins text-[18px] text-gray-300 font-medium  hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
+                  <button className={`flex font-poppins text-[18px] text-gray-300 font-medium hover:rounded-md hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
                     <div key={tab.id} className='flex flex-row'>
                       <div className='sm:block hidden'>{tab.logo}</div>
                       <div  className="text-sm pl-3">{tab.title}</div>
@@ -70,7 +70,7 @@ function Profile() {
           </div>
           <Divider orientation='vertical' className='h-1000 w-[2px] bg-[#3D3D3D] ' />
           {/* Component Section */}
-          <div className="flex flex-col w-[58%] mr-20 items-center p-6 rounded-lg">
+          <div className="flex flex-col sm:w-[58%] sm:mr-20 items-center p-6 rounded-lg">
             {tabs.map(tab => (
               indexTab === tab.id && tab.component
             ))}

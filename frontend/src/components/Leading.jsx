@@ -28,7 +28,7 @@ function Leading() {
                         </div>
                         <div className='flex flex-row mt-4'>
                             <Provider store={signUpStore}>
-                                <SignUpForm />
+                                <SignUpForm buttonTxt={"Get Started"}/>
                             </Provider>
 
                             <SignInForm />

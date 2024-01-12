@@ -14,8 +14,8 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Theme appearance="dark">
         <main className="blue-dark text-foreground bg-background font-poppins">
           <App />
-        </main>      
+        </main>
       </Theme>
-      </ThemeProvider>
+    </ThemeProvider>
   </React.StrictMode >,
 )

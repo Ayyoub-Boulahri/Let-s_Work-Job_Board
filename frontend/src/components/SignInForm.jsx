@@ -2,8 +2,21 @@ import React from 'react'
 import { Dialog, Button } from '@radix-ui/themes';
 import { IoLogInOutline } from "react-icons/io5";
 import "../css/signInForm.css";
+import { useContext } from 'react';
+import { SignInContext } from '../App';
+import { useNavigate } from 'react-router-dom';
+import { SiNginx } from 'react-icons/si';
 
 function SignInForm() {
+    const { setIsSignIn, setUserType } = useContext(SignInContext)
+    const navigate = useNavigate();
+
+    const signIn = (type) => {
+        setIsSignIn(true);
+        setUserType(type);
+        navigate("/jobs");
+    }
+
     return (
         <Dialog.Root>
             <Dialog.Trigger>
@@ -16,19 +29,19 @@ function SignInForm() {
                     <p className="title">Login</p>
                     <form className="form">
                         <div className="input-group">
-                            <label htmlFor="username">Email</label>
-                            <input type="text" name="username" id="username" placeholder="Enter your Email" />
+                            <label>Email</label>
+                            <input type="text" placeholder="Enter your Email"/>
                         </div>
                         <div className="input-group">
-                            <label htmlFor="password" className='mt-2'>Password</label>
-                            <input type="password" name="password" id="password" placeholder="Enter your Password" />
+                            <label className='mt-2'>Password</label>
+                            <input type="password" placeholder="Enter your Password"/>
                             <div className="forgot">
                                 <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
                             </div>
                         </div>
                         <div className='flex flex-row justify-between gap-6'>
-                            <button className="sign">As Employee</button>
-                            <button className="sign">As Company</button>
+                            <button className="sign" onClick={() => signIn("employee")}>As Employee</button>
+                            <button className="sign" onClick={() => signIn("company")}>As Company</button>
                         </div>
                     </form>
                     <div className="social-message">
@@ -42,9 +55,9 @@ function SignInForm() {
                                 <span className='text-center'>Login with Google</span>
                         </button>
                     </div>
-                    <p className="signup">Don't have an account?
+                    {/* <p className="signup">Don't have an account?
                         <a rel="noopener noreferrer" href="#" className=""> Sign up</a>
-                    </p>
+                    </p> */}
                 </div>
 
             </Dialog.Content>

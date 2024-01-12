@@ -5,21 +5,23 @@ import "../css/signUpForm.css";
 import { usePagination, PaginationItemType } from "@nextui-org/react";
 import PersonnelInfosForm from './sign_up/PersonnelInfosForm';
 import AccountType from './sign_up/AccountType';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SecurityInfos from './sign_up/SecurityInfos';
 import AddSkills from './sign_up/AddSkills';
 import AddExperiences from './sign_up/AddExperiences';
 import AddDegrees from './sign_up/AddDegrees';
 import AlmostThere from './sign_up/AlmostThere';
-import ResumeUploader from './sign_up/FileUploader';
+import FileUploader from './sign_up/FileUploader';
 import ImageUpload from './sign_up/ImageUpload ';
 import AboutEmployee from './sign_up/AboutEmployee';
 import CompanyInfos from './sign_up/CompanyInfos';
 import CompanyDesc from './sign_up/CompanyDesc';
+import SignUpComplete from './sign_up/signUpComplete';
+import { initCompany, initEmployee } from '../stores/signUpStore';
 
-function SignUpForm() {
+function SignUpForm(props) {
     const typeUser = useSelector((state) => state.typeUser.value);
-
+    const dispatch = useDispatch()
     const [nbPages, setNbPages] = useState(5)
 
     const { activePage, range, setPage, onNext, onPrevious } = usePagination({
@@ -29,42 +31,60 @@ function SignUpForm() {
         boundaries: 10,
     });
 
-
-    const Employeeitems = [
-        <PersonnelInfosForm />,
-        <SecurityInfos />,
-        <AddSkills />,
-        <AddExperiences />,
-        <AddDegrees />,
-        <AlmostThere />,
-        <ResumeUploader />,
-        <ImageUpload />,
-        <AboutEmployee />
-    ];
-
-    const companyItems = [
-        <CompanyInfos />,
-        <SecurityInfos />,
-        <CompanyDesc />,
-        <ImageUpload />,
-        <ResumeUploader />
-    ];
-
     const handleNext = () => {
-        if(typeUser == "employee")
+        if (typeUser == "employee")
             setNbPages(Employeeitems.length + 1)
         else
             setNbPages(companyItems.length + 1)
         onNext();
     }
 
+    const initializeAll = () => {
+        dispatch(initEmployee());
+        dispatch(initCompany());
+        setPage(1)
+    }
+
+    const handleOutsideClick = (e) => {
+        initializeAll()
+    };
+    var pagination = { activePage, range, setPage, onNext, onPrevious, handleNext, nbPages }
+
+
+    const Employeeitems = [
+        <PersonnelInfosForm pagination={pagination} />,
+        <SecurityInfos pagination={pagination} />,
+        <AddSkills pagination={pagination} />,
+        <AddExperiences pagination={pagination} />,
+        <AddDegrees pagination={pagination} />,
+        <AlmostThere pagination={pagination} />,
+        <FileUploader pagination={pagination} />,
+        <ImageUpload pagination={pagination} />,
+        <AboutEmployee pagination={pagination} />
+    ];
+
+    const companyItems = [
+        <CompanyInfos pagination={pagination} />,
+        <SecurityInfos pagination={pagination} />,
+        <CompanyDesc pagination={pagination} />,
+        <ImageUpload pagination={pagination} />,
+        <FileUploader pagination={pagination} />,
+        <SignUpComplete pagination={pagination} />,
+    ];
+
+
+
 
     return (
         <Dialog.Root>
             <Dialog.Trigger>
-                <button type="button" className="inline-flex mr-6 items-center px-4 py-2 border border-transparent text-base leading-6 font-bold font-poppins rounded-md text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-700 active:bg-rose-700 transition ease-in-out duration-150 cursor-pointer">
-                    Get Started <IoArrowForwardOutline className='ml-2 text-[18px] font-bold' />
-                </button>
+                {props.buttonTxt == "Get Started" 
+                    ?   <button type="button" className="inline-flex mr-6 items-center px-4 py-2 border border-transparent text-base leading-6 font-bold font-poppins rounded-md text-white bg-rose-600 hover:bg-rose-500 focus:border-rose-700 active:bg-rose-700 transition ease-in-out duration-150 cursor-pointer" onClick={handleOutsideClick}>
+                            Get Started <IoArrowForwardOutline className='ml-2 text-[18px] font-bold' />
+                        </button> 
+
+                    :   <button className="bn632-hover bn26 mr-10 font-poppins" onClick={handleOutsideClick}>Sing Up</button>
+                }
             </Dialog.Trigger>
 
             <Dialog.Content style={{ maxWidth: 500, backgroundColor: "#0D1117" }}>
@@ -81,31 +101,28 @@ function SignUpForm() {
                                     ))
                             }
                         </div>
-                        <div className='mt-6'>
-                            <ul className="flex gap-2 items-center justify-center">
-                                {range.map((page) => {
-                                    if (page !== PaginationItemType.NEXT && page !== PaginationItemType.PREV && page !== PaginationItemType.DOTS) {
-                                        return (
-                                            <li key={page} aria-label={`page ${page}`}>
-                                                <button
-                                                    className={`w-3 h-3 bg-default-300 rounded-full ${activePage === page ? 'bg-rose-500' : ''}`}
-                                                />
-                                            </li>
-                                        );
-                                    }
-                                })}
-                            </ul>
-                        </div>
 
-                        <div className='flex justify-end gap-4 mt-4'>
-                            {activePage != 1 && <button onClick={onPrevious} className='font-semibold bg-rose-600 px-4 py-2 rounded-md'>Back</button>}
-                            <button onClick={handleNext} className="bg-[#0099FF] font-semibold px-4 py-2 rounded-md">
-                                {activePage !== nbPages ? "Next" : "Sign Up"}
-                            </button>
-                        </div>
+                        {activePage == 1 &&
+                            <div className='flex justify-end gap-4 mt-4'>
+                                <button onClick={handleNext} className="bg-[#0099FF] font-semibold px-4 py-2 rounded-md">
+                                    Next
+                                </button>
+                            </div>
+                        }
+
                     </div>
                 </div>
+                {
+                    activePage == companyItems.length + 1 && typeUser == "company" &&
+                    <Dialog.Close>
+                        <div className='flex justify-end gap-4 mt-4 w-full'>
+                            <button className='font-semibold bg-rose-600 px-4 py-2 rounded-md'>OK</button>
+                        </div>
+                    </Dialog.Close>
+                }
             </Dialog.Content>
+
+
         </Dialog.Root>
     )
 }
