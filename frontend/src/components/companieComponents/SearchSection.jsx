@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 import React, { Component } from 'react'
 import Photo from "../../assets/about.png"
 import CompanyCard from './CompanyCard';
-import {Input} from "@nextui-org/react";
+import {Input, link} from "@nextui-org/react";
 import { Divider} from "@nextui-org/react";
 import {RadioGroup, Radio} from "@nextui-org/react";
 
@@ -120,16 +120,19 @@ export class SearchSection extends Component {
                       <Radio value="tokyo" >
                       5001 - 10000
                       </Radio>
-                      <Radio value="tokyo" >
+                      <Radio value="kyo" >
                       more than 10000
                       </Radio>
                     </RadioGroup>
                 </div>
             </div>
             <div>
-                {ListOfCompanies.map(ligne =>(
-                    <CompanyCard name={ligne.name} logo={ligne.logo} taille={ligne.founded_year} lieu={ligne.hq_location} secteur={ligne.industry}/>
-                ))
+                {ListOfCompanies.map(ligne =>{
+                    return <div onClick={()=>{
+                        
+                    }}><CompanyCard  name={ligne.name} logo={ligne.logo} taille={ligne.founded_year} lieu={ligne.hq_location} secteur={ligne.industry}/></div>
+                    
+                })
                 }
             </div>
         </div>
