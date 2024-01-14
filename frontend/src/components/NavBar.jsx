@@ -9,22 +9,42 @@ import { useEffect } from 'react';
 import SignUpForm from './SignUpForm';
 import { Provider } from 'react-redux';
 import { signUpStore } from '../stores/signUpStore';
-import { FaRegBell } from "react-icons/fa";
-import { Dropdown, DropdownSection, DropdownTrigger, DropdownMenu, DropdownItem, Avatar, User } from "@nextui-org/react";
-import { Button, cn } from "@nextui-org/react";
 import NotificationDropdown from './navbarComponents/notificationDropdown';
 import AvatarDropdown from './navbarComponents/AvatarDropdown';
-import { useContext } from 'react';
-import { SignInContext } from '../App';
 import { Link, useNavigate } from 'react-router-dom';
+import checkAuthentication from '../services/checkAuthentication';
+import { useSelector } from 'react-redux';
 
 function NavBar() {
-  const { isSignIn, userType } = useContext(SignInContext)
-
   const [toggle, setToggle] = useState(false)
   const [navLinkId, setNavLinkId] = useState(1)
   const [navLinks, setNavLinks] = useState([])
   const navigate = useNavigate()
+  const authInfo = useSelector((state) => state.isAuthenticated.value);
+
+  useEffect(() => {
+
+    const fetchAuthInfo = async () => {
+      const authInfo = await checkAuthentication();
+    };
+
+    fetchAuthInfo();
+
+    if (authInfo?.typeUser == "employee" && authInfo?.auth)
+      setNavLinks(employeeNavLinks)
+    else if (authInfo?.typeUser == "company" && authInfo?.auth)
+      setNavLinks(companyNavLinks);
+    else
+      setNavLinks(acceuilNavLinks)
+
+    window.addEventListener('scroll', () => {
+      const navbar = document.getElementById('navbar');
+      if (window.scrollY > 0)
+        navbar.classList.add('bg-opacity-80')
+      else
+        navbar.classList.remove('bg-opacity-80')
+    })
+  }, [authInfo])
 
   const acceuilNavLinks = [
     {
@@ -71,22 +91,6 @@ function NavBar() {
     },
   ];
 
-  useEffect(() => {
-    if (userType == "employee" && isSignIn)
-      setNavLinks(employeeNavLinks)
-    else if (userType == "company" && isSignIn)
-      setNavLinks(companyNavLinks);
-    else
-      setNavLinks(acceuilNavLinks)
-
-    window.addEventListener('scroll', () => {
-      const navbar = document.getElementById('navbar');
-      if (window.scrollY > 0)
-        navbar.classList.add('bg-opacity-80')
-      else
-        navbar.classList.remove('bg-opacity-80')
-    })
-  }, [isSignIn, userType])
 
   return (
     <div className="w-full shadow-xl overflow-hidden z-[1110] bg-background bg-opacity-50 mb-20 fixed duration-200" id='navbar'>
@@ -97,7 +101,7 @@ function NavBar() {
 
             {/* computer size items */}
             {
-              !isSignIn ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
+              !authInfo?.auth ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                 {navLinks.map((nav, index) => (
                   <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
                     <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`}>
@@ -106,30 +110,30 @@ function NavBar() {
                   </li>
                 ))}
               </ul>
-              :
-              <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
-              {navLinks.map((nav, index) => (
-                <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
-                  <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
-                    {nav.title}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                :
+                <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
+                  {navLinks.map((nav, index) => (
+                    <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
+                      <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
+                        {nav.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
             }
             {/* notification Dropdown */}
 
-            {isSignIn && <NotificationDropdown />}
+            {authInfo?.auth && <NotificationDropdown />}
 
             {/* Profile Avatar Bar */}
 
-            {isSignIn && <AvatarDropdown />}
+            {authInfo?.auth && <AvatarDropdown />}
 
 
             {/* Sign Up Button */}
 
             {
-              !isSignIn &&
+              !authInfo?.auth &&
               <Provider store={signUpStore}>
                 <SignUpForm buttonTxt="Sign Up" />
               </Provider>
@@ -150,9 +154,16 @@ function NavBar() {
                     {navLinks.map((nav, index) => (
                       <li key={nav.id}
                         className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setNavLinkId(index + 1)}>
-                        <a href={`#${nav.id}`}>
-                          {nav.title}
-                        </a>
+                        {
+                          !authInfo?.auth 
+                            ? <a href={`#${nav.id}`}>
+                                {nav.title}
+                              </a>
+                            : <Link to={"/" + nav.id}>
+                                {nav.title}
+                              </Link>
+                        }
+
                       </li>
                     ))}
                   </ul>

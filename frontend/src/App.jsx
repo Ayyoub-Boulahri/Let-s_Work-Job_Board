@@ -4,17 +4,14 @@ import Profile from './pages/profile'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Jobs from './pages/Jobs'
-import { createContext, useState } from 'react'
 import Companies from './pages/companies'
-export const SignInContext = createContext()
+import { Provider } from 'react-redux';
+import { authStore } from './stores/authStore'
 
 function App() {
-  const [isSignIn, setIsSignIn] = useState(false)
-  const [userType, setUserType] = useState("")
   return (
     <>
-      <SignInContext.Provider value={{ isSignIn, setIsSignIn, userType, setUserType }}>
-
+      <Provider store={authStore}>
         <BrowserRouter>
           <NavBar />
           <Routes>
@@ -25,8 +22,7 @@ function App() {
           </Routes>
           <Footer />
         </BrowserRouter>
-
-      </SignInContext.Provider >
+      </Provider>
     </>
   )
 }

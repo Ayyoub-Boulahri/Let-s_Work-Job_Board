@@ -48,6 +48,7 @@ function SignUpForm(props) {
     const handleOutsideClick = (e) => {
         initializeAll()
     };
+    
     var pagination = { activePage, range, setPage, onNext, onPrevious, handleNext, nbPages }
 
 

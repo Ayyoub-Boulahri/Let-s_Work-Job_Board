@@ -5,13 +5,9 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { setAboutMe } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
-import { useContext } from 'react';
-import { SignInContext } from '../../App';
 import { useNavigate } from 'react-router-dom';
 
 function AboutEmployee(props) {
-
-    const { setIsSignIn, setUserType } = useContext(SignInContext)
     
     const dispatch = useDispatch();
     var employeeData = useSelector((state) => state.employeeData.value);
@@ -38,9 +34,7 @@ function AboutEmployee(props) {
 
     const signUpFonction = (employeeData) => {
         console.log(employeeData);
-        setIsSignIn(true);
-        setUserType("employee");
-        navigate("/jobs");
+
     }
     
     return (

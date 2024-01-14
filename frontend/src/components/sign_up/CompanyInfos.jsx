@@ -8,16 +8,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function CompanyInfos(props) {
     const dispatch = useDispatch();
-    const companyData = useSelector((state) => state.companyData.value);
-
+    let companyData = useSelector((state) => state.companyData.value);
+    useEffect(() => console.log(companyData), [])
     const schema = yup.object().shape({
         companyName: yup.string().required('Company Name is required'),
         phoneNumber: yup.string().min(10).required('Phone Number is required'),
         country: yup.string().required('Country is required'),
         city: yup.string().required('City is required'),
         address: yup.string().required('Address is required'),
+        size: yup.string().required('Size is required'),
+        foundedYear: yup.number().required('Year is required'),
+        industry: yup.string().required('Industry is required'),
     });
-
+    
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
@@ -49,19 +52,70 @@ function CompanyInfos(props) {
         { id: "TOK", value: "Tokyo", country: "JPN" },
     ];
 
+    const sizes = [
+        { id: 1, value: "moins 10 employees" },
+        { id: 2, value: "de 10 a 100 employee" },
+        { id: 3, value: "de 101 a 500 employee" },
+        { id: 4, value: "de 501 a 1000 employee" },
+        { id: 5, value: "plus 1000 employee" },
+    ]
+
+    const industries = [
+        { id: 1, value: "Fashion" },
+        { id: 2, value: "Electrical Engineering" },
+        { id: 3, value: "Civil Engineering" },
+        { id: 4, value: "Computer Hardware" },
+        { id: 5, value: "Computer Software" }
+    ]
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="slideshow flex flex-col gap-2">
                 <p className="title py-4">Company Informations</p>
 
-                <div className='input-group flex flex-col'>
-                    {errors.companyName ? <label style={{ color: '#E11D48' }}>Company Name</label> : <label>Company Name</label>}
-                    <input type="text" placeholder='Company Name' {...register('companyName')} className={`${errors.companyName && 'erreur'}`} defaultValue={companyData.companyName}/>
+                <div className='input-group flex gap-6 w-full'>
+                    <div className='flex flex-col w-full'>
+                        {errors.companyName ? <label style={{ color: '#E11D48' }}>Company Name</label> : <label>Company Name</label>}
+                        <input type="text" placeholder='Company Name' {...register('companyName')} className={`${errors.companyName && 'erreur'}`} defaultValue={companyData.companyName} />
+                    </div>
+                    <div className='flex flex-col w-full'>
+
+                        {errors.phoneNumber ? <label style={{ color: '#E11D48' }}>Phone Number</label> : <label>Phone Number</label>}
+                        <input type="tel" placeholder='Phone Number' {...register('phoneNumber')} className={`${errors.phoneNumber && 'erreur'}`} defaultValue={companyData.phoneNumber} />
+                    </div>
+
                 </div>
 
-                <div className='input-group flex w-full flex-col'>
-                    {errors.phoneNumber ? <label style={{ color: '#E11D48' }}>Phone Number</label> : <label>Phone Number</label>}
-                    <input type="tel" placeholder='Phone Number' {...register('phoneNumber')} className={`${errors.phoneNumber && 'erreur'}`} defaultValue={companyData.phoneNumber} />
+                <div className='input-group flex gap-4'>
+                    <div>
+                        {errors.size ? <label style={{ color: '#E11D48' }}>Size</label> : <label>Size</label>}
+                        <select className={`select ${errors.size && "erreur"}`} {...register("size")} >
+                            <option value="" disabled selected>company size</option>
+                            {sizes.map((size) => (
+                                <option key={size.id} value={size.value} selected={companyData.size == size.value}>
+                                    {size.value}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        {errors.industry ? <label style={{ color: '#E11D48' }}>Industry</label> : <label>Industry</label>}
+                        <select className={`select ${errors.industry && "erreur"}`} {...register("industry")} >
+                            <option value="" disabled selected>Industry</option>
+                            {industries.map((industry) => (
+                                <option key={industry.id} value={industry.value} selected={companyData.industry == industry.value}>
+                                    {industry.value}
+                                </option>
+                            ))}
+                        </select>                    </div>
+
+                    <div>
+                        {errors.foundedYear ? <label style={{ color: '#E11D48' }}>Founded Year</label> : <label>Founded Year</label>}
+                        <input type="number" placeholder='founded Year' {...register("foundedYear")} className={`${errors.foundedYear && "erreur"}`} defaultValue={companyData.foundedYear} />
+                    </div>
+
+
                 </div>
 
                 <div className='input-group flex gap-6 w-full'>

@@ -92,6 +92,9 @@ const companyInitState = {
         country: "",
         city: "",
         address: "",
+        industry: "",
+        foundedYear: null,
+        size: "",
         email: "",
         password: "",
         description: "",
@@ -111,6 +114,9 @@ const companySlice = createSlice({
             state.value.country = action.payload.country;
             state.value.city = action.payload.city;
             state.value.address = action.payload.address;
+            state.value.foundedYear = action.payload.foundedYear;
+            state.value.size = action.payload.size;
+            state.value.industry = action.payload.industry;
         },
         setCompanySecurityInfos: (state, action) => {
             state.value.email = action.payload.email;

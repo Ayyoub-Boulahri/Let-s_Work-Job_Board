@@ -5,6 +5,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { setSecurityInfos, setCompanySecurityInfos } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
+import { IoLogInOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5'; // Import eye icons
 
 function SecurityInfos(props) {
     const dispatch = useDispatch();
@@ -24,6 +25,12 @@ function SecurityInfos(props) {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
+
+    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const onSubmit = async (data) => {
         const formattedData = {
@@ -46,16 +53,54 @@ function SecurityInfos(props) {
             <div className="slideshow flex flex-col gap-2">
                 <p className="title py-4">Security Informations</p>
                 <div className='input-group flex-col gap-4'>
+
+                    {/* email input and label */}
+
                     {errors.email ? <label style={{ color: '#E11D48' }}>Email</label> : <label>Email</label>}
                     <input type="email" placeholder='Enter your Email' {...register("email")} className={`${errors.email && "erreur"}`} defaultValue={typeUser == "employee" ? employeeData.email : companyData.email} />
+                    
+                    {/* password input and label */}
 
                     {errors.password ? <label className='pt-4' style={{ color: '#E11D48' }}>Password</label> : <label className='pt-4'>Password</label>}
-                    <input type="password" placeholder='Enter a password' {...register("password")} className={`${errors.password && "erreur"}`} defaultValue={typeUser == "employee" ? employeeData.password : companyData.password} />
+                    <div className={`password-input-container flex  ${errors.email && "erreur"}`}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="Enter a Password"
+                            className='input-password'
+                            {...register("password")}
+                            defaultValue={typeUser == "employee" ? employeeData.password : companyData.password}
+                        />
+                        <button
+                            type="button"
+                            className="toggle-password"
+                            onClick={togglePasswordVisibility}
+                        >
+                            {showPassword ? <IoEyeOutline size={16} /> : <IoEyeOffOutline size={16} />}
+                        </button>
+                    </div>
                     {errors.password && <label style={{ color: '#E11D48' }}>{errors.password.message}</label>}
 
+                    {/* password confirmation input and label */}
+                    
                     {errors.confirmation ? <label className='pt-4' style={{ color: '#E11D48' }}>Confimation</label> : <label className='pt-4'>Confimation</label>}
-                    <input type="password" placeholder='Confirm your password' {...register("confirmation")} className={`${errors.confirmation && "erreur"}`} defaultValue={typeUser == "employee" ? employeeData.password : companyData.password} />
+                    <div className={`password-input-container flex  ${errors.confirmation && "erreur"}`}>
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            placeholder='Confirm your password'
+                            className='input-password'
+                            {...register("confirmation")}
+                            defaultValue={typeUser == "employee" ? employeeData.password : companyData.password}
+                        />
+                        <button
+                            type="button"
+                            className="toggle-password"
+                            onClick={togglePasswordVisibility}
+                        >
+                            {showPassword ? <IoEyeOutline size={16} /> : <IoEyeOffOutline size={16} />}
+                        </button>
+                    </div>
                     {errors.confirmation && <label style={{ color: '#E11D48' }}>the confirmation didn't match the password</label>}
+
                 </div>
 
 

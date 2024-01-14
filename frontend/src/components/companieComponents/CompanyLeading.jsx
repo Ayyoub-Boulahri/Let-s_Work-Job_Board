@@ -4,7 +4,6 @@ import CompanyPhoto from '../../assets/Companies.svg'
 import { Input } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
 
-
 function CompanyLeading() {
   return (
     <section>
