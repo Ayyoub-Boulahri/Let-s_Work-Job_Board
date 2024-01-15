@@ -8,7 +8,7 @@ import '../../css/card.css'
 
 function CompanyCard(props) {
   return (
-    <div className='flex flex-col gap-2 p-8 bg-zinc-800 rounded-md m-3 company-card'>
+    <div className='flex flex-col gap-2 p-8 bg-[#121212] card rounded-md m-3 company-card'>
       <div className='flex gap-3'>
         <img src={props.logo} className='w-[100px]' alt="company photo"/>
         <h1 className='text-[20px]'>{props.name}</h1>

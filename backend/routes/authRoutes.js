@@ -17,11 +17,11 @@ router.post('/employee', (req, res) => {
         }
 
         // Store the email and typeUser and set auth to true in the session
+
         req.session.email = email;
         req.session.auth = true;
         req.session.typeUser = "employee";
-        console.log("Login successful");
-        console.log(req.session)
+
         return res.status(200).json({ message: "Login successful" });
     });
 });
@@ -44,13 +44,11 @@ router.post('/company', (req, res) => {
         req.session.email = email;
         req.session.auth = true;
         req.session.typeUser = "company";
-        console.log("Login successful");
         return res.status(200).json({ message: "Login successful" });
     });
 });
 
 router.get('/check-authentication', (req, res) => {
-    console.log(req.session)
     if (req.session.auth) {
         const { email, auth, typeUser } = req.session;
         // If authenticated, send the information

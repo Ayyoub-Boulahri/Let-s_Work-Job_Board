@@ -76,14 +76,14 @@ export class SearchSection extends Component {
       ];
       
     return (
-      <section >
-        <div className='py-10 px-16'> 
+      <section>
+        <div className='py-10'> 
             <font className='font-bold text-[24px]'>
                 Find the right Company
             </font>
         </div>
-        <div className='flex'>
-            <div className='w-[50%] px-20'>
+        <div className='flex gap-10'>
+            <div className='w-[50%] px-10'>
                 <font className='font-bold text-[18px]'>
                     Filter the companies
                 </font>
@@ -126,11 +126,11 @@ export class SearchSection extends Component {
                     </RadioGroup>
                 </div>
             </div>
-            <div>
+            <div className='flex flex-col gap-2'>
                 {ListOfCompanies.map(ligne =>{
-                    return <div onClick={()=>{
-                        
-                    }}><CompanyCard  name={ligne.name} logo={ligne.logo} taille={ligne.founded_year} lieu={ligne.hq_location} secteur={ligne.industry}/></div>
+                    return <div key={ligne.id}>
+                      <CompanyCard  name={ligne.name} logo={ligne.logo} taille={ligne.founded_year} lieu={ligne.hq_location} secteur={ligne.industry}/>
+                    </div>
                     
                 })
                 }

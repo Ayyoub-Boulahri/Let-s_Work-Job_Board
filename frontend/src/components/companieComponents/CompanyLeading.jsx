@@ -7,7 +7,7 @@ import { IoIosSearch } from "react-icons/io";
 function CompanyLeading() {
   return (
     <section>
-      <div className='flex gap-10 px-20 py-10'>
+      <div className='flex gap-10 py-10'>
         <div>
           <img src={CompanyPhoto} alt='company photo'/>
         </div>
