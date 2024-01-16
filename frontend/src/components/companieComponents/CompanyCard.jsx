@@ -4,28 +4,39 @@ import CompanyPhoto from '../../assets/Companies.svg'
 import { Input } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
 import '../../css/card.css'
-
+import { Avatar } from '@nextui-org/react'
 
 function CompanyCard(props) {
   return (
-    <div className='flex flex-col gap-2 p-8 bg-[#121212] card rounded-md m-3 company-card'>
-      <div className='flex gap-3'>
-        <img src={props.logo} className='w-[100px]' alt="company photo"/>
-        <h1 className='text-[20px]'>{props.name}</h1>
+    <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md m-3 company-card'>
+      <div className='flex gap-8 justify-start'>
+        <Avatar radius='md' src={props.logo} size="lg" />
+        <div>
+          <h1 className='font-bold text-default-600 text-[20px]'>{props.name}</h1>
+          <h4 className='font-semibold text-default-400'>{props.year}</h4>
+        </div>
       </div>
-      <div className='flex gap-6 justify-between'>
-          <div>
+      <div className='flex flex-col gap-4'>
+        <div className='flex gap-6'>
+          <div className='w-[32%]'>
             <h1 className='font-bold'>Location</h1>
-            <p>{props.lieu}</p>
+            <h4 className='font-semibold text-default-500'>{props.lieu}</h4>
           </div>
-          <div>
+          <div className='w-[32%]'>
             <h1 className='font-bold'>Company Size </h1>
-            <p>{props.taille}</p>
+            <h4 className='font-semibold text-default-500'>{props.size}</h4>
           </div>
           <div>
             <h1 className='font-bold'>Industry</h1>
-            <p>{props.secteur}</p>
+            <h4 className='font-semibold text-default-500'>{props.secteur}</h4>
           </div>
+        </div>
+        <div>
+          <h1 className='font-bold'>Description</h1>
+          <div className='line-clamp-3 text-small text-default-400'>
+            {props.description}
+          </div>
+        </div>
       </div>
     </div>
   )

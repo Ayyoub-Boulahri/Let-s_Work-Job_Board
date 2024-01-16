@@ -6,20 +6,20 @@ import CompaniesList from './CompaniesList';
 
 const SearchSection = () => {
 
-  
+
 
   return (
-    <section>
+    <div>
       <div className='py-10'>
-        <font className='font-bold text-[24px]'>
+        <p className='font-bold text-[24px]'>
           Find the right Company
-        </font>
+        </p>
       </div>
       <div className='flex gap-10'>
         <div className='w-[50%] px-10'>
-          <font className='font-bold text-[18px]'>
+          <p className='font-bold text-[18px]'>
             Filter the companies
-          </font>
+          </p>
           <div className='py-10'>
             <span >
               <Input type="industry" variant="bordered" label="city" />
@@ -59,9 +59,9 @@ const SearchSection = () => {
             </RadioGroup>
           </div>
         </div>
-        <CompaniesList />
+          <CompaniesList />
       </div>
-    </section>
+    </div>
   )
 }
 

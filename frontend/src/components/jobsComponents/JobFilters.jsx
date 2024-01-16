@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { RiListSettingsLine } from "react-icons/ri";
+import FilterPopUp from "./FilterPopUp";
 
 function JobFilters() {
+    const [selectedFilters, setSelectedFilters] = useState([]);
 
     const options = [
         { value: "any", label: "Any time" },
@@ -11,29 +13,48 @@ function JobFilters() {
         { value: "last2Weeks", label: "Last 2 weeks" },
         { value: "lastMonth", label: "Last month" },
     ];
+
+    const toggleFilter = (filter) => {
+        if (selectedFilters.includes(filter)) {
+            setSelectedFilters(selectedFilters.filter((item) => item !== filter));
+        } else {
+            setSelectedFilters([...selectedFilters, filter]);
+        }
+    };
+
     return (
         <div className='flex mt-8 gap-4 items-center'>
-            <div className='flex gap-4'>
-                <select className='rounded-full px-4 py-1 bg-section-bright-bg cursor-pointer hover:bg-default-200 duration-300'>
+            <div className='flex gap-4 overflow-x-auto max-w-full'>
+                <select
+                    className='rounded-full text-[10px] sm:text-[18px] px-4 py-1 bg-section-bright-bg cursor-pointer hover:bg-default-200 duration-300'
+                >
                     <option value="" selected disabled>Date posted</option>
                     {options.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
-                <div className='rounded-full px-4 py-1 bg-section-bright-bg cursor-pointer hover:bg-default-200 duration-300'>
+                <div
+                    className={`rounded-full text-[10px] min-w-fit sm:text-[18px] px-4 py-1 cursor-pointer duration-300 ${selectedFilters.includes('Open Jobs') ? 'bg-blue-600 hover:bg-blue-800' : 'bg-section-bright-bg hover:bg-default-200'}`}
+                    onClick={() => toggleFilter('Open Jobs')}
+                >
                     Open Jobs
                 </div>
-                <div className='rounded-full px-4 py-1 bg-section-bright-bg cursor-pointer hover:bg-default-200 duration-300'>
+                <div
+                    className={`rounded-full text-[10px] min-w-fit sm:text-[18px] px-4 py-1 cursor-pointer duration-300 ${selectedFilters.includes('Salary') ? 'bg-blue-600 hover:bg-blue-800' : 'bg-section-bright-bg hover:bg-default-200'}`}
+                    onClick={() => toggleFilter('Salary')}
+                >
                     Salary
                 </div>
-                <div className='rounded-full px-4 py-1 bg-section-bright-bg cursor-pointer hover:bg-default-200 duration-300'>
-                    my location
+                <div
+                    className={`rounded-full text-[10px] min-w-fit sm:text-[16px] px-4 py-1 cursor-pointer duration-300 ${selectedFilters.includes('My Location') ? 'bg-blue-600 hover:bg-blue-800' : 'bg-section-bright-bg hover:bg-default-200'}`}
+                    onClick={() => toggleFilter('My Location')}
+                >
+                    My Location
                 </div>
             </div>
-            <RiListSettingsLine size={25} className="cursor-pointer hover:text-default-500 duration-300" />
-
+            <FilterPopUp />
         </div>
-    )
+    );
 }
 
-export default JobFilters
+export default JobFilters;

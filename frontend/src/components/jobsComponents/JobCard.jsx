@@ -9,7 +9,6 @@ function JobCard(props) {
                 <p className='text-default-500 text-small font-bold'>{props.job.date_posted}</p>
                 <div className={`rounded-full  px-4 ${props.job.offer_status == "Open" ? "bg-green-700" : "bg-red-500"}`}>{props.job.offer_status}</div>
             </div>
-            <a href="/companies/company/1" target="_blank">more</a>
             <div className='flex items-center gap-4'>
                 <Avatar radius='md' src={props.job.photo} size="lg" />
 

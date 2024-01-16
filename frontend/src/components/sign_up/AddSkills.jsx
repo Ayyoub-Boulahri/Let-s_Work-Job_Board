@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react';
 import { Divider } from "@nextui-org/react";
 import SkillItem from '../SkillItem';
 import { SiAddthis } from "react-icons/si";
@@ -9,19 +9,20 @@ import { useDispatch, useSelector } from 'react-redux';
 function AddSkills(props) {
     const dispatch = useDispatch();
     const employeeData = useSelector((state) => state.employeeData.value);
-    
+    const [selectedSkill, setSelectedSkill] = useState('');
+
+    const predefinedSkills = ['Html', 'JavaScript', 'Adobe After Effect', 'Vs Code', 'Java OOP'];
 
     const HandelAddSkill = () => {
-        const skillInput = document.getElementById("skillInput");
-        if (skillInput.value !== "") {
+        if (selectedSkill !== "") {
             var isValid = true;
             employeeData.skills.forEach((item) => {
-                if (item.toLowerCase() === skillInput.value.toLowerCase())
+                if (item.toLowerCase() === selectedSkill.toLowerCase())
                     isValid = false
             })
             if (isValid) {
-                dispatch(addSkill({ skill: skillInput.value }))
-                skillInput.value = "";
+                dispatch(addSkill({ skill: selectedSkill }))
+                setSelectedSkill('');
             }
         }
     }
@@ -37,7 +38,16 @@ function AddSkills(props) {
                 <div className='input-group flex flex-col gap-2'>
                     <label>What are your Skills ? 🧑‍⚕️</label>
                     <div className='flex w-full gap-8 items-center'>
-                        <input type="text" className='w-[150px]' id='skillInput' />
+                        <select
+                            value={selectedSkill}
+                            onChange={(e) => setSelectedSkill(e.target.value)}
+                            className='w-[150px] select'
+                        >
+                            <option value="" disabled>Select a skill</option>
+                            {predefinedSkills.map((skill, index) => (
+                                <option key={index} value={skill}>{skill}</option>
+                            ))}
+                        </select>
                         <SiAddthis size={30} className='cursor-pointer mr-2' onClick={HandelAddSkill} />
                     </div>
                 </div>
@@ -46,7 +56,7 @@ function AddSkills(props) {
                     <div className='flex flex-wrap'>
                         {employeeData.skills.map((skillText, index) => (
                             <div key={index}>
-                                <SkillItem skill={skillText} delete={handelRemoveSkill}/>
+                                <SkillItem skill={skillText} delete={handelRemoveSkill} />
                             </div>
                         ))}
                     </div>
@@ -78,4 +88,4 @@ function AddSkills(props) {
     )
 }
 
-export default AddSkills
+export default AddSkills;
