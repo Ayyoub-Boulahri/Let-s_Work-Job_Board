@@ -14,10 +14,15 @@ import AvatarDropdown from './navbarComponents/AvatarDropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import checkAuthentication from '../services/checkAuthentication';
 import { useSelector } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 function NavBar() {
   const [toggle, setToggle] = useState(false)
-  const [navLinkId, setNavLinkId] = useState(1)
+
+  const [navLinkId, setNavLinkId] = useState(() => {
+    return parseInt(localStorage.getItem('activeNavLink')) || 1;
+  });
+
   const [navLinks, setNavLinks] = useState([])
   const navigate = useNavigate()
   const authInfo = useSelector((state) => state.isAuthenticated.value);
@@ -43,8 +48,13 @@ function NavBar() {
         navbar.classList.add('bg-opacity-80')
       else
         navbar.classList.remove('bg-opacity-80')
-    })
-  }, [authInfo])
+    }), 
+    localStorage.setItem('activeNavLink', navLinkId.toString());
+  }, [authInfo, navLinkId])
+
+  const scrollToTop = () => {
+    window.scrollTo(0, 0);
+  };
 
   const acceuilNavLinks = [
     {
@@ -113,7 +123,7 @@ function NavBar() {
                 :
                 <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                   {navLinks.map((nav, index) => (
-                    <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
+                    <li key={nav.id} onClick={() => { setNavLinkId(index + 1); scrollToTop(); }}>
                       <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
                         {nav.title}
                       </Link>
@@ -155,13 +165,13 @@ function NavBar() {
                       <li key={nav.id}
                         className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setNavLinkId(index + 1)}>
                         {
-                          !authInfo?.auth 
+                          !authInfo?.auth
                             ? <a href={`#${nav.id}`}>
-                                {nav.title}
-                              </a>
+                              {nav.title}
+                            </a>
                             : <Link to={"/" + nav.id}>
-                                {nav.title}
-                              </Link>
+                              {nav.title}
+                            </Link>
                         }
 
                       </li>

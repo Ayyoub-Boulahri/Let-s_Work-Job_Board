@@ -13,17 +13,17 @@ function CompanyCard(props) {
         <img src={props.logo} className='w-[100px]' alt="company photo"/>
         <h1 className='text-[20px]'>{props.name}</h1>
       </div>
-      <div className='flex gap-6'>
+      <div className='flex gap-6 justify-between'>
           <div>
-            <h1 className='font-bold'>Lieu</h1>
+            <h1 className='font-bold'>Location</h1>
             <p>{props.lieu}</p>
           </div>
           <div>
-            <h1 className='font-bold'>Taille global de l'entreprise </h1>
+            <h1 className='font-bold'>Company Size </h1>
             <p>{props.taille}</p>
           </div>
           <div>
-            <h1 className='font-bold'>Secteur</h1>
+            <h1 className='font-bold'>Industry</h1>
             <p>{props.secteur}</p>
           </div>
       </div>
