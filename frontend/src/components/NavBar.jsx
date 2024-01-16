@@ -124,7 +124,6 @@ function NavBar() {
                 <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                   {navLinks.map((nav, index) => (
                     <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
-
                       <li key={nav.id} onClick={() => { setNavLinkId(index + 1); scrollToTop(); }}>
                         {nav.title}
                       </li>
