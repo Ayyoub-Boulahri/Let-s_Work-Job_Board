@@ -24,7 +24,7 @@ function AvatarDropdown() {
                     <p className="font-semibold">Signed in as</p>
                     <p className="font-semibold">zoey@example.com</p>
                 </DropdownItem>
-                <DropdownItem key="settings" onClick={() => navigate("/profile")}>
+                <DropdownItem key="settings" onClick={() => {window.location.href = '/profile'}}>
                     My Profile
                 </DropdownItem>
                 <DropdownItem key="team_settings">Team Settings</DropdownItem>

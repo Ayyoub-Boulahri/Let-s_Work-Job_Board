@@ -48,8 +48,8 @@ function NavBar() {
         navbar.classList.add('bg-opacity-80')
       else
         navbar.classList.remove('bg-opacity-80')
-    }), 
-    localStorage.setItem('activeNavLink', navLinkId.toString());
+    }),
+      localStorage.setItem('activeNavLink', navLinkId.toString());
   }, [authInfo, navLinkId])
 
   const scrollToTop = () => {
@@ -113,21 +113,22 @@ function NavBar() {
             {
               !authInfo?.auth ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                 {navLinks.map((nav, index) => (
-                  <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
-                    <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`}>
+                  <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`}>
+                    <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
                       {nav.title}
-                    </a>
-                  </li>
+                    </li>
+                  </a>
                 ))}
               </ul>
                 :
                 <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                   {navLinks.map((nav, index) => (
-                    <li key={nav.id} onClick={() => { setNavLinkId(index + 1); scrollToTop(); }}>
-                      <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
+                    <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
+
+                      <li key={nav.id} onClick={() => { setNavLinkId(index + 1); scrollToTop(); }}>
                         {nav.title}
-                      </Link>
-                    </li>
+                      </li>
+                    </Link>
                   ))}
                 </ul>
             }
