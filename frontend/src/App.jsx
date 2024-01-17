@@ -20,7 +20,7 @@ function App() {
             <Route path='/profile' element={<Profile />} />
             <Route path='/jobs' element={<Jobs />} />
             <Route path='/companies' element={<Companies />} />
-            <Route path='/companies/company/:id' element={<Company />} />
+            <Route path='/companies/company/:company_id' element={<Company />} />
             <Route path='*' element={<div>error 404</div>} />
           </Routes>
           <Footer />

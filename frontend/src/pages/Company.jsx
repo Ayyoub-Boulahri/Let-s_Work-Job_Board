@@ -1,7 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom';
 function Company() {
-    const { id } = useParams();
+    const { company_id } = useParams();
 
   return (
     <div>{id}</div>
