@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import checkAuthentication from '../services/checkAuthentication';
 import { useSelector, useDispatch } from 'react-redux';
 import { setAuthenticated } from '../stores/authStore';
+import Degrees from '../components/profileComponents/Degrees'
 
 function Profile() {
   const [indexTab, setindexTab] = useState(1)
@@ -22,16 +23,7 @@ function Profile() {
   const authInfos = useSelector((state) => state.isAuthenticated.value);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const fetchAuthInfo = async () => {
-      const infoAuthentificaiton = await checkAuthentication();
-      dispatch(setAuthenticated(infoAuthentificaiton));
-      if (!infoAuthentificaiton)
-        navigate("/");
-    };
-
-    fetchAuthInfo();
-  }, []);
+  
   const tabs = [
     {
       id: 1,
@@ -55,7 +47,7 @@ function Profile() {
       id: 4,
       title: "Degrees",
       logo: <FaBook />,
-      component: <LoginInfos />
+      component: <Degrees />
     }
   ]
 
