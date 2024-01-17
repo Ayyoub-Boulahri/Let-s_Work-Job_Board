@@ -13,24 +13,27 @@ import NotificationDropdown from './navbarComponents/notificationDropdown';
 import AvatarDropdown from './navbarComponents/AvatarDropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import checkAuthentication from '../services/checkAuthentication';
-import { useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuthenticated } from '../stores/authStore';
 
 function NavBar() {
   const [toggle, setToggle] = useState(false)
 
-  const [navLinkId, setNavLinkId] = useState(() => {
-    return parseInt(localStorage.getItem('activeNavLink')) || 1;
-  });
-
   const [navLinks, setNavLinks] = useState([])
   const navigate = useNavigate()
   const authInfo = useSelector((state) => state.isAuthenticated.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-
     const fetchAuthInfo = async () => {
-      const authInfo = await checkAuthentication();
+      const infoAuthentificaiton = await checkAuthentication();
+      if(!authInfo?.auth){
+        dispatch(setAuthenticated(infoAuthentificaiton));
+      }
+      if (!infoAuthentificaiton) 
+        navigate("/");
+      
+      window.scrollTo(0, 0);
     };
 
     fetchAuthInfo();
@@ -48,9 +51,8 @@ function NavBar() {
         navbar.classList.add('bg-opacity-80')
       else
         navbar.classList.remove('bg-opacity-80')
-    }),
-      localStorage.setItem('activeNavLink', navLinkId.toString());
-  }, [authInfo, navLinkId])
+    })
+  }, [authInfo])
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
@@ -60,29 +62,36 @@ function NavBar() {
     {
       id: "home",
       title: "Home",
+      path: "#home"
     },
     {
       id: "about",
       title: "About",
+      path: "#about"
     },
     {
       id: "contact",
       title: "Contact",
+      path: "#contact"
     },
   ];
 
+  
   const employeeNavLinks = [
     {
       id: "jobs",
       title: "Jobs",
+      path: "/jobs"
     },
     {
       id: "companies",
       title: "Companies",
+      path: "/companies"
     },
     {
       id: "requests",
       title: "job requests",
+      path: "/jobRequests"
     },
   ];
 
@@ -90,14 +99,17 @@ function NavBar() {
     {
       id: "profiles",
       title: "Profiles",
+      path: "/profile"
     },
     {
       id: "jobListings",
       title: "Job Listings",
+      path: "/jobListings"
     },
     {
       id: "newOffer",
       title: "New Offer",
+      path: "/newOffer"
     },
   ];
 
@@ -113,7 +125,7 @@ function NavBar() {
             {
               !authInfo?.auth ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                 {navLinks.map((nav, index) => (
-                  <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`}>
+                  <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.hash === nav.path ? 'isActive' : 'text-[18px]'} py-2`}>
                     <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
                       {nav.title}
                     </li>
@@ -123,7 +135,7 @@ function NavBar() {
                 :
                 <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                   {navLinks.map((nav, index) => (
-                    <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${index + 1 === navLinkId ? 'isActive' : 'text-[18px]'}  py-2`} >
+                    <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.pathname === nav.path ? 'isActive' : 'text-[18px]'}  py-2`} >
                       <li key={nav.id} onClick={() => { setNavLinkId(index + 1); scrollToTop(); }}>
                         {nav.title}
                       </li>

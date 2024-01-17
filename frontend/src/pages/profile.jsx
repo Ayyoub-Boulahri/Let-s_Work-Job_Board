@@ -13,16 +13,12 @@ import { FaBook } from "react-icons/fa";
 import ExperiencesSkills from '../components/profileComponents/ExperiencesSkills'
 import { useNavigate } from 'react-router-dom';
 import checkAuthentication from '../services/checkAuthentication';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { setAuthenticated } from '../stores/authStore';
 import Degrees from '../components/profileComponents/Degrees'
 
 function Profile() {
   const [indexTab, setindexTab] = useState(1)
-  const navigate = useNavigate();
-  const authInfos = useSelector((state) => state.isAuthenticated.value);
-  const dispatch = useDispatch();
-
   
   const tabs = [
     {
