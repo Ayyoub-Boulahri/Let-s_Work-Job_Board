@@ -21,7 +21,7 @@ function JobCard(props) {
             </div>
 
             <div className='text-default-700 font-extrabold text-[16px]'>
-                <h3>{props.job.title}</h3>
+                <h3>{props.job.title} <span className='font-semibold text-default-400'> ({props.job.job_type})</span></h3>
             </div>
 
             <div className='line-clamp-3 text-small text-default-400'>

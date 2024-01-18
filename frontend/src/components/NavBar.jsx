@@ -27,13 +27,11 @@ function NavBar() {
   useEffect(() => {
     const fetchAuthInfo = async () => {
       const infoAuthentificaiton = await checkAuthentication();
-      if(!authInfo?.auth){
-        dispatch(setAuthenticated(infoAuthentificaiton));
-      }
-      if (!infoAuthentificaiton) 
+      dispatch(setAuthenticated(infoAuthentificaiton));
+      if (!infoAuthentificaiton){
+        window.scrollTo(0, 0);
         navigate("/");
-      
-      window.scrollTo(0, 0);
+      }
     };
 
     fetchAuthInfo();
@@ -126,7 +124,7 @@ function NavBar() {
               !authInfo?.auth ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                 {navLinks.map((nav, index) => (
                   <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.hash === nav.path ? 'isActive' : 'text-[18px]'} py-2`}>
-                    <li key={nav.id} onClick={() => setNavLinkId(index + 1)} >
+                    <li key={nav.id} >
                       {nav.title}
                     </li>
                   </a>
@@ -135,8 +133,8 @@ function NavBar() {
                 :
                 <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
                   {navLinks.map((nav, index) => (
-                    <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.pathname === nav.path ? 'isActive' : 'text-[18px]'}  py-2`} >
-                      <li key={nav.id} onClick={() => { setNavLinkId(index + 1); scrollToTop(); }}>
+                    <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.pathname === nav.path ? 'isActive' : 'text-[18px]'}  py-2`} onClick={scrollToTop}>
+                      <li key={nav.id}>
                         {nav.title}
                       </li>
                     </Link>
