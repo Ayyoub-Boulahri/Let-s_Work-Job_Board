@@ -5,10 +5,12 @@ import { Input } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
 import '../../css/card.css'
 import { Avatar } from '@nextui-org/react'
+import { useNavigate } from 'react-router-dom';
 
 function CompanyCard(props) {
+  const navigate=useNavigate()
   return (
-    <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md m-3 company-card'>
+    <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md m-3 company-card' onClick={() => navigate("/companies/company/" + props.id)}>
       <div className='flex gap-8 justify-start'>
         <Avatar radius='md' src={props.logo} size="lg" />
         <div>

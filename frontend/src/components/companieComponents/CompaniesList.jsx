@@ -175,7 +175,7 @@ function CompaniesList() {
         }
     ];
 
-    const companiesPerPage = 5;
+    const companiesPerPage = 4;
     const [currentPage, setCurrentPage] = useState(1);
     const totalCompanies = ListOfCompanies.length;
     const totalPages = Math.ceil(totalCompanies / companiesPerPage);
@@ -201,7 +201,7 @@ function CompaniesList() {
             <div className='flex flex-col gap-2 w-[90%]'>
                 {visibleCompanies.map(ligne => {
                     return <div key={ligne.id}>
-                        <CompanyCard name={ligne.name} description={ligne.description} logo={ligne.logo} year={ligne.founded_year} size={ligne.size} lieu={ligne.hq_location} secteur={ligne.industry} />
+                        <CompanyCard id={ligne.id} name={ligne.name} description={ligne.description} logo={ligne.logo} year={ligne.founded_year} size={ligne.size} lieu={ligne.hq_location} secteur={ligne.industry} />
                     </div>
 
                 })
