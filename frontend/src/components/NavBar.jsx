@@ -87,7 +87,7 @@ function NavBar() {
       path: "/companies"
     },
     {
-      id: "requests",
+      id: "jobRequests",
       title: "job requests",
       path: "/jobRequests"
     },
@@ -173,7 +173,7 @@ function NavBar() {
                   <ul className='list-none flex flex-col justify-center items-center flex-1'>
                     {navLinks.map((nav, index) => (
                       <li key={nav.id}
-                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setNavLinkId(index + 1)}>
+                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setToggle((prev) => !prev)}>
                         {
                           !authInfo?.auth
                             ? <a href={`#${nav.id}`}>

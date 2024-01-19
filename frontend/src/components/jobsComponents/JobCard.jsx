@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom'
 function JobCard(props) {
     const navigate = useNavigate()
     return (
-        <div className="rounded-md flex flex-col px-4 pb-2 pt-3 gap-2 bg-[#121212] card" onClick={() => navigate("/jobs/job/" + props.job.id)}>
+        <div className="rounded-md flex flex-col px-4 pb-2 pt-3 gap-2 bg-[#121212] card" onClick={() => {window.location.href = "/jobs/job/" + props.job.id}}>
             <div className='flex w-full justify-between'>
                 <p className='text-default-500 text-small font-bold'>{props.job.date_posted}</p>
                 <div className={`rounded-full  px-4 ${props.job.offer_status == "Open" ? "bg-green-700" : "bg-red-500"}`}>{props.job.offer_status}</div>

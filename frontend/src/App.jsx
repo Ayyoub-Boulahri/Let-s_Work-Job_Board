@@ -9,6 +9,7 @@ import { Provider } from 'react-redux';
 import { authStore } from './stores/authStore'
 import Company from './pages/company'
 import JobOffer from './pages/JobOffer'
+import JobRequests from './pages/JobRequests'
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Route path='/companies' element={<Companies />} />
             <Route path='/companies/company/:company_id' element={<Company />} />
             <Route path='/jobs/job/:job_id' element={<JobOffer />} />
+            <Route path='/jobRequests' element={<JobRequests />} />
             <Route path='*' element={<div>error 404</div>} />
           </Routes>
           <Footer />
