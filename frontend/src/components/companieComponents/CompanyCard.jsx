@@ -11,17 +11,11 @@ function CompanyCard(props) {
   const navigate=useNavigate()
   return (
     <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md m-3 company-card' onClick={() => navigate("/companies/company/" + props.id)}>
-      <div className='flex justify-between'>
-        <div className='flex gap-8 justify-start'>
-          <Avatar radius='md' src={props.logo} size="lg" />
-          <div>
-            <h1 className='font-bold text-default-600 md:text-[20px] text-[16px]'>{props.name}</h1>
-            <h4 className='font-semibold text-default-400'>{props.year}</h4>
-          </div>
-        </div>
-        <div className='flex flex-col justify-center items-center'>
-          <h1 className='text-primary-600 font-bold text-[20px]'>2.7K</h1>
-          <h1 className='text-default-400 font-semibold'>Followers</h1>
+      <div className='flex gap-8 justify-start'>
+        <Avatar radius='md' src={props.logo} size="lg" />
+        <div>
+          <h1 className='font-bold text-default-600 text-[20px]'>{props.name}</h1>
+          <h4 className='font-semibold text-default-400'>{props.year}</h4>
         </div>
       </div>
       <div className='flex flex-col gap-4'>
