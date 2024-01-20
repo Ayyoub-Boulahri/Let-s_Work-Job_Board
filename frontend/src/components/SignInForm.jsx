@@ -44,7 +44,7 @@ function SignInForm() {
                 if(type == "employee")
                     navigate("/jobs")
                 if(type == "company")
-                    console.log("success company log in");
+                    navigate("/profiles")
                 
             } else {
                 setErrorLogin(true)
