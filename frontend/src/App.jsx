@@ -11,6 +11,7 @@ import Company from './pages/company'
 import JobOffer from './pages/JobOffer'
 import JobRequests from './pages/JobRequests'
 import Profiles from './pages/Profiles'
+import JobListings from './pages/JobListings'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
             <Route path='/jobs/job/:job_id' element={<JobOffer />} />
             <Route path='/jobRequests' element={<JobRequests />} />
             <Route path='/Profiles' element={<Profiles />} />
+            <Route path='/jobListings' element={<JobListings />} />
             <Route path='*' element={<div>error 404</div>} />
           </Routes>
           <Footer />
