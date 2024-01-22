@@ -16,7 +16,7 @@ import { MdNotificationsActive } from "react-icons/md";
 function Company() {
 
   const [isAbout, setIsAbout] = useState(true);
-  const [isFollowed, setIsFollowed] = useState(true);
+  const [isFollowed, setIsFollowed] = useState(false);
   const { company_id } = useParams();
   const company = {
     id: 14,
