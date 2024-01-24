@@ -1,19 +1,10 @@
 import React from 'react'
-import styles from '../style'
 import { useState } from 'react';
 
-import Profile from '../assets/profileExample.jpg'
-import ProfileList from '../components/profilesComponents/ProfileList';
 
-function Profiles() {
+function Filter() {
     const [selectedFilters, setSelectedFilters] = useState([]);
-    const sampleProfile = {
-        img: Profile,  // Replace with the actual image URL
-        name: 'John Doe',
-        city: 'New York',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam condimentum enim vel massa tincidunt, ac convallis dolor ultrices.',
-        email: 'john.doe@example.com'
-      };
+
     const options = [
         { value: "any", label: "Any time" },
         { value: "lastDay", label: "Last Day" },
@@ -30,11 +21,9 @@ function Profiles() {
             setSelectedFilters([...selectedFilters, filter]);
         }
     };
+
     return (
-        <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg pt-20 xl:pb-4`}>
-            <div className={`${styles.boxWidth}`}>
-                <div>
-                <div className='flex mt-8 gap-4 items-center'>
+        <div className='flex mt-8 gap-4 items-center'>
             <div className='flex gap-4 overflow-x-auto max-w-full'>
                 <select
                     className='rounded-full text-[10px] sm:text-[18px] px-4 py-1 bg-section-bright-bg cursor-pointer hover:bg-default-200 duration-300'
@@ -63,15 +52,9 @@ function Profiles() {
                     My Location
                 </div>
             </div>
-            
-         </div>
+           
         </div>
-        <ProfileList></ProfileList>
-         
-    </div>
-   
-    </div>
-    )
+    );
 }
 
-export default Profiles
+export default Filter
