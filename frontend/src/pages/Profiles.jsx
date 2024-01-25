@@ -66,7 +66,7 @@ function Profiles() {
             
          </div>
         </div>
-        <ProfileList></ProfileList>
+        <ProfileList/>
          
     </div>
    
