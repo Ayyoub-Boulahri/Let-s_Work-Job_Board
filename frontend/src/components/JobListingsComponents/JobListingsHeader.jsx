@@ -1,0 +1,63 @@
+import React from 'react'
+import { Divider, Tabs, Tab } from "@nextui-org/react";
+import JobListsTable from './JobListsTable';
+
+function JobListingsHeader() {
+    const jobOffers = [
+        {
+            id: 1,
+            title: "Customer Service Representative",
+            date_poste: "17/01/2024",
+            Deadline: "17/01/2024",
+            nbCondidat: 32,
+            status: "Open",
+        },
+        {
+            id: 2,
+            title: "Delivery Driver",
+            date_poste: "02/01/2024",
+            Deadline: "17/01/2024",
+            status: "close",
+            nbCondidat: 57,
+        },
+        {
+            id: 3,
+            title: "Technical Support Specialist",
+            date_poste: "01/12/2024",
+            Deadline: "17/01/2024",
+            status: "Open",
+            nbCondidat: 100,
+        },
+        {
+            id: 4,
+            title: "Software Engineer - Messaging Platform",
+            date_poste: "18/01/2024",
+            Deadline: "17/01/2024",
+            status: "Open",
+            nbCondidat: 126
+        }
+    ]
+
+    return (
+        <div className='min-h-[450px]'>
+            <h1 className='text-[30px] text-default-800 my-6'>Manage Job Offers</h1>
+            <Tabs variant="light" aria-label="Tabs variants">
+                <Tab key="All" title="All" >
+                    <Divider className='mb-6 mt-2' />
+                    <JobListsTable jobOffers={jobOffers} />
+                </Tab>
+                <Tab key="Accepted" title="Opens" >
+                    <Divider className='mb-6 mt-2' />
+                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "Open")} />
+                </Tab>
+                <Tab key="In Progress" title="Closed" >
+                    <Divider className='mb-6 mt-2' />
+                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "close")} />
+                </Tab>
+            </Tabs>
+
+        </div>
+    )
+}
+
+export default JobListingsHeader

@@ -12,7 +12,7 @@ import JobOffer from './pages/JobOffer'
 import JobRequests from './pages/JobRequests'
 import Profiles from './pages/Profiles'
 import JobListings from './pages/JobListings'
-import ProfileEmployee from './pages/ProfileEmployee'
+import NewOffer from './pages/NewOffer'
 
 function App() {
   return (
@@ -31,6 +31,7 @@ function App() {
             <Route path='/jobRequests' element={<JobRequests />} />
             <Route path='/Profiles' element={<Profiles />} />
             <Route path='/jobListings' element={<JobListings />} />
+            <Route path='/newOffer' element={<NewOffer />} />
             <Route path='*' element={<div>error 404</div>} />
           </Routes>
           <Footer />

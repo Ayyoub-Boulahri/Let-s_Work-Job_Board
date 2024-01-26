@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider } from "@nextui-org/react";
 import { RiListSettingsLine } from "react-icons/ri";
 import { Select, SelectItem, Input, Switch } from "@nextui-org/react";
-export default function App() {
+function FilterPopUp() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -169,3 +169,5 @@ export default function App() {
     </>
   );
 }
+
+export default FilterPopUp
