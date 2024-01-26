@@ -13,7 +13,7 @@ function ProfileList() {
           img: profile,
           name: 'John Doe',
           city: 'New York',
-          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam condimentum enim vel massa tincidunt, ac convallis dolor ultrices.',
+          description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam condimentum enim vel massa tincidunt, ac convallis dolor ultrices. Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum. Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum.',
           email: 'john.doe@example.com'
         },
         {
@@ -21,7 +21,7 @@ function ProfileList() {
           img: profile,
           name: 'Jane Smith',
           city: 'Los Angeles',
-          description: 'Sed dignissim, lectus vitae accumsan posuere, enim odio lacinia tortor, ac sagittis ex justo vitae urna.',
+          description: 'Sed dignissim, lectus vitae accumsan posuere, enim odio lacinia tortor, ac sagittis ex justo vitae urna. Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum. Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum.',
           email: 'jane.smith@example.com'
         },
         {
@@ -29,7 +29,15 @@ function ProfileList() {
           img: profile,
           name: 'Bob Johnson',
           city: 'Chicago',
-          description: 'Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum.',
+          description: 'Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum. Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum.',
+          email: 'bob.johnson@example.com'
+        },
+        {
+          id:4,
+          img: profile,
+          name: 'Bob Johnson',
+          city: 'Chicago',
+          description: 'Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum. Fusce nec elit eu orci elementum facilisis. Aliquam erat volutpat. Nulla facilisi. Sed congue elit ut lacus feugiat bibendum.',
           email: 'bob.johnson@example.com'
         }
       ];
@@ -59,7 +67,7 @@ function ProfileList() {
     <div>
         
             <div className='flex items-center flex-col'>
-                <div className='grid sm:grid-cols-3 grid-cols-1 gap-6 gap-y-8 my-6'>
+                <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6'>
                     {visibleProfiles.map((profile) => (
                         <div key={profile.id}>
                             <ProfileCard 
