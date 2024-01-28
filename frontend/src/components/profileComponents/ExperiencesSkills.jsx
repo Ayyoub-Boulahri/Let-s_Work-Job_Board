@@ -4,6 +4,9 @@ import { Divider } from "@nextui-org/react";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import SkillItem from '../SkillItem';
 import { MdAddCircle } from "react-icons/md";
+import {Select, SelectItem , Button} from "@nextui-org/react";
+import { MdAddBox } from "react-icons/md";
+
 
 function ExperiencesSkills() {
     const Skills = [
@@ -79,12 +82,24 @@ function ExperiencesSkills() {
             </div>
             {/* the div that has the form of adding a skill */}
             {isSkillsTextFieldVisible && (
-                <div className='mt-3 flex'>
-                    <input type="text "  className='rounded-md'/>
-                    <div className='flex items-center m-1 bg-transparent'>
-                    <MdAddCircle />
-                    </div>
-                </div>
+                <div className='mt-4 flex gap-2 items-center ml-2'>
+                <Select
+              labelPlacement='outside'
+              
+              placeholder="Select a skill"
+              className="max-w-xs "
+              radius='lg'
+            >
+              {Skills.map((animal) => (
+                <SelectItem key={animal.id} value={animal.skill}>
+                  {animal.skill}
+                </SelectItem>
+              ))}
+            </Select>
+                
+                    <MdAddBox  size={32} className='hover:text-default-500 duration-300 cursor-pointer' />
+                
+              </div>
             )}
             <div className='flex flex-wrap mt-3'>
                 {Skills.map(tab => (
@@ -106,11 +121,13 @@ function ExperiencesSkills() {
             </div>
             {/* the div that has the form of adding an experience */}
             {isExperiencesTextFieldVisible && (
+                
                 <div className='mt-3 flex'>
-                <input type="text "  className='rounded-md'/>
-                <div className='flex items-center m-1 bg-transparent'>
-                <MdAddCircle />
-                </div>
+                    <input type="text "  className='rounded-md'/>
+                    <div className='flex items-center m-1 bg-transparent'>
+                    <MdAddCircle />
+                    </div>
+                
             </div>
             )}
             <div className='flex flex-wrap mt-3'>

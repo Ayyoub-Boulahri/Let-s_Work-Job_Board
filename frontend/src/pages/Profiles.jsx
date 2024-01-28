@@ -8,7 +8,7 @@ import ProfileList from '../components/profilesComponents/ProfileList';
 function Profiles() {
     const [selectedFilters, setSelectedFilters] = useState([]);
     const sampleProfile = {
-        img: Profile,  // Replace with the actual image URL
+        img: Profile,  
         name: 'John Doe',
         city: 'New York',
         description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam condimentum enim vel massa tincidunt, ac convallis dolor ultrices.',
