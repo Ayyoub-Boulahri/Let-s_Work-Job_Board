@@ -36,15 +36,18 @@ function SignInForm() {
 
     const handleLogin = async (type) => {
         const { email, password } = loginInfos;
+        const formatedEmail = email?.toLowerCase()
         try {
-            const response = await axios.post('http://localhost:5000/api/login/' + type, { email, password }, { withCredentials: true });
+            const response = await axios.post('http://localhost:5000/api/login/' + type, { email:formatedEmail, password }, { withCredentials: true });
             if (response.status === 200) {
                 const authInfo = await checkAuthentication();
                 dispatch(setAuthenticated(authInfo))
                 if(type == "employee")
-                    navigate("/jobs")
+                    window.location.href = "/jobs"
+                    // navigate("/jobs")
                 if(type == "company")
-                    navigate("/profiles")
+                    window.location.href = "/profiles"
+                    // navigate("/profiles")
                 
             } else {
                 setErrorLogin(true)

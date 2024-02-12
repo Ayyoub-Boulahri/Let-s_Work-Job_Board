@@ -6,6 +6,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { setSecurityInfos, setCompanySecurityInfos } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { IoLogInOutline, IoEyeOutline, IoEyeOffOutline } from 'react-icons/io5'; // Import eye icons
+import { getAllEmployeeEmails } from '../../services/employeeServices';
+import { getAllCompanyEmails } from '../../services/companyServices';
 
 function SecurityInfos(props) {
     const dispatch = useDispatch();
@@ -14,7 +16,15 @@ function SecurityInfos(props) {
     const companyData = useSelector((state) => state.companyData.value);
 
     const schema = yup.object().shape({
-        email: yup.string().email().required(),
+        email: yup.string()
+            .email('Invalid email format')
+            .required('Email is required')
+            .test('unique-email', 'Email already exists', async function (value) {
+                const arrayOfEmails = (typeUser === "employee" ? await getAllEmployeeEmails() : await getAllCompanyEmails());
+                const lowercaseValue = value.toLowerCase();
+                const lowercaseEmails = arrayOfEmails.map(email => email.toLowerCase());
+                return !lowercaseEmails.includes(lowercaseValue);
+            }),
         password: yup.string()
             .min(8, 'Password must be at least 8 characters long')
             .matches(/^(?=.*[A-Z])(?=.*\d)/, '\nPassword must contain at least one uppercase letter and one number')
@@ -26,7 +36,8 @@ function SecurityInfos(props) {
         resolver: yupResolver(schema)
     });
 
-    const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+    // State to toggle password visibility
+    const [showPassword, setShowPassword] = useState(false);
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -34,7 +45,7 @@ function SecurityInfos(props) {
 
     const onSubmit = async (data) => {
         const formattedData = {
-            email: data.email,
+            email: data.email.toLowerCase(),
             password: data.password
         }
         try {
@@ -50,6 +61,7 @@ function SecurityInfos(props) {
     }
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+
             <div className="slideshow flex flex-col gap-2">
                 <p className="title py-4">Security Informations</p>
                 <div className='input-group flex-col gap-4'>
@@ -58,11 +70,12 @@ function SecurityInfos(props) {
 
                     {errors.email ? <label style={{ color: '#E11D48' }}>Email</label> : <label>Email</label>}
                     <input type="email" placeholder='Enter your Email' {...register("email")} className={`${errors.email && "erreur"}`} defaultValue={typeUser == "employee" ? employeeData.email : companyData.email} />
-                    
+                    {errors.email && <label style={{ color: '#E11D48' }}>{errors.email.message}</label>}
+
                     {/* password input and label */}
 
                     {errors.password ? <label className='pt-4' style={{ color: '#E11D48' }}>Password</label> : <label className='pt-4'>Password</label>}
-                    <div className={`password-input-container flex  ${errors.email && "erreur"}`}>
+                    <div className={`password-input-container flex  ${errors.password && "erreur"}`}>
                         <input
                             type={showPassword ? "text" : "password"}
                             placeholder="Enter a Password"
@@ -81,7 +94,7 @@ function SecurityInfos(props) {
                     {errors.password && <label style={{ color: '#E11D48' }}>{errors.password.message}</label>}
 
                     {/* password confirmation input and label */}
-                    
+
                     {errors.confirmation ? <label className='pt-4' style={{ color: '#E11D48' }}>Confimation</label> : <label className='pt-4'>Confimation</label>}
                     <div className={`password-input-container flex  ${errors.confirmation && "erreur"}`}>
                         <input

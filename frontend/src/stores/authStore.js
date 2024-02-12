@@ -4,6 +4,7 @@ const authSlice = createSlice({
     name: "isAuthenticated",
     initialState: {
         value: {
+            userId: null,
             email: "",
             auth: false,
             typeUser: ""
@@ -14,7 +15,7 @@ const authSlice = createSlice({
             state.value = action.payload;
         },
         setLoginOut: (state) => {
-            state.value = { email: "", auth: false, typeUser: "" }
+            state.value = { userId: null, email: "", auth: false, typeUser: "" }
         }
     }
 });

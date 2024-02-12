@@ -6,6 +6,10 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { setAboutMe } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { createEmployee } from '../../services/employeeServices';
+import checkAuthentication from '../../services/checkAuthentication';
+import { setAuthenticated } from '../../stores/authStore';
+import axios from 'axios';
 
 function AboutEmployee(props) {
     
@@ -26,15 +30,17 @@ function AboutEmployee(props) {
         try {
             dispatch(setAboutMe(data.aboutMe));
             employeeData = dispatch((dispatch, getState) => getState().employeeData.value);
-            signUpFonction(employeeData); 
+            console.log(employeeData)
+            signUpFonction(employeeData);
+            props.pagination.onNext() 
         } catch (err) {
             console.log(err);
         }
     }
+    
 
     const signUpFonction = (employeeData) => {
-        console.log(employeeData);
-
+        createEmployee(employeeData)
     }
     
     return (

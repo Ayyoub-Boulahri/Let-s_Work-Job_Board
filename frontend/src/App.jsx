@@ -14,30 +14,32 @@ import Profiles from './pages/Profiles'
 import JobListings from './pages/JobListings'
 import NewOffer from './pages/NewOffer'
 import ProfileEmployee from './pages/ProfileEmployee'
-
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 function App() {
+  const client = new QueryClient()
   return (
     <>
       <Provider store={authStore}>
-        <BrowserRouter>
-          <NavBar />
-          <Routes>
-            <Route path='/' element={<Acceuil />} />
-            <Route path='/profile' element={<Profile />} />
-            <Route path='/jobs' element={<Jobs />} />
-            <Route path='/companies' element={<Companies />} />
-            <Route path='/companies/company/:company_id' element={<Company />} />
-            <Route path='/profiles/profile/:profile_id' element={<ProfileEmployee />} />
-            <Route path='/jobs/job/:job_id' element={<JobOffer />} />
-            <Route path='/jobRequests' element={<JobRequests />} />
-            <Route path='/Profiles' element={<Profiles />} />
-            <Route path='/profiles/profile/:profile_id' element={<ProfileEmployee />} />
-            <Route path='/jobListings' element={<JobListings />} />
-            <Route path='/newOffer' element={<NewOffer />} />
-            <Route path='*' element={<div>error 404</div>} />
-          </Routes>
-          <Footer />
-        </BrowserRouter>
+        <QueryClientProvider client={client}>
+          <BrowserRouter>
+            <NavBar />
+            <Routes>
+              <Route path='/' element={<Acceuil />} />
+              <Route path='/profile' element={<Profile />} />
+              <Route path='/jobs' element={<Jobs />} />
+              <Route path='/companies' element={<Companies />} />
+              <Route path='/companies/company/:company_id' element={<Company />} />
+              <Route path='/jobs/job/:job_id' element={<JobOffer />} />
+              <Route path='/jobRequests' element={<JobRequests />} />
+              <Route path='/Profiles' element={<Profiles />} />
+              <Route path='/profiles/profile/:profile_id' element={<ProfileEmployee />} />
+              <Route path='/jobListings' element={<JobListings />} />
+              <Route path='/newOffer' element={<NewOffer />} />
+              <Route path='*' element={<div>error 404</div>} />
+            </Routes>
+            <Footer />
+          </BrowserRouter>
+        </QueryClientProvider>
       </Provider>
     </>
   )

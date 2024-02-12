@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import profile from '../../assets/work_boy.png';
 import '../../css/profile.css';
 import { Divider } from '@nextui-org/react';
@@ -6,8 +6,12 @@ import { FaRegEdit } from 'react-icons/fa';
 import { Input } from "@nextui-org/react";
 import { Textarea } from "@nextui-org/react";
 import { Button } from "@nextui-org/react";
+import { getEmployeeByEmail } from '../../services/employeeServices'; // Import the function directly
+import { useSelector, useDispatch } from 'react-redux';
 
-  function PersonnelInfos() {
+function PersonnelInfos() {
+  const authInfo = useSelector((state) => state.isAuthenticated.value);
+
   const List = [
     {
       id: 1,
@@ -37,14 +41,31 @@ import { Button } from "@nextui-org/react";
   ];
 
   const [isFormVisible, setIsFormVisible] = useState(false);
-  const [isAboutME, setIsAboutMe] = useState(true);
+  const [isAboutMe, setIsAboutMe] = useState(true);
+  const [myInfos, setMyInfos] = useState(null);
+  const [isLoadingInfos, setIsLoadingInfos] = useState(false);
+
+  useEffect(() => {
+    const fetchMyInfos = async () => {
+      try {
+        setIsLoadingInfos(true);
+        const info = await getEmployeeByEmail(authInfo?.email);
+        setMyInfos(info.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoadingInfos(false);
+      }
+    };
+    fetchMyInfos();
+  }, [myInfos]);
 
   return (
     <div className='flex flex-col '>
       <div className='flex'>
         <div className='p-2 text-sm h-[30%] text-[20px]'>
-          <h1 className=' font-medium text-blue-600 dark:text-blue-500 '>Profile</h1>
-          <p className='mt-2'>
+          <h1 className=' font-medium text-blue-600 dark:text-blue-500 text-[18px]'>Profile</h1>
+          <p className='mt-2 text-[16px]'>
             Optimisez votre expérience sur <b>let's work</b> en mettant à jour vos données professionnelles
           </p>
         </div>
@@ -59,10 +80,9 @@ import { Button } from "@nextui-org/react";
           <FaRegEdit onClick={() => setIsAboutMe((prev) => !prev)} />
         </div>
       </div>
-      {isAboutME == true ?
+      {isAboutMe == true ?
         <div className='py-5 '>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos voluptas repellendus veniam perspiciatis inventore dicta ipsam eveniet est! Soluta debitis laborum tempora deserunt facilis nulla expedita a maxime esse molestiae.
-          &#13;Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti voluptatem corporis voluptatum iste numquam doloremque nihil suscipit explicabo modi harum ad error nostrum, eveniet reiciendis ducimus repellat? Praesentium, exercitationem nemo!
+          {myInfos?.about}
         </div>
         :
         <div className='mt-4'>

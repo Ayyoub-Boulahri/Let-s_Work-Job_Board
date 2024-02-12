@@ -29,10 +29,11 @@ const employeeInitState = {
         experiences: [],
         degrees: [],
         cv: { name: "", blobObj: null },
-        profilePhoto: { name: "", blobObj: null },
+        profilePhoto: null,
         aboutMe: ""
     }
 }
+
 const employeeSlice = createSlice({
     name: "employeeData",
     initialState: employeeInitState,
@@ -59,10 +60,14 @@ const employeeSlice = createSlice({
             state.value.skills = state.value.skills.filter(e => e !== action.payload.skill);
         },
         addExperience: (state, action) => {
-            state.value.experiences = [...state.value.experiences, action.payload.experience];
+            state.value.experiences = [...state.value.experiences, action.payload];
         },
         removeExperience: (state, action) => {
-            state.value.experiences = state.value.experiences.filter(e => e !== action.payload.experience);
+            const experienceIdToRemove = action.payload.id_experience;
+            console.log(experienceIdToRemove)
+            state.value.experiences = state.value.experiences.filter(
+                experience => experience.id_experience !== experienceIdToRemove
+            );
         },
         addDegree: (state, action) => {
             state.value.degrees = [...state.value.degrees, action.payload]
@@ -80,8 +85,24 @@ const employeeSlice = createSlice({
             state.value.aboutMe = action.payload
         },
         initEmployee: (state) => {
-            state = employeeInitState;
+            state.value.cin = employeeInitState.value.cin;
+            state.value.firstName = employeeInitState.value.firstName;
+            state.value.lastName = employeeInitState.value.lastName;
+            state.value.phoneNumber = employeeInitState.value.phoneNumber;
+            state.value.dob = employeeInitState.value.dob;
+            state.value.country = employeeInitState.value.country;
+            state.value.city = employeeInitState.value.city;
+            state.value.address = employeeInitState.value.address;
+            state.value.email = employeeInitState.value.email;
+            state.value.password = employeeInitState.value.password;
+            state.value.skills = employeeInitState.value.skills;
+            state.value.experiences = employeeInitState.value.experiences;
+            state.value.degrees = employeeInitState.value.degrees;
+            state.value.cv = employeeInitState.value.cv;
+            state.value.profilePhoto = employeeInitState.value.profilePhoto;
+            state.value.aboutMe = employeeInitState.value.aboutMe;
         }
+
     }
 })
 
@@ -99,7 +120,8 @@ const companyInitState = {
         password: "",
         description: "",
         file: { name: "", blobObj: null },
-        profilePhoto: { name: "", blobObj: null },
+        profilePhoto: null,
+        company_cover: null,
     }
 }
 
@@ -128,12 +150,29 @@ const companySlice = createSlice({
         setCompanyProfilePhoto: (state, action) => {
             state.value.profilePhoto = action.payload;
         },
+        setCompanyCoverPhoto: (state, action) => {
+            state.value.company_cover = action.payload;
+        },
         setFile: (state, action) => {
             state.value.file = action.payload;
         },
         initCompany: (state) => {
-            state = companyInitState;
+            state.value.companyName = companyInitState.value.companyName;
+            state.value.phoneNumber = companyInitState.value.phoneNumber;
+            state.value.country = companyInitState.value.country;
+            state.value.city = companyInitState.value.city;
+            state.value.address = companyInitState.value.address;
+            state.value.foundedYear = companyInitState.value.foundedYear;
+            state.value.size = companyInitState.value.size;
+            state.value.industry = companyInitState.value.industry;
+            state.value.email = companyInitState.value.email;
+            state.value.password = companyInitState.value.password;
+            state.value.description = companyInitState.value.description;
+            state.value.file = companyInitState.value.file;
+            state.value.profilePhoto = companyInitState.value.profilePhoto;
+            state.value.company_cover = companyInitState.value.company_cover;
         }
+
     }
 })
 
@@ -158,8 +197,9 @@ export const {
     setCompanySecurityInfos,
     setDescription,
     setCompanyProfilePhoto,
-    setFile, 
-    initCompany
+    setFile,
+    initCompany,
+    setCompanyCoverPhoto
 } = companySlice.actions;
 
 export const signUpStore = configureStore({

@@ -1,20 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { PaginationItemType } from "@nextui-org/react";
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { setPersonnelInfos } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
+import getAllCountries from '../../services/countriesServices';
+import { useQuery } from '@tanstack/react-query';
 
 function PersonnelInfosForm(props) {
     const dispatch = useDispatch();
     const employeeData = useSelector((state) => state.employeeData.value);
-
+    const [selectedCountry, setSelectedCountry] = useState(employeeData.country)
+    const [cities, setCities] = useState(null)
+    
     const schema = yup.object().shape({
         cin: yup.string().required('CIN is required'),
         firstName: yup.string().required('First Name is required'),
         lastName: yup.string().required('Last Name is required'),
-        phoneNumber: yup.string().min(10).required('Phone Number is required'),
+        phoneNumber: yup.string()
+                        .matches(/^\(\d{3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
+                        .required('Phone Number is required'),
         dob: yup.date().required('Date of Birth is required'),
         country: yup.string().required('Country is required'),
         city: yup.string().required('City is required'),
@@ -38,27 +44,19 @@ function PersonnelInfosForm(props) {
         }
     }
 
-    const countries = [
-        { id: "MAR", value: "Morocco" },
-        { id: "USA", value: "United States" },
-        { id: "CAN", value: "Canada" },
-        { id: "GBR", value: "United Kingdom" },
-        { id: "AUS", value: "Australia" },
-        { id: "GER", value: "Germany" },
-        { id: "FRA", value: "France" },
-        { id: "JPN", value: "Japan" },
-    ];
+    const { data: countries, isLoading } = useQuery({
+        queryKey: ["countries"],
+        queryFn: () => {
+            return getAllCountries()
+        }
+    })
 
-    const cities = [
-        { id: "RAB", value: "Rabat", country: "MAR" },
-        { id: "NYC", value: "New York City", country: "USA" },
-        { id: "TOR", value: "Toronto", country: "CAN" },
-        { id: "LON", value: "London", country: "GBR" },
-        { id: "SYD", value: "Sydney", country: "AUS" },
-        { id: "BER", value: "Berlin", country: "GER" },
-        { id: "PAR", value: "Paris", country: "FRA" },
-        { id: "TOK", value: "Tokyo", country: "JPN" },
-    ];
+    useEffect(() => {
+        if (selectedCountry != "") {
+            const country = countries?.find((country) => country.pays_name == selectedCountry)
+            setCities(country?.cities)
+        }
+    }, [selectedCountry, countries])
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -84,7 +82,7 @@ function PersonnelInfosForm(props) {
                 <div className='input-group flex gap-6 w-full'>
                     <div className='w-full'>
                         {errors.phoneNumber ? <label style={{ color: '#E11D48' }}>Phone Number</label> : <label>Phone Number</label>}
-                        <input type="tel" placeholder='Phone Number' defaultValue={employeeData.phoneNumber} {...register("phoneNumber")} className={`${errors.phoneNumber && "erreur"}`} />
+                        <input type="tel" placeholder='Phone: (212) 123-456789' defaultValue={employeeData.phoneNumber} {...register("phoneNumber")} className={`${errors.phoneNumber && "erreur"}`} />
                     </div>
 
                     <div className='w-full'>
@@ -96,11 +94,12 @@ function PersonnelInfosForm(props) {
                 <div className='input-group flex gap-6 w-full'>
                     <div className='w-full'>
                         {errors.country ? <label style={{ color: '#E11D48' }}>Country</label> : <label>Country</label>}
-                        <select className={`select ${errors.country && "erreur"}`} {...register("country")} >
+                        <select className={`select ${errors.country && "erreur"}`} {...register("country")} onChange={(e) => setSelectedCountry(e.target.value)}>
                             <option value="" disabled selected>Select a country</option>
-                            {countries.map((option) => (
-                                <option key={option.id} value={option.id} selected={employeeData.country == option.id}>
-                                    {option.value}
+                            {isLoading && <option value="" className='font-bold text-primary-500'>Loading ...</option>}
+                            {countries?.map((option, index) => (
+                                <option key={index} value={option.pays_name} selected={employeeData.country == option.pays_name}>
+                                    {option.pays_name}
                                 </option>
                             ))}
                         </select>
@@ -108,11 +107,11 @@ function PersonnelInfosForm(props) {
 
                     <div className='w-full'>
                         {errors.city ? <label style={{ color: '#E11D48' }}>City</label> : <label>City</label>}
-                        <select className={`select ${errors.city && "erreur"}`} {...register("city")} >
+                        <select className={`select ${errors.city && "erreur"}`} {...register("city")} disabled={!selectedCountry}>
                             <option value="" disabled selected>Select a city</option>
-                            {cities.map((option) => (
-                                <option key={option.id} value={option.id} selected={employeeData.city == option.id}>
-                                    {option.value}
+                            {cities?.map((option, index) => (
+                                <option key={index} value={option.city_name} selected={employeeData.city == option.city_name}>
+                                    {option.city_name}
                                 </option>
                             ))}
                         </select>

@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '../style'
 import { useState } from 'react';
 
-import Profile from '../assets/profileExample.jpg'
+import Profile from '../assets/profile.png'
 import ProfileList from '../components/profilesComponents/ProfileList';
 
 function Profiles() {

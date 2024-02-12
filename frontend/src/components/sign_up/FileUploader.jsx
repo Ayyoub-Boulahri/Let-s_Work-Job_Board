@@ -1,10 +1,12 @@
-import React, { useEffect, useState,  useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { FaFileUpload } from "react-icons/fa";
 import "../../css/CheckAnimationSuccess.css"
 import { useSelector, useDispatch } from 'react-redux';
 import { PaginationItemType } from "@nextui-org/react";
 import { setCv, setFile } from '../../stores/signUpStore';
-import { set } from 'react-hook-form';
+import { fileToBase64 } from '../../services/convertFunctions';
+import { createCompany } from '../../services/companyServices';
+
 
 const FileUploader = (props) => {
     const fileInputRef = useRef(null)
@@ -15,39 +17,47 @@ const FileUploader = (props) => {
     const [fileName, setFileName] = useState("")
 
     useEffect(() => {
-        if(typeUser == "employee") {
+        if (typeUser == "employee") {
             setFileName(employeeData.cv.name)
-        }else {
+        } else {
             setFileName(companyData.file.name)
         }
     }, [])
-
-    const handleFile = (event) => {
+    
+    const handleFile = async (event) => {
         const file = event.target.files[0];
-        setFileName(file.name)
+        setFileName(file.name);
+    
         if (file) {
             try {
                 const formData = new FormData();
                 formData.append('file', file);
-                if(typeUser == "employee") 
-                    dispatch(setCv({name: file.name, blobObj: formData}))
-                else
-                    dispatch(setFile({name: file.name, blobObj: formData}))
+    
+                const base64String = await fileToBase64(file);
+    
+                if (typeUser === "employee") {
+                    dispatch(setCv({ name: file.name, blobObj: base64String }));
+                } else {
+                    dispatch(setFile({ name: file.name, blobObj: base64String }));
+                }
             } catch (error) {
                 console.error('Error uploading file:', error);
             }
         }
-    }
+    };
+    
 
     const handleSelectClick = () => {
         fileInputRef.current.click();
     };
 
+
     const handelSubmit = () => {
-        if(fileName != "" && typeUser == "employee")
+        if (fileName != "" && typeUser == "employee")
             props.pagination.onNext()
-        else if(typeUser == "company") {
+        else if (fileName != "" && typeUser == "company") {
             console.log(companyData)
+            createCompany(companyData)
             props.pagination.onNext()
         }
     }

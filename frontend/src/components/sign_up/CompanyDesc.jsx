@@ -26,6 +26,7 @@ function CompanyDesc(props) {
             console.log(err);
         }
     }
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <div className="slideshow flex flex-col gap-2 min-h-[300px]">

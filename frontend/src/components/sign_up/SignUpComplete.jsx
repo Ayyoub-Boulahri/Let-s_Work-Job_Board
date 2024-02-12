@@ -7,7 +7,7 @@ function SignUpComplete(props) {
     <div className="flex flex-col items-center justify-center slideshow">
             <img src={complete} alt="Almost there" className='w-[200px] mb-4' />
             <h1 className="text-4xl font-bold mb-4">Thanks For Your Sign Up</h1>
-            <p className="text-lg text-center">We Will Send you an Email in a few hours when we verifie your company identity</p>
+            {props.type == "company" && <p className="text-lg text-center">We Will Send you an Email in a few hours when we verifie your company identity</p>}
             <div className='mt-6'>
                 <ul className="flex gap-2 items-center justify-center">
                     {props.pagination.range.map((page) => {

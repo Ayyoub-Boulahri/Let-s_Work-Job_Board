@@ -5,26 +5,38 @@ import { SiAddthis } from "react-icons/si";
 import { PaginationItemType } from "@nextui-org/react";
 import { addSkill, removeSkill } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import searchSkills from '../../services/skillsServices';
 
 function AddSkills(props) {
     const dispatch = useDispatch();
     const employeeData = useSelector((state) => state.employeeData.value);
-    const [selectedSkill, setSelectedSkill] = useState('');
+    const [inputValue, setInputValue] = useState('');
 
-    const predefinedSkills = ['Html', 'JavaScript', 'Adobe After Effect', 'Vs Code', 'Java OOP'];
+    const { data: skills, isLoading: isLoadingSkills } = useQuery({
+        queryKey: ["skills", inputValue],
+        queryFn: () => searchSkills(inputValue)
+    });
 
     const HandelAddSkill = () => {
-        if (selectedSkill !== "") {
+        console.log("hi")
+        const item = skills?.filter((sk) => sk.skill === inputValue);
+        console.log(item)
+        if (inputValue !== "" && item.length > 0) {
             var isValid = true;
             employeeData.skills.forEach((item) => {
-                if (item.toLowerCase() === selectedSkill.toLowerCase())
-                    isValid = false
-            })
+                if (item.toLowerCase() === inputValue.toLowerCase())
+                    isValid = false;
+            });
             if (isValid) {
-                dispatch(addSkill({ skill: selectedSkill }))
-                setSelectedSkill('');
+                dispatch(addSkill({ skill: inputValue }));
+                setInputValue('');
             }
         }
+    }
+
+    const handleInputChange = (e) => {
+        setInputValue(e.target.value);
     }
 
     const handelRemoveSkill = (skill) => {
@@ -38,16 +50,18 @@ function AddSkills(props) {
                 <div className='input-group flex flex-col gap-2'>
                     <label>What are your Skills ? 🧑‍⚕️</label>
                     <div className='flex w-full gap-8 items-center'>
-                        <select
-                            value={selectedSkill}
-                            onChange={(e) => setSelectedSkill(e.target.value)}
-                            className='w-[150px] select'
-                        >
-                            <option value="" disabled>Select a skill</option>
-                            {predefinedSkills.map((skill, index) => (
-                                <option key={index} value={skill}>{skill}</option>
-                            ))}
-                        </select>
+                        <input
+                            list="skills"
+                            name="skill"
+                            id="skillTxt"
+                            value={inputValue}
+                            onChange={handleInputChange}
+                        />
+
+                        <datalist id="skills">
+                            {skills?.map((sk, index) => <option key={index} value={sk.skill} />)}
+                        </datalist>
+
                         <SiAddthis size={30} className='cursor-pointer mr-2' onClick={HandelAddSkill} />
                     </div>
                 </div>

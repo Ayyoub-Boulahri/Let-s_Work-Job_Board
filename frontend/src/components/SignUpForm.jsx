@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Dialog } from '@radix-ui/themes';
 import { IoArrowForwardOutline } from "react-icons/io5";
 import "../css/signUpForm.css";
-import { usePagination, PaginationItemType } from "@nextui-org/react";
+import { usePagination } from "@nextui-org/react";
 import PersonnelInfosForm from './sign_up/PersonnelInfosForm';
 import AccountType from './sign_up/AccountType';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,12 +12,13 @@ import AddExperiences from './sign_up/AddExperiences';
 import AddDegrees from './sign_up/AddDegrees';
 import AlmostThere from './sign_up/AlmostThere';
 import FileUploader from './sign_up/FileUploader';
-import ImageUpload from './sign_up/ImageUpload ';
 import AboutEmployee from './sign_up/AboutEmployee';
 import CompanyInfos from './sign_up/CompanyInfos';
 import CompanyDesc from './sign_up/CompanyDesc';
 import SignUpComplete from './sign_up/signUpComplete';
 import { initCompany, initEmployee } from '../stores/signUpStore';
+import CompanyPhotoUpload from './sign_up/CompanyPhotoUpload';
+import EmployeePhotoUpload from './sign_up/EmployeePhotoUpload';
 
 function SignUpForm(props) {
     const typeUser = useSelector((state) => state.typeUser.value);
@@ -60,17 +61,18 @@ function SignUpForm(props) {
         <AddDegrees pagination={pagination} />,
         <AlmostThere pagination={pagination} />,
         <FileUploader pagination={pagination} />,
-        <ImageUpload pagination={pagination} />,
-        <AboutEmployee pagination={pagination} />
+        <EmployeePhotoUpload pagination={pagination} />,
+        <AboutEmployee pagination={pagination} />,
+        <SignUpComplete pagination={pagination} type="employee"/>,
     ];
 
     const companyItems = [
         <CompanyInfos pagination={pagination} />,
         <SecurityInfos pagination={pagination} />,
         <CompanyDesc pagination={pagination} />,
-        <ImageUpload pagination={pagination} />,
+        <CompanyPhotoUpload pagination={pagination} />,
         <FileUploader pagination={pagination} />,
-        <SignUpComplete pagination={pagination} />,
+        <SignUpComplete pagination={pagination} type="company"/>,
     ];
 
 

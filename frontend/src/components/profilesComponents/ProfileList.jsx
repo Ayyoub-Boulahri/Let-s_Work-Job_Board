@@ -2,7 +2,7 @@ import React from 'react'
 import { Pagination } from '@nextui-org/react';
 import { useState } from 'react';
 import ProfileCard from './ProfileCard';
-import profile from '../../assets/profileExample.jpg'
+import profile from '../../assets/profile.png'
 
 function ProfileList() {
 

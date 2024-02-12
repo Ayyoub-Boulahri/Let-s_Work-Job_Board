@@ -52,9 +52,10 @@ const NewOffer = () => {
             <select
               className="outline-none border-0 bg-[#27272A] p-2 rounded-md text-default-400 text-small"
             >
-              <option>Year</option>
-              <option>month</option>
-              <option>day</option>
+              <option value="Year">Year</option>
+              <option value="month">month</option>
+              <option value="day">day</option>
+              <option value="hour">hour</option>
             </select>
           </div>
 
@@ -72,7 +73,10 @@ const NewOffer = () => {
             <h1 className='text-[20px] text-default-600'>Required Skills</h1>
             <div className="flex gap-4 items-center">
               <select className='bg-[#27272A] rounded-md p-2 outline-none w-full'>
-                <option value="">Full time Job</option>
+                <option value="Full-time">Full-time</option>
+                <option value="Contract">Contract</option>
+                <option value="Part-time">Part-time</option>
+                <option value="Temporary">Temporary</option>
               </select>
               <SiAddthis size={30} className='cursor-pointer mr-2' />
             </div>

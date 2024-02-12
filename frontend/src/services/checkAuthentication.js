@@ -2,11 +2,11 @@ import axios from 'axios';
 
 const checkAuthentication = async () => {
   try {
-    const response = await axios.get('http://localhost:5000/api/login/check-authentication', {withCredentials: true});
+    const response = await axios.get('http://localhost:5000/api/login/check-authentication', { withCredentials: true });
 
     if (response.status === 200) {
-      const { email, auth, typeUser } = response.data;
-      return { email, auth, typeUser };
+      const { email, auth, typeUser, userId } = response.data;
+      return { email, auth, typeUser, userId };
     } else {
       console.error('Failed to fetch authentication status:', response.data.error);
     }
@@ -18,3 +18,4 @@ const checkAuthentication = async () => {
 };
 
 export default checkAuthentication;
+

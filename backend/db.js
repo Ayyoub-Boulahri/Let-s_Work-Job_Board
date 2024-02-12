@@ -1,27 +1,12 @@
-const mysql = require('mysql');
+const mongoose = require('mongoose');
 
-class Database {
-  constructor() {
-    this.connection = mysql.createConnection({
-      host: 'localhost',
-      user: 'root',
-      password: '',
-      database: 'job_board',
-    });
+const connectionString = 'mongodb://localhost:27017/job_board';
 
-    this.connect();
-  }
+mongoose.connect(connectionString, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
-  connect() {
-    this.connection.connect((err) => {
-      if (err) {
-        console.error('Error connecting to MySQL:', err);
-      } else {
-        console.log('Connected to MySQL!');
-      }
-    });
-  }
-}
 
 // Export a singleton instance of the Database class
-module.exports = new Database().connection;
+module.exports = mongoose;

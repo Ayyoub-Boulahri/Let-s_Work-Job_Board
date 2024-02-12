@@ -38,7 +38,7 @@ function AddDegrees(props) {
     const onSubmit = async (data) => {
         var allInputs = document.querySelectorAll('input');
         var formattedData = {
-            id: getNextId(),
+            id_education: getNextId(),
             degreeName: data.degree,
             school: data.school,
             year: data.year

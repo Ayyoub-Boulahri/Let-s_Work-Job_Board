@@ -50,7 +50,7 @@ function NavBar() {
       else
         navbar.classList.remove('bg-opacity-80')
     })
-  }, [authInfo])
+  }, [])
 
   const scrollToTop = () => {
     window.scrollTo(0, 0);
@@ -97,7 +97,7 @@ function NavBar() {
     {
       id: "profiles",
       title: "Profiles",
-      path: "/profile"
+      path: "/profiles"
     },
     {
       id: "jobListings",
@@ -147,7 +147,7 @@ function NavBar() {
 
             {/* Profile Avatar Bar */}
 
-            {authInfo?.auth && <AvatarDropdown />}
+            {authInfo?.auth && <AvatarDropdown authInfo={authInfo}/>}
 
 
             {/* Sign Up Button */}

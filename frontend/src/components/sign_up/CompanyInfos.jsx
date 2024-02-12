@@ -1,18 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PaginationItemType } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { setcompanyInfos } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
+import { useQuery } from '@tanstack/react-query';
+import getAllIndustries from '../../services/industriesServices';
+import getAllCountries from '../../services/countriesServices';
 
 function CompanyInfos(props) {
     const dispatch = useDispatch();
     let companyData = useSelector((state) => state.companyData.value);
-    useEffect(() => console.log(companyData), [])
+    
     const schema = yup.object().shape({
         companyName: yup.string().required('Company Name is required'),
-        phoneNumber: yup.string().min(10).required('Phone Number is required'),
+        phoneNumber: yup.string()
+                        .matches(/^\(\d{3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
+                        .required('Phone Number is required'),
         country: yup.string().required('Country is required'),
         city: yup.string().required('City is required'),
         address: yup.string().required('Address is required'),
@@ -20,7 +25,7 @@ function CompanyInfos(props) {
         foundedYear: yup.number().required('Year is required'),
         industry: yup.string().required('Industry is required'),
     });
-    
+
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema),
     });
@@ -30,43 +35,39 @@ function CompanyInfos(props) {
         props.pagination.onNext()
     }
 
-    const countries = [
-        { id: "MAR", value: "Morocco" },
-        { id: "USA", value: "United States" },
-        { id: "CAN", value: "Canada" },
-        { id: "GBR", value: "United Kingdom" },
-        { id: "AUS", value: "Australia" },
-        { id: "GER", value: "Germany" },
-        { id: "FRA", value: "France" },
-        { id: "JPN", value: "Japan" },
-    ];
+    const { data: industries, isLoading: isLoadingIndustries } = useQuery({
+        queryKey: ["industries"],
+        queryFn: () => getAllIndustries()
+    })
 
-    const cities = [
-        { id: "RAB", value: "Rabat", country: "MAR" },
-        { id: "NYC", value: "New York City", country: "USA" },
-        { id: "TOR", value: "Toronto", country: "CAN" },
-        { id: "LON", value: "London", country: "GBR" },
-        { id: "SYD", value: "Sydney", country: "AUS" },
-        { id: "BER", value: "Berlin", country: "GER" },
-        { id: "PAR", value: "Paris", country: "FRA" },
-        { id: "TOK", value: "Tokyo", country: "JPN" },
-    ];
+    const { data: countries, isLoading:isLoadingCountries } = useQuery({
+        queryKey: ["countries"],
+        queryFn: () => {
+            return getAllCountries()
+        }
+    })
+
+    const [selectedCountry, setSelectedCountry] = useState(companyData.country)
+    const [cities, setCities] = useState()
+
+
+    useEffect(() => {
+        if (selectedCountry != "") {
+            const country = countries?.find((country) => country.pays_name == selectedCountry)
+            setCities(country?.cities)
+        }
+    }, [selectedCountry, countries])
 
     const sizes = [
-        { id: 1, value: "moins 10 employees" },
-        { id: 2, value: "de 10 a 100 employee" },
-        { id: 3, value: "de 101 a 500 employee" },
-        { id: 4, value: "de 501 a 1000 employee" },
-        { id: 5, value: "plus 1000 employee" },
-    ]
-
-    const industries = [
-        { id: 1, value: "Fashion" },
-        { id: 2, value: "Electrical Engineering" },
-        { id: 3, value: "Civil Engineering" },
-        { id: 4, value: "Computer Hardware" },
-        { id: 5, value: "Computer Software" }
-    ]
+        { id: 1, value: "1 - 50 employees" },
+        { id: 2, value: "51 - 200 employees" },
+        { id: 3, value: "201 - 500 employees" },
+        { id: 4, value: "501 - 1000 employees" },
+        { id: 5, value: "1001 - 5000 employees" },
+        { id: 6, value: "5001 - 10000 employees" },
+        { id: 7, value: "10000+ employees" }
+    ];
+    
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -81,7 +82,7 @@ function CompanyInfos(props) {
                     <div className='flex flex-col w-full'>
 
                         {errors.phoneNumber ? <label style={{ color: '#E11D48' }}>Phone Number</label> : <label>Phone Number</label>}
-                        <input type="tel" placeholder='Phone Number' {...register('phoneNumber')} className={`${errors.phoneNumber && 'erreur'}`} defaultValue={companyData.phoneNumber} />
+                        <input type="tel" placeholder='Phone: (212) 123-456789' {...register('phoneNumber')} className={`${errors.phoneNumber && 'erreur'}`} defaultValue={companyData.phoneNumber} />
                     </div>
 
                 </div>
@@ -103,12 +104,14 @@ function CompanyInfos(props) {
                         {errors.industry ? <label style={{ color: '#E11D48' }}>Industry</label> : <label>Industry</label>}
                         <select className={`select ${errors.industry && "erreur"}`} {...register("industry")} >
                             <option value="" disabled selected>Industry</option>
-                            {industries.map((industry) => (
-                                <option key={industry.id} value={industry.value} selected={companyData.industry == industry.value}>
-                                    {industry.value}
+                            {isLoadingIndustries && <option value="" className='font-bold text-primary-500'>Loading ...</option>}
+                            {industries?.map((industry, index) => (
+                                <option key={index} value={industry.industry_name} selected={companyData.industry == industry.industry_name}>
+                                    {industry.industry_name}
                                 </option>
                             ))}
-                        </select>                    </div>
+                        </select>
+                    </div>
 
                     <div>
                         {errors.foundedYear ? <label style={{ color: '#E11D48' }}>Founded Year</label> : <label>Founded Year</label>}
@@ -121,11 +124,12 @@ function CompanyInfos(props) {
                 <div className='input-group flex gap-6 w-full'>
                     <div className='w-full'>
                         {errors.country ? <label style={{ color: '#E11D48' }}>Country</label> : <label>Country</label>}
-                        <select className={`select ${errors.country && "erreur"}`} {...register("country")} >
+                        <select className={`select ${errors.country && "erreur"}`} {...register("country")} onChange={(e) => setSelectedCountry(e.target.value)}>
                             <option value="" disabled selected>Select a country</option>
-                            {countries.map((option) => (
-                                <option key={option.id} value={option.id} selected={companyData.country == option.id}>
-                                    {option.value}
+                            {isLoadingCountries && <option value="" className='font-bold text-primary-500'>Loading ...</option>}
+                            {countries?.map((option, index) => (
+                                <option key={index} value={option.pays_name} selected={companyData.country == option.pays_name}>
+                                    {option.pays_name}
                                 </option>
                             ))}
                         </select>
@@ -133,11 +137,11 @@ function CompanyInfos(props) {
 
                     <div className='w-full'>
                         {errors.city ? <label style={{ color: '#E11D48' }}>City</label> : <label>City</label>}
-                        <select className={`select ${errors.city && "erreur"}`} {...register("city")} >
+                        <select className={`select ${errors.city && "erreur"}`} {...register("city")} disabled={!selectedCountry && companyData.country == ""}>
                             <option value="" disabled selected>Select a city</option>
-                            {cities.map((option) => (
-                                <option key={option.id} value={option.id} selected={companyData.city == option.id}>
-                                    {option.value}
+                            {cities?.map((option, index) => (
+                                <option key={index} value={option.city_name} selected={companyData.city == option.city_name}>
+                                    {option.city_name}
                                 </option>
                             ))}
                         </select>
