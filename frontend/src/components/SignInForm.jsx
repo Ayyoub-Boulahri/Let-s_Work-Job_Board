@@ -43,11 +43,11 @@ function SignInForm() {
                 const authInfo = await checkAuthentication();
                 dispatch(setAuthenticated(authInfo))
                 if(type == "employee")
-                    window.location.href = "/jobs"
-                    // navigate("/jobs")
+                    // window.location.href = "/jobs"
+                    navigate("/jobs")
                 if(type == "company")
-                    window.location.href = "/profiles"
-                    // navigate("/profiles")
+                    // window.location.href = "/profiles"
+                    navigate("/profiles")
                 
             } else {
                 setErrorLogin(true)

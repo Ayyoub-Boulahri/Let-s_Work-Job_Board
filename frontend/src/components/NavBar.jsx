@@ -24,19 +24,16 @@ function NavBar() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const email = localStorage.getItem('email');
-    const auth = localStorage.getItem('auth');
-    const userId = localStorage.getItem('userId');
-    const typeUser = localStorage.getItem('typeUser');
+    const fetchAuthInfo = async () => {
+      const infoAuthentificaiton = await checkAuthentication();
+      dispatch(setAuthenticated(infoAuthentificaiton));
+      if (!infoAuthentificaiton){
+        window.scrollTo(0, 0);
+        navigate("/");
+      }
+    };
+    fetchAuthInfo();
 
-    const authObj = {
-      userId,
-      email,
-      auth,
-      typeUser
-    }
-
-    dispatch(setAuthenticated(authObj));
 
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');

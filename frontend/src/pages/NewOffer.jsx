@@ -80,7 +80,13 @@ const NewOffer = () => {
               </select>
               <SiAddthis size={30} className='cursor-pointer mr-2' />
             </div>
-            <div className="flex">
+            <div className="flex flex-wrap">
+              <SkillItem skill="Html" />
+              <SkillItem skill="JavaScript" />
+              <SkillItem skill="Adobe After Effects" />
+              <SkillItem skill="Html" />
+              <SkillItem skill="JavaScript" />
+              <SkillItem skill="Adobe After Effects" />
               <SkillItem skill="Html" />
               <SkillItem skill="JavaScript" />
               <SkillItem skill="Adobe After Effects" />

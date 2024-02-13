@@ -17,7 +17,12 @@ function AvatarDropdown() {
 
     const { data: myInfos, isLoading: isLoadingInfos } = useQuery({
         queryKey: ["myInfos"],
-        queryFn: () => authInfo?.typeUser == "employee" ? getEmployeeByEmail(authInfo.email) : getCompanyByEmail(authInfo.email)
+        queryFn: () => {
+            if(authInfo.typeUser == "employee")
+                return getEmployeeByEmail(authInfo.email) 
+            else if(authInfo.typeUser == "company")
+                return getCompanyByEmail(authInfo.email)
+        }
     })
 
 
@@ -33,7 +38,7 @@ function AvatarDropdown() {
 
     const handleDeleteAccount = async () => {
         const deleteResult = await authInfo?.typeUser == "employee" ? deleteEmployeeById(myInfos.data._id) : deleteCompanyById(myInfos.data._id)
-        if(deleteResult){
+        if (deleteResult) {
             console.log("hihihih")
             navigate("/");
         }
@@ -58,7 +63,7 @@ function AvatarDropdown() {
                         {
                             !isLoadingInfos &&
                             <>
-                                {authInfo?.typeUser == "employee" 
+                                {authInfo?.typeUser == "employee"
                                     ? <p className="font-semibold">Hi {myInfos.data.first_name} {myInfos.data.last_name}</p>
                                     : <p className="font-semibold">Hi {myInfos.data.company_name}</p>
                                 }
@@ -66,7 +71,7 @@ function AvatarDropdown() {
                             </>
                         }
                     </DropdownItem>
-                    <DropdownItem key="profile" onClick={() => {navigate((authInfo?.typeUser == "employee" ? '/profile' : '/companies/company/1'))}}>
+                    <DropdownItem key="profile" onClick={() => { navigate((authInfo?.typeUser == "employee" ? '/profile' : '/companies/company/1')) }}>
                         My Profile
                     </DropdownItem>
                     <DropdownItem key="delete" className="text-danger-400" onClick={onOpen}>

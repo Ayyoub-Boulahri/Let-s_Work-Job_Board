@@ -9,7 +9,7 @@ import { Button } from "@nextui-org/react";
 import { getEmployeeByEmail } from '../../services/employeeServices'; // Import the function directly
 import { useSelector, useDispatch } from 'react-redux';
 
-function PersonnelInfos() {
+function PersonnelInfos(props) {
   const authInfo = useSelector((state) => state.isAuthenticated.value);
 
   const List = [
@@ -42,23 +42,6 @@ function PersonnelInfos() {
 
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [isAboutMe, setIsAboutMe] = useState(true);
-  const [myInfos, setMyInfos] = useState(null);
-  const [isLoadingInfos, setIsLoadingInfos] = useState(false);
-
-  useEffect(() => {
-    const fetchMyInfos = async () => {
-      try {
-        setIsLoadingInfos(true);
-        const info = await getEmployeeByEmail(authInfo?.email);
-        setMyInfos(info.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setIsLoadingInfos(false);
-      }
-    };
-    fetchMyInfos();
-  }, [myInfos]);
 
   return (
     <div className='flex flex-col '>
@@ -82,7 +65,7 @@ function PersonnelInfos() {
       </div>
       {isAboutMe == true ?
         <div className='py-5 '>
-          {myInfos?.about}
+          {props.userInfos.about}
         </div>
         :
         <div className='mt-4'>
