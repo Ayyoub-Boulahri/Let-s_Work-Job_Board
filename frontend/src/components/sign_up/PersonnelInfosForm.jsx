@@ -19,7 +19,7 @@ function PersonnelInfosForm(props) {
         firstName: yup.string().required('First Name is required'),
         lastName: yup.string().required('Last Name is required'),
         phoneNumber: yup.string()
-                        .matches(/^\(\d{3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
+                        .matches(/^\(\d{1,3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
                         .required('Phone Number is required'),
         dob: yup.date().required('Date of Birth is required'),
         country: yup.string().required('Country is required'),
@@ -64,8 +64,8 @@ function PersonnelInfosForm(props) {
                 <p className="title py-4">Personnel Informations</p>
                 <div className='input-group flex gap-4'>
                     <div>
-                        {errors.cin ? <label style={{ color: '#E11D48' }}>CIN</label> : <label>CIN</label>}
-                        <input type="text" placeholder='CIN' {...register("cin")} className={`${errors.cin && "erreur"}`} defaultValue={employeeData.cin} />
+                        {errors.cin ? <label style={{ color: '#E11D48' }}>ID</label> : <label>CIN</label>}
+                        <input type="text" placeholder='ID' {...register("cin")} className={`${errors.cin && "erreur"}`} defaultValue={employeeData.cin} />
                     </div>
 
                     <div>
@@ -108,9 +108,9 @@ function PersonnelInfosForm(props) {
                     <div className='w-full'>
                         {errors.city ? <label style={{ color: '#E11D48' }}>City</label> : <label>City</label>}
                         <select className={`select ${errors.city && "erreur"}`} {...register("city")} disabled={!selectedCountry}>
-                            <option value="" disabled selected>Select a city</option>
+                            <option value="" disabled>Select a city</option>
                             {cities?.map((option, index) => (
-                                <option key={index} value={option.city_name} selected={employeeData.city == option.city_name}>
+                                <option key={index} value={option.city_name} selected={employeeData.city === option.city_name}>
                                     {option.city_name}
                                 </option>
                             ))}

@@ -19,29 +19,24 @@ import { setAuthenticated } from '../stores/authStore';
 function NavBar() {
   const [toggle, setToggle] = useState(false)
 
-  const [navLinks, setNavLinks] = useState([])
   const navigate = useNavigate()
   const authInfo = useSelector((state) => state.isAuthenticated.value);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchAuthInfo = async () => {
-      const infoAuthentificaiton = await checkAuthentication();
-      dispatch(setAuthenticated(infoAuthentificaiton));
-      if (!infoAuthentificaiton){
-        window.scrollTo(0, 0);
-        navigate("/");
-      }
-    };
+    const email = localStorage.getItem('email');
+    const auth = localStorage.getItem('auth');
+    const userId = localStorage.getItem('userId');
+    const typeUser = localStorage.getItem('typeUser');
 
-    fetchAuthInfo();
+    const authObj = {
+      userId,
+      email,
+      auth,
+      typeUser
+    }
 
-    if (authInfo?.typeUser == "employee" && authInfo?.auth)
-      setNavLinks(employeeNavLinks)
-    else if (authInfo?.typeUser == "company" && authInfo?.auth)
-      setNavLinks(companyNavLinks);
-    else
-      setNavLinks(acceuilNavLinks)
+    dispatch(setAuthenticated(authObj));
 
     window.addEventListener('scroll', () => {
       const navbar = document.getElementById('navbar');
@@ -50,6 +45,7 @@ function NavBar() {
       else
         navbar.classList.remove('bg-opacity-80')
     })
+
   }, [])
 
   const scrollToTop = () => {
@@ -74,7 +70,7 @@ function NavBar() {
     },
   ];
 
-  
+
   const employeeNavLinks = [
     {
       id: "jobs",
@@ -122,8 +118,8 @@ function NavBar() {
             {/* computer size items */}
             {
               !authInfo?.auth ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
-                {navLinks.map((nav, index) => (
-                  <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.hash === nav.path ? 'isActive' : 'text-[18px]'} py-2`}>
+                {acceuilNavLinks.map((nav, index) => (
+                  <a href={`#${nav.id}`} className={`font-poppins cursor-pointer nav-link ${index === acceuilNavLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.hash === nav.path ? 'isActive' : 'text-[18px]'} py-2`}>
                     <li key={nav.id} >
                       {nav.title}
                     </li>
@@ -131,9 +127,19 @@ function NavBar() {
                 ))}
               </ul>
                 :
-                <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
-                  {navLinks.map((nav, index) => (
-                    <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === navLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.pathname === nav.path ? 'isActive' : 'text-[18px]'}  py-2`} onClick={scrollToTop}>
+                authInfo?.typeUser == "employee"
+                  ? <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
+                    {employeeNavLinks.map((nav, index) => (
+                      <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === employeeNavLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.pathname === nav.path ? 'isActive' : 'text-[18px]'}  py-2`} onClick={scrollToTop}>
+                        <li key={nav.id}>
+                          {nav.title}
+                        </li>
+                      </Link>
+                    ))}
+                  </ul>
+                  : <ul className='list-none sm:flex hidden justify-center items-center flex-1'>
+                  {companyNavLinks.map((nav, index) => (
+                    <Link to={"/" + nav.id} className={`font-poppins cursor-pointer nav-link ${index === companyNavLinks.length - 1 ? 'mr-0' : 'mr-14'} ${location.pathname === nav.path ? 'isActive' : 'text-[18px]'}  py-2`} onClick={scrollToTop}>
                       <li key={nav.id}>
                         {nav.title}
                       </li>
@@ -147,7 +153,7 @@ function NavBar() {
 
             {/* Profile Avatar Bar */}
 
-            {authInfo?.auth && <AvatarDropdown authInfo={authInfo}/>}
+            {authInfo?.auth && <AvatarDropdown authInfo={authInfo} />}
 
 
             {/* Sign Up Button */}
@@ -171,9 +177,9 @@ function NavBar() {
                 />
                 <div className={`${toggle ? 'flex' : 'hidden'} p-6 bg-black-gradient fixed top-20 right-0 mx-4 my-2 min-w-[140px] rounded-xl sidebar`}>
                   <ul className='list-none flex flex-col justify-center items-center flex-1'>
-                    {navLinks.map((nav, index) => (
+                    {(!authInfo?.auth ? acceuilNavLinks : authInfo?.typeUser =="employee" ? employeeNavLinks : companyNavLinks).map((nav, index) => (
                       <li key={nav.id}
-                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === navLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setToggle((prev) => !prev)}>
+                        className={`font-poppins font-normal cursor-pointer text-[16px] ${index === companyNavLinks.length - 1 ? 'mb-0' : 'mb-4'} text-white`} onClick={() => setToggle((prev) => !prev)}>
                         {
                           !authInfo?.auth
                             ? <a href={`#${nav.id}`}>

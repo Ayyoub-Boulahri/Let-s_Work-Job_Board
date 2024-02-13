@@ -23,7 +23,10 @@ const NewOffer = () => {
           <div className="flex gap-4 items-center">
             <h1 className='text-[20px] text-default-600 w-[20%]'>Job Type</h1>
             <select className='bg-[#27272A] rounded-md p-2 outline-none w-full'>
-              <option value="">Full time Job</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Contract">Contract</option>
+              <option value="Part-time">Part-time</option>
+              <option value="Temporary">Temporary</option>
             </select>
           </div>
 
@@ -73,10 +76,7 @@ const NewOffer = () => {
             <h1 className='text-[20px] text-default-600'>Required Skills</h1>
             <div className="flex gap-4 items-center">
               <select className='bg-[#27272A] rounded-md p-2 outline-none w-full'>
-                <option value="Full-time">Full-time</option>
-                <option value="Contract">Contract</option>
-                <option value="Part-time">Part-time</option>
-                <option value="Temporary">Temporary</option>
+                <option value="">Select skills</option>
               </select>
               <SiAddthis size={30} className='cursor-pointer mr-2' />
             </div>

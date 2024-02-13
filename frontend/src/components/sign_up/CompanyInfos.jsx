@@ -16,7 +16,7 @@ function CompanyInfos(props) {
     const schema = yup.object().shape({
         companyName: yup.string().required('Company Name is required'),
         phoneNumber: yup.string()
-                        .matches(/^\(\d{3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
+                        .matches(/^\(\d{1,3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
                         .required('Phone Number is required'),
         country: yup.string().required('Country is required'),
         city: yup.string().required('City is required'),
