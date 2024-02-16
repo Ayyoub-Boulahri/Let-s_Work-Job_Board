@@ -8,30 +8,19 @@ import {Input} from "@nextui-org/react";
 import { MdOutlineAlternateEmail } from "react-icons/md";
 import PasswordInput from '../PasswordInput';
 
-function LoginInfos() {
-  const List = [
-    {
-      id: 1,
-      name: "Email",
-      text: "khalaf"
-    },
-    {
-      id: 2,
-      name: "password",
-      text: "drhourhi"
-    }
-  ]
+function LoginInfos(props) {
   const [changeEmail,setChangeEmail] = useState(false);
   const [changePassword,setChangePassword] = useState(false);
   return (
     <div className='flex flex-col '>
       <div className='flex'>
-        <div className='p-2 text-sm h-[30%] text-[20px] '>
-          <h1 className=' font-medium text-blue-600 dark:text-blue-500 '>Login</h1>
+      <div className='p-2 text-sm h-[30%] text-[20px]'>
+          <h1 className=' font-medium text-blue-600 dark:text-blue-500 text-[18px]'>Profile</h1>
           <p className='mt-2 '>Gérez votre compte, assurez la sécurité de vos connexions, et prenez le contrôle de la sécurité de vos informations personnelles et bien plus encore.</p>
+
         </div>
         <span className='w-[40%]'>
-          <img src={profile} alt="" />
+          <img src={profile} alt='' className='w-32 ' />
         </span>
       </div>
       <Divider className="my-4" />
@@ -42,7 +31,7 @@ function LoginInfos() {
             <h1>Email</h1>
           </div>
           <div className='text-[14px]'>
-            <h1>khalaf.drhourhi@gmail.com</h1>
+            <h1>{props.userInfos.email}</h1>
           </div>
         </div>
           {!changeEmail &&

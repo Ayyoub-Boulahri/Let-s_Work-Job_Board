@@ -1,10 +1,26 @@
-import React from 'react';
+import React, { useEffect } from 'react'
 import styles from '../style'
 import { Input } from '@nextui-org/react';
 import { SiAddthis } from "react-icons/si";
 import SkillItem from '../components/SkillItem';
+import { useNavigate } from 'react-router-dom';
+import handleLogout from '../services/handleLogout';
+import { useDispatch} from 'react-redux';
+import { setLoginOut } from '../stores/authStore';
 
 const NewOffer = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    const typeUser = localStorage.getItem('typeUser');
+    if (typeUser != "company") {
+      handleLogout();
+      dispatch(setLoginOut());
+      navigate("/");
+    }
+  }, [])
+
   return (
     <div className={`${styles.flexStart} ${styles.paddingX} md:px-96 bg-section-dark-bg pt-36 xl:pb-4`}>
       <div className={`${styles.boxWidth}`}>

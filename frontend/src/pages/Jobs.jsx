@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../style';
 import { Divider } from '@nextui-org/react';
 import JobsLeading from '../components/jobsComponents/JobsLeading';
@@ -11,18 +11,16 @@ import { setLoginOut } from '../stores/authStore';
 
 function Jobs() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const authInfo = useSelector((state) => state.isAuthenticated.value);
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    const fetchAuthInfo = async () => {
-      const infoAuthentificaiton = await checkAuthentication();
-      if (!authInfo?.auth || authInfo?.typeUser != "employee"){
-        window.scrollTo(0, 0);
-        navigate("/");
-      }
-    };
-    fetchAuthInfo()
+    const typeUser = localStorage.getItem('typeUser');
+    if (typeUser != "employee") {
+      handleLogout();
+      dispatch(setLoginOut());
+      navigate("/");
+    }
   }, [])
 
   return (

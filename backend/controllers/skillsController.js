@@ -6,7 +6,7 @@ class SkillsController {
       // Get the string parameter from the route
       const searchSkill = req.params.searchSkill;
 
-      const filteredSkills = await Skill.find({ skill: { $regex: new RegExp(searchSkill, 'i') } }, { "_id": false });
+      const filteredSkills = await Skill.find({ skill: { $regex: new RegExp(searchSkill, 'i') } }, { "_id": false }).sort({skill:1});
 
       if (!filteredSkills || filteredSkills.length === 0) {
         return res.status(404).json({ error: 'No matching skill found' });

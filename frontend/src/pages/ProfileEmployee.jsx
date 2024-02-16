@@ -1,14 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styles from '../style'
 import { Avatar, Divider } from "@nextui-org/react";
 import Profile from '../assets/profile.png'
 import { MdOutlineMailOutline } from "react-icons/md";
 import { FaPhoneAlt } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 import Markdown from 'react-markdown'
 import { useState } from 'react';
+import handleLogout from '../services/handleLogout';
+import { useDispatch } from 'react-redux';
+import { setLoginOut } from '../stores/authStore';
 
 function ProfileEmployee() {
-
+  const dispatch = useDispatch()
+  const navigate = useNavigate();
+  
   const profile = {
     id: 1,
     img: Profile,
@@ -23,7 +29,7 @@ function ProfileEmployee() {
         degree: "Dut Genie Informatique",
         school: "Ecole Superieur de technologie Meknes",
         year: 2024
-      }, 
+      },
       {
         id: 2,
         degree: "Dut Genie Informatique",
@@ -31,17 +37,17 @@ function ProfileEmployee() {
         year: 2024
       }
     ],
-    skills : [
+    skills: [
       {
-        id:1,
-        skill:"C++"
+        id: 1,
+        skill: "C++"
       },
       {
-        id:2,
-        skill:"java"
+        id: 2,
+        skill: "java"
       },
     ],
-    Experiences : [
+    Experiences: [
       {
         id: 1,
         title: "Software Engineer",
@@ -60,6 +66,15 @@ function ProfileEmployee() {
       }
     ]
   }
+
+  useEffect(() => {
+    const typeUser = localStorage.getItem('typeUser');
+    if (typeUser != "company") {
+      handleLogout();
+      dispatch(setLoginOut());
+      navigate("/");
+    }
+  }, [])
 
   return (
     <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg pt-20 xl:pb-4`}>
@@ -91,7 +106,7 @@ function ProfileEmployee() {
                 {/* About */}
                 <div >
                   <h1 className="font-bold text-default-600 text-[20px]">About</h1>
-                  <p className="text-small text-default-400 leading-[1.6]" style={{textIndent: "30px"}}>
+                  <p className="text-small text-default-400 leading-[1.6]" style={{ textIndent: "30px" }}>
                     {profile.description}
                   </p>
                 </div>
@@ -117,22 +132,22 @@ function ProfileEmployee() {
               </div>
               <Divider className='my-4' />
               <div className='flex flex-col gap-2  my-6'>
-              <h1 className="font-bold text-default-600 text-[20px]">Skills</h1>
-              <div className='flex gap-3 flex-wrap'>
-                
-                {
-                  profile.skills.map(ligne => (
-                    <div className="bg-zinc-800 text-white rounded-lg p-3 px-6">
-                    <h2 className="text-xs font-bold">{ligne.skill}</h2>
-                  </div>
-                  ))
-                }
+                <h1 className="font-bold text-default-600 text-[20px]">Skills</h1>
+                <div className='flex gap-3 flex-wrap'>
+
+                  {
+                    profile.skills.map(ligne => (
+                      <div className="bg-zinc-800 text-white rounded-lg p-3 px-6">
+                        <h2 className="text-xs font-bold">{ligne.skill}</h2>
+                      </div>
+                    ))
+                  }
                 </div>
               </div>
               <Divider className='my-4' />
               <h1 className="font-bold text-default-600 text-[20px] mb-4">Experiences</h1>
               <div className='flex flex-wrap gap-3'>
-              {
+                {
                   profile.Experiences.map(ligne => (
                     <div className="bg-zinc-800 text-white rounded-lg p-4">
                       <h2 className="text-xl font-bold mb-4">{ligne.title}</h2>

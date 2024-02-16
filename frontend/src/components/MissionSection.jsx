@@ -26,7 +26,7 @@ function MissionSection() {
             id: 1,
             title: "Industry-Leading Technology",
             content: "Leveraging cutting-edge technology, we stay ahead of the curve to provide the latest features and innovations.",
-            icon: <AiOutlineLineChart className="icon" size={30} />
+            icon: <AiOutlineLineChart />
         }
     ]
 

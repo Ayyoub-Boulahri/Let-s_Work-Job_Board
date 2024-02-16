@@ -4,7 +4,7 @@ import profile from "../../assets/profile.png"
 import { useSelector, useDispatch } from 'react-redux';
 import { PaginationItemType } from "@nextui-org/react";
 import { setProfilePhoto } from '../../stores/signUpStore';
-import { fileToBase64 } from '../../services/convertFunctions';
+import { convertBufferToDataURL, fileToBase64 } from '../../services/convertFunctions';
 import { fetchAndConvertToBase64 } from '../../services/convertFunctions';
 
 const EmployeePhotoUpload = (props) => {
@@ -53,11 +53,6 @@ const EmployeePhotoUpload = (props) => {
                 console.error('Error uploading file:', error);
             }
         }
-    };
-
-    const convertBufferToDataURL = (buffer) => {
-        const base64String = buffer.toString('base64');
-        return `data:image/png;base64,${base64String}`;
     };
 
     return (

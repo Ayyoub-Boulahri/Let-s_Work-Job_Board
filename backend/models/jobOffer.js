@@ -10,7 +10,7 @@ const jobOfferSchema = new mongoose.Schema({
     CURRENCY: String,
     pay_periode: String,
     DATE_PUBLICATION: { type: Date, default: Date.now },
-    DELAIS_DEPOT: Date,
+    DELAIS_DEPOT: String,
     JOB_STATUS: Boolean,
     ATTACHEMENTS: Array,
     SKILLS: Array,

@@ -4,11 +4,12 @@ import { Divider } from "@nextui-org/react";
 import { MdOutlinePlaylistAdd } from "react-icons/md";
 import SkillItem from '../SkillItem';
 import { MdAddCircle } from "react-icons/md";
-import {Select, SelectItem , Button} from "@nextui-org/react";
+import { Select, SelectItem, Button } from "@nextui-org/react";
 import { MdAddBox } from "react-icons/md";
+import ExperienceItem from '../sign_up/ExperienceItem';
 
 
-function ExperiencesSkills() {
+function ExperiencesSkills(props) {
     const Skills = [
         {
             id: 1,
@@ -40,11 +41,6 @@ function ExperiencesSkills() {
         }
     ];
 
-
-    const Experiences = [
-        // ... (unchanged)
-    ];
-
     const [isSkillsTextFieldVisible, setSkillsTextFieldVisible] = useState(false);
     const [isExperiencesTextFieldVisible, setExperiencesTextFieldVisible] = useState(false);
 
@@ -63,7 +59,7 @@ function ExperiencesSkills() {
                     <h1 className=' font-medium text-blue-600 dark:text-blue-500 '>Achivements</h1>
                     <p className='mt-2'>Améliorez votre présence sur <b>let's work</b> en mettant à jour vos compétences et en enrichissant votre parcours professionnel.</p>
                 </div>
-                <span className='w-[40%]'> 
+                <span className='w-[40%]'>
 
                     <img src={profile} alt="" className='w-32' />
 
@@ -83,34 +79,34 @@ function ExperiencesSkills() {
             {/* the div that has the form of adding a skill */}
             {isSkillsTextFieldVisible && (
                 <div className='mt-4 flex gap-2 items-center ml-2'>
-                <Select
-              labelPlacement='outside'
-              
-              placeholder="Select a skill"
-              className="max-w-xs "
-              radius='lg'
-            >
-              {Skills.map((animal) => (
-                <SelectItem key={animal.id} value={animal.skill}>
-                  {animal.skill}
-                </SelectItem>
-              ))}
-            </Select>
-                
-                    <MdAddBox  size={32} className='hover:text-default-500 duration-300 cursor-pointer' />
-                
-              </div>
+                    <Select
+                        labelPlacement='outside'
+
+                        placeholder="Select a skill"
+                        className="max-w-xs "
+                        radius='lg'
+                    >
+                        {Skills.map((kill) => (
+                            <SelectItem key={kill.id} value={kill.skill}>
+                                {kill.skill}
+                            </SelectItem>
+                        ))}
+                    </Select>
+
+                    <MdAddBox size={32} className='hover:text-default-500 duration-300 cursor-pointer' />
+
+                </div>
             )}
             <div className='flex flex-wrap mt-3'>
-                {Skills.map(tab => (
-                    <div key={tab.id}>
-                        <SkillItem skill={tab.skill} />
+                {props.userInfos.skills.map((skill, index) => (
+                    <div key={index}>
+                        <SkillItem skill={skill} />
                     </div>
                 ))}
             </div>
             <Divider className="my-4" />
             <div className='flex justify-between mt-4'>
-                <div className='text-gray-500 text-[20px] font-bold '> 
+                <div className='text-gray-500 text-[20px] font-bold '>
                     <h1>Experiences</h1>
                 </div>
                 <div>
@@ -121,19 +117,24 @@ function ExperiencesSkills() {
             </div>
             {/* the div that has the form of adding an experience */}
             {isExperiencesTextFieldVisible && (
-                
+
                 <div className='mt-3 flex'>
-                    <input type="text "  className='rounded-md'/>
+                    <input type="text " className='rounded-md' />
                     <div className='flex items-center m-1 bg-transparent'>
-                    <MdAddCircle />
+                        <MdAddCircle />
                     </div>
-                
-            </div>
+
+                </div>
             )}
-            <div className='flex flex-wrap mt-3'>
-                {Experiences.map(tab => (
-                    <div key={tab.id}>
-                        <SkillItem skill={tab.Experience} />
+            <div className='flex flex-wrap flex-col gap-4 mt-3'>
+                {props.userInfos.experiences.map((experience, index) => (
+                    <div key={index}>
+                        <div className="bg-default-50 text-white rounded-lg p-4">
+                            <h2 className="text-xl font-bold mb-4">{experience.title}</h2>
+                            <p className="text-gray-400 mb-6">{experience.company}</p>
+                            {(experience.date_debut || experience.date_fin) && <p className="text-gray-400 mb-6">{experience.date_debut} - {experience.date_fin}</p>}
+                            {experience.description && <p className="text-gray-400">{experience.description}</p> }
+                        </div>
                     </div>
                 ))}
             </div>

@@ -7,35 +7,22 @@ import { setPersonnelInfos } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
 import getAllCountries from '../../services/countriesServices';
 import { useQuery } from '@tanstack/react-query';
+import { PersonnelInfosSchema } from '../../schemas/employeeSchema';
 
 function PersonnelInfosForm(props) {
     const dispatch = useDispatch();
     const employeeData = useSelector((state) => state.employeeData.value);
     const [selectedCountry, setSelectedCountry] = useState(employeeData.country)
-    const [cities, setCities] = useState(null)
-    
-    const schema = yup.object().shape({
-        cin: yup.string().required('CIN is required'),
-        firstName: yup.string().required('First Name is required'),
-        lastName: yup.string().required('Last Name is required'),
-        phoneNumber: yup.string()
-                        .matches(/^\(\d{1,3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
-                        .required('Phone Number is required'),
-        dob: yup.date().required('Date of Birth is required'),
-        country: yup.string().required('Country is required'),
-        city: yup.string().required('City is required'),
-        address: yup.string().required('Address is required'),
-    });
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(PersonnelInfosSchema)
     });
 
     const onSubmit = async (data) => {
         try {
             const formattedData = {
                 ...data,
-                dob: data.dob.toLocaleDateString('en-CA'), // Adjust the locale to match your desired format
+                dob: data.dob.toLocaleDateString('en-CA'),
             };
             dispatch(setPersonnelInfos(formattedData))
             props.pagination.onNext()
@@ -50,6 +37,7 @@ function PersonnelInfosForm(props) {
             return getAllCountries()
         }
     })
+    const [cities, setCities] = useState(countries?.find((country) => country.pays_name == selectedCountry)?.cities)
 
     useEffect(() => {
         if (selectedCountry != "") {
@@ -60,6 +48,8 @@ function PersonnelInfosForm(props) {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
+            {errors.country && <label>{errors.country.message}</label>}
+            {errors.city && <label>{errors.city.message}</label>}
             <div className="slideshow flex flex-col gap-2">
                 <p className="title py-4">Personnel Informations</p>
                 <div className='input-group flex gap-4'>
@@ -107,7 +97,7 @@ function PersonnelInfosForm(props) {
 
                     <div className='w-full'>
                         {errors.city ? <label style={{ color: '#E11D48' }}>City</label> : <label>City</label>}
-                        <select className={`select ${errors.city && "erreur"}`} {...register("city")} disabled={!selectedCountry}>
+                        <select className={`select ${errors.city && "erreur"}`} defaultValue={employeeData.city} {...register("city")} disabled={!selectedCountry}>
                             <option value="" disabled>Select a city</option>
                             {cities?.map((option, index) => (
                                 <option key={index} value={option.city_name} selected={employeeData.city === option.city_name}>

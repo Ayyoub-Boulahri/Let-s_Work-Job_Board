@@ -67,6 +67,15 @@ class EmployeeController {
             // Replace the buffer data with base64 string in the response
             employeeInfos.profilePhoto = base64Photo;
 
+            // Format date_debut field in experiences array if it exists
+            if (employeeInfos.experiences && employeeInfos.experiences.length > 0) {
+                employeeInfos.experiences.forEach(experience => {
+                    if (experience.date_debut) {
+                        experience.date_debut = new Date(experience.date_debut).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                    }
+                });
+            }
+
             return res.status(200).json(employeeInfos);
         }
         catch (error) {
@@ -74,6 +83,7 @@ class EmployeeController {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }
+
 
     getAllEmails = async (req, res) => {
         try {
@@ -107,6 +117,55 @@ class EmployeeController {
             res.status(500).json({ message: "Internal server error" });
         }
     }
+
+
+    updateProfilePhoto = async (req, res) => {
+        try {
+            const { _id, profilePhoto } = req.body;
+
+            // Convert base64 string to buffer
+            const photoBuffer = Buffer.from(profilePhoto, 'base64');
+
+            // Update profile photo for the employee
+            const updateResult = await Employee.updateOne(
+                { _id: _id }, // Filter by _id
+                { $set: { "profilePhoto": photoBuffer } }
+            );
+
+            if (updateResult.nModified === 0) {
+                return res.status(404).json({ message: "Employee not found or profile photo not updated" });
+            }
+
+            res.status(200).json({ message: "Profile photo updated successfully" });
+        } catch (error) {
+            console.error("Error updating photo:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    }
+
+    updateEmployeeInfos = async (req, res) => {
+        console.log("hhhhhhiiiiii")
+        try {
+            const { _id, infos} = req.body;
+            console.log(infos)
+            console.log(_id)
+            // Update profile photo for the employee
+            const updateResult = await Employee.updateOne(
+                { _id: _id }, 
+                { $set: infos }
+            );
+
+            if (updateResult.nModified === 0) {
+                return res.status(404).json({ message: "Employee not found" });
+            }
+
+            res.status(200).json({ message: "infos updated successfully" });
+        } catch (error) {
+            console.error("Error updating employee infos:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    }
+
 }
 
 

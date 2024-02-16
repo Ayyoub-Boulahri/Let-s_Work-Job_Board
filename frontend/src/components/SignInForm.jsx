@@ -38,17 +38,25 @@ function SignInForm() {
         const { email, password } = loginInfos;
         const formatedEmail = email?.toLowerCase()
         try {
-            const response = await axios.post('http://localhost:5000/api/login/' + type, { email:formatedEmail, password }, { withCredentials: true });
+            const response = await axios.post('http://localhost:5000/api/login/' + type, { email: formatedEmail, password }, { withCredentials: true });
             if (response.status === 200) {
                 const authInfo = await checkAuthentication();
                 dispatch(setAuthenticated(authInfo))
-                if(type == "employee")
+                localStorage.setItem('auth', true);
+                localStorage.setItem('email', authInfo.email);
+                localStorage.setItem('userId', authInfo.userId);
+
+                if (type == "employee") {
+                    localStorage.setItem('typeUser', "employee");
                     // window.location.href = "/jobs"
                     navigate("/jobs")
-                if(type == "company")
+                }
+                if (type == "company") {
+                    localStorage.setItem('typeUser', "company");
                     // window.location.href = "/profiles"
                     navigate("/profiles")
-                
+                }
+
             } else {
                 setErrorLogin(true)
             }
@@ -68,42 +76,42 @@ function SignInForm() {
 
                 <div className="form-container">
                     <p className='title'>Login</p>
-                        <div className="input-group">
-                            <label>Email</label>
+                    <div className="input-group">
+                        <label>Email</label>
+                        <input
+                            type="text"
+                            placeholder="Enter your Email"
+                            name="email"
+                            onChange={handleChange}
+                            className={`${errorLogin && "erreur"}`}
+                        />
+                    </div>
+                    <div className="input-group">
+                        <label className='mt-2'>Password</label>
+                        <div className={`password-input-container flex ${errorLogin && "erreur"}`}>
                             <input
-                                type="text"
-                                placeholder="Enter your Email"
-                                name="email"
+                                type={showPassword ? "text" : "password"}
+                                placeholder="Enter your Password"
+                                className='input-password'
+                                name="password"
                                 onChange={handleChange}
-                                className={`${errorLogin && "erreur"}`}
                             />
+                            <button
+                                type="button"
+                                className="toggle-password"
+                                onClick={togglePasswordVisibility}
+                            >
+                                {showPassword ? <IoEyeOutline size={16} /> : <IoEyeOffOutline size={16} />}
+                            </button>
                         </div>
-                        <div className="input-group">
-                            <label className='mt-2'>Password</label>
-                            <div className={`password-input-container flex ${errorLogin && "erreur"}`}>
-                                <input
-                                    type={showPassword ? "text" : "password"}
-                                    placeholder="Enter your Password"
-                                    className='input-password'
-                                    name="password"
-                                    onChange={handleChange}
-                                />
-                                <button
-                                    type="button"
-                                    className="toggle-password"
-                                    onClick={togglePasswordVisibility}
-                                >
-                                    {showPassword ? <IoEyeOutline size={16} /> : <IoEyeOffOutline size={16} />}
-                                </button>
-                            </div>
-                            <div className="forgot">
-                                <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
-                            </div>
+                        <div className="forgot">
+                            <a rel="noopener noreferrer" href="#">Forgot Password ?</a>
                         </div>
-                        <div className='flex flex-row justify-between gap-6'>
-                            <button className="sign" onClick={() => handleLogin("employee")}>As Employee</button>
-                            <button className="sign" onClick={() => handleLogin("company")}>As Company</button>
-                        </div>
+                    </div>
+                    <div className='flex flex-row justify-between gap-6'>
+                        <button className="sign" onClick={() => handleLogin("employee")}>As Employee</button>
+                        <button className="sign" onClick={() => handleLogin("company")}>As Company</button>
+                    </div>
                     <div className="social-message">
                         <div className="line"></div>
                         <p className="message">Login with social accounts</p>

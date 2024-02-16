@@ -3,7 +3,7 @@ const Country = require('../models/country');
 class CountryController {
   getAllCountries = async (req, res) => {
     try {
-      const countries = await Country.find();
+      const countries = await Country.find().sort({pays_name: 1});
 
       if (!countries || countries.length === 0) {
         return res.status(404).json({ error: 'No countries found' });

@@ -10,6 +10,7 @@ import { createEmployee } from '../../services/employeeServices';
 import checkAuthentication from '../../services/checkAuthentication';
 import { setAuthenticated } from '../../stores/authStore';
 import axios from 'axios';
+import { aboutSchema } from '../../schemas/employeeSchema';
 
 function AboutEmployee(props) {
     
@@ -18,12 +19,8 @@ function AboutEmployee(props) {
 
     const navigate = useNavigate()
 
-    const schema = yup.object().shape({
-        aboutMe: yup.string().min(500, "Your description must be at least 500 characters").required()
-    });
-
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(aboutSchema)
     });
 
     const onSubmit = async (data) => {

@@ -3,7 +3,7 @@ import PersonnelInfos from '../components/profileComponents/PersonnelInfos';
 import LoginInfos from '../components/profileComponents/LoginInfos';
 import styles from '../style';
 import "../css/profile.css";
-import { Avatar, Divider } from "@nextui-org/react";
+import { Avatar, Divider, Spinner } from "@nextui-org/react";
 import profile from '../assets/profile.png';
 import { PiAddressBookThin } from "react-icons/pi";
 import { MdOutlinePrivacyTip } from "react-icons/md";
@@ -12,20 +12,38 @@ import { FaBook } from "react-icons/fa";
 import ExperiencesSkills from '../components/profileComponents/ExperiencesSkills';
 import { useSelector } from 'react-redux';
 import Degrees from '../components/profileComponents/Degrees';
-import { getEmployeeByEmail } from '../services/employeeServices';
-import { Spinner } from "@nextui-org/react";
+import { getEmployeeByEmail, updateProfilePhoto } from '../services/employeeServices';
+import { useNavigate } from 'react-router-dom';
+import handleLogout from '../services/handleLogout';
+import { useDispatch } from 'react-redux';
+import { setLoginOut } from '../stores/authStore';
+import { convertBufferToDataURL, fileToBase64 } from '../services/convertFunctions';
+import { MdEdit } from "react-icons/md";
 
 function Profile() {
   const [indexTab, setindexTab] = useState(1);
   const [myInfos, setMyInfos] = useState(null);
-  const [isLoading, setIsLoading] = useState(true); // State to track loading status
+  const [isLoading, setIsLoading] = useState(true);
+  const [profilePhoto, setProfilePhoto] = useState(profile)
   const authInfo = useSelector((state) => state.isAuthenticated.value);
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
+    const typeUser = localStorage.getItem('typeUser');
+    if (typeUser != "employee") {
+      handleLogout();
+      dispatch(setLoginOut());
+      navigate("/");
+    }
+
     const fetchMyInfos = async () => {
       try {
         const response = await getEmployeeByEmail(authInfo?.email);
         setMyInfos(response.data);
+        const base64Image = convertBufferToDataURL(response?.data.profilePhoto);
+        setProfilePhoto(base64Image);
       } catch (error) {
         console.error("Error fetching employee data:", error);
       } finally {
@@ -38,30 +56,57 @@ function Profile() {
     }
   }, [authInfo]);
 
+  const handleImageChange = async (event) => {
+    const photo = event.target.files[0];
+
+    if (photo) {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        setProfilePhoto(e.target.result);
+      };
+
+      reader.readAsDataURL(photo);
+
+      try {
+        const formData = new FormData();
+        formData.append('file', photo);
+
+        let fileData = formData.get('file');
+        let base64String = fileData instanceof Blob ? await fileToBase64(fileData) : fileData;
+
+        updateProfilePhoto(myInfos?._id, base64String)
+        window.location.reload();
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
+
   const tabs = [
     {
       id: 1,
       title: "Personnel Informations",
       logo: <PiAddressBookThin />,
-      component: <PersonnelInfos userInfos={{ first_name: myInfos?.first_name, last_name: myInfos?.last_name, address: myInfos?.address, about: myInfos?.about, phone: myInfos?.phone, country: myInfos?.country, city: myInfos?.city }} />
+      component: <PersonnelInfos userInfos={{ cin: myInfos?.cin, first_name: myInfos?.first_name, last_name: myInfos?.last_name, address: myInfos?.address, about: myInfos?.about, phone: myInfos?.phone, country: myInfos?.country, city: myInfos?.city, date_of_birth: myInfos?.date_of_birth }} />
     },
     {
       id: 2,
       title: "Login Informations",
       logo: <MdOutlinePrivacyTip />,
-      component: <LoginInfos />
+      component: <LoginInfos userInfos={{ email: myInfos?.email, password: myInfos?.password }} />
     },
     {
       id: 3,
       title: "Skills & Experiences",
       logo: <GrAchievement />,
-      component: <ExperiencesSkills />
+      component: <ExperiencesSkills userInfos={{ skills: myInfos?.skills, experiences: myInfos?.experiences }} />
     },
     {
       id: 4,
       title: "Degrees",
       logo: <FaBook />,
-      component: <Degrees />
+      component: <Degrees userInfos={{ educations: myInfos?.educations }} />
     }
   ];
 
@@ -69,12 +114,27 @@ function Profile() {
     <div className={`pt-20 bg-section-dark-bg ${styles.flexStart} ${styles.paddingX}`}>
       <div className={`${styles.boxWidth} ${styles.paddingY}`}>
         <div className={` flex sm:flex-row  flex-col justify-between`}>
-          <div className='flex flex-col sm:w-[28%] items-center py-6 rounded-lg '>
-            <Avatar isBordered color="primary" src={profile} className="w-[160px] h-[160]" />
-            {isLoading
-              ? <Spinner className='mt-6' />
-              : <h1 className={`${styles.heading3} text-center`}>{myInfos?.first_name} {myInfos?.last_name}</h1>
-            }
+          <div className='flex flex-col sm:w-[28%] items-center py-6 rounded-lg'>
+            <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+              <Avatar isBordered color="primary" src={profilePhoto} className="w-[160px] h-[160px]" />
+              {isHovered && (
+                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+                  <label htmlFor='imageUpload' className="bg-black opacity-80 rounded-full p-2 w-full h-full text-center flex justify-center items-center cursor-pointer">
+                    <MdEdit color='white' size={30} />
+                  </label>
+                  <input
+                    type="file"
+                    id="imageUpload"
+                    accept=".png, .jpg, .jpeg"
+                    onChange={handleImageChange}
+                    hidden={true}
+                  />
+                </div>
+              )}
+            </div>
+            {isLoading ? <Spinner className='mt-6' /> : (
+              <h1 className={`${styles.heading3} text-center`}>{myInfos?.first_name} {myInfos?.last_name}</h1>
+            )}
             <div className='flex sm:flex-col flex-row list-none mt-6 '>
               {tabs.map((tab) => (
                 <>
@@ -91,14 +151,13 @@ function Profile() {
           </div>
           <Divider orientation='vertical' className='h-1000 w-[2px] bg-[#3D3D3D] ' />
           <div className="flex flex-col sm:w-[58%] sm:mr-20 items-center p-6 rounded-lg">
-            {isLoading
-              ? <Spinner size='lg' />
-              : <div>
+            {isLoading ? <Spinner size='lg' /> : (
+              <div>
                 {tabs.map(tab => (
                   indexTab === tab.id && tab.component
                 ))}
               </div>
-            }
+            )}
           </div>
         </div>
       </div>
