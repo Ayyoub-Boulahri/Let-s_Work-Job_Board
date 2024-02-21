@@ -7,5 +7,12 @@ router.get('/emails', EmployeeController.getAllEmails)
 router.delete('/deleteEmployeeById', EmployeeController.deleteEmployee)
 router.put('/update/profilePhoto', EmployeeController.updateProfilePhoto)
 router.put('/update/employeeInfos', EmployeeController.updateEmployeeInfos)
+router.put('/update/addEmployeeSkill', EmployeeController.addEmployeeSkill)
+router.put('/update/addEmployeeExperience', EmployeeController.addEmployeeExperience)
+router.put('/update/removeEmployeeSkill', EmployeeController.removeEmployeeSkill)
+router.put('/update/removeEmployeeExperience', EmployeeController.removeEmployeeExperience)
+router.put('/update/addEmployeeEducation', EmployeeController.addEmployeeEducation)
+router.put('/update/removeEmployeeEducation', EmployeeController.removeEmployeeEducation)
+router.put('/update/cv', EmployeeController.updateEmployeeCv)
 
 module.exports = router;

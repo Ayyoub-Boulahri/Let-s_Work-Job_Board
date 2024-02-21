@@ -131,16 +131,14 @@ function PersonnelInfos(props) {
 
   return (
     <div className='flex flex-col '>
-      <div className='flex'>
+      <div className='flex justify-between'>
         <div className='p-2 text-sm h-[30%] text-[20px]'>
           <h1 className=' font-medium text-blue-600 dark:text-blue-500 text-[18px]'>Profile</h1>
           <p className='mt-2 text-[16px]'>
             Optimisez votre expérience sur <b>let's work</b> en mettant à jour vos données professionnelles
           </p>
         </div>
-        <span className='w-[40%]'>
           <img src={profile} alt='' className='w-32 ' />
-        </span>
       </div>
       <Divider className='my-4' />
       <div className='flex flex-row text-[24px] text-gray-300'>

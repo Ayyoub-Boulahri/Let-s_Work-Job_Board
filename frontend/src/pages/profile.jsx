@@ -3,7 +3,7 @@ import PersonnelInfos from '../components/profileComponents/PersonnelInfos';
 import LoginInfos from '../components/profileComponents/LoginInfos';
 import styles from '../style';
 import "../css/profile.css";
-import { Avatar, Divider, Spinner } from "@nextui-org/react";
+import { Avatar, Divider, Spinner, Button } from "@nextui-org/react";
 import profile from '../assets/profile.png';
 import { PiAddressBookThin } from "react-icons/pi";
 import { MdOutlinePrivacyTip } from "react-icons/md";
@@ -19,6 +19,8 @@ import { useDispatch } from 'react-redux';
 import { setLoginOut } from '../stores/authStore';
 import { convertBufferToDataURL, fileToBase64 } from '../services/convertFunctions';
 import { MdEdit } from "react-icons/md";
+import { TbFileCv } from "react-icons/tb";
+import MyCV from '../components/profileComponents/MyCV';
 
 function Profile() {
   const [indexTab, setindexTab] = useState(1);
@@ -55,6 +57,58 @@ function Profile() {
       fetchMyInfos();
     }
   }, [authInfo]);
+
+  const addSkill = (newSkill) => {
+    setMyInfos(prevState => ({
+      ...prevState,
+      skills: [...prevState.skills, newSkill]
+    }));
+  }
+
+  const removeSkill = (skillToRemove) => {
+    setMyInfos(prevState => {
+      const updatedSkills = prevState.skills.filter(skill => skill !== skillToRemove);
+      return {
+        ...prevState,
+        skills: updatedSkills
+      };
+    });
+  };
+
+  const addExperience = (newExperience) => {
+    setMyInfos(prevState => ({
+      ...prevState,
+      experiences: [...prevState.experiences, newExperience]
+    }));
+  }
+
+  const removeExperience= (id_exp) => {
+    setMyInfos(prevState => {
+      const updatedExperiences = prevState.experiences.filter(experience => experience._id !== id_exp);
+      return {
+        ...prevState,
+        experiences: updatedExperiences
+      };
+    });
+  };
+
+  const addEducation = (newEducation) => {
+    setMyInfos(prevState => ({
+      ...prevState,
+      educations: [...prevState.educations, newEducation],
+    }));
+  }
+
+  const removeEducation = (id_edu) => {
+    setMyInfos(prevState => {
+      const updatedEducations = prevState.educations.filter(education => education._id !== id_edu);
+      return {
+        ...prevState,
+        educations: updatedEducations
+      };
+    });
+  };
+
 
   const handleImageChange = async (event) => {
     const photo = event.target.files[0];
@@ -100,13 +154,19 @@ function Profile() {
       id: 3,
       title: "Skills & Experiences",
       logo: <GrAchievement />,
-      component: <ExperiencesSkills userInfos={{ skills: myInfos?.skills, experiences: myInfos?.experiences }} />
+      component: <ExperiencesSkills userInfos={{ skills: myInfos?.skills, experiences: myInfos?.experiences }} addSkill={addSkill} addExperience={addExperience} removeSkill={removeSkill} removeExperience={removeExperience}/>
     },
     {
       id: 4,
       title: "Degrees",
       logo: <FaBook />,
-      component: <Degrees userInfos={{ educations: myInfos?.educations }} />
+      component: <Degrees userInfos={{ educations: myInfos?.educations }} addEducation={addEducation} removeEducation={removeEducation} />
+    },
+    {
+      id: 5,
+      title: "My CV",
+      logo: <TbFileCv />,
+      component: <MyCV userInfos={{ cv: myInfos?.cv }}/>
     }
   ];
 
@@ -138,10 +198,10 @@ function Profile() {
             <div className='flex sm:flex-col flex-row list-none mt-6 '>
               {tabs.map((tab) => (
                 <>
-                  <button key={tab.id} className={`flex font-poppins text-[18px] text-gray-300 font-medium hover:rounded-md hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'}`} onClick={() => setindexTab(tab.id)}>
+                  <button key={tab.id} className={`flex font-poppins text-[18px] text-gray-300 font-medium hover:rounded-md hover:bg-[#21262C] p-1 px-3 ${tab.id === indexTab && 'active-tab'} ${tab.title == "My CV" && "sm:block hidden"}`} onClick={() => setindexTab(tab.id)}>
                     <div className='flex flex-row'>
                       <div className='sm:block hidden'>{tab.logo}</div>
-                      <div className="text-sm pl-3">{tab.title}</div>
+                      <div className="text-sm sm:pl-3 pl-0">{tab.title}</div>
                     </div>
                   </button>
                   {tab.id !== tabs.length && <Divider key={`divider-${tab.id}`} className="my-4 bg-[#3D3D3D] sm:block hidden" />}
@@ -152,7 +212,7 @@ function Profile() {
           <Divider orientation='vertical' className='h-1000 w-[2px] bg-[#3D3D3D] ' />
           <div className="flex flex-col sm:w-[58%] sm:mr-20 items-center p-6 rounded-lg">
             {isLoading ? <Spinner size='lg' /> : (
-              <div>
+              <div className='w-full'>
                 {tabs.map(tab => (
                   indexTab === tab.id && tab.component
                 ))}
@@ -161,6 +221,11 @@ function Profile() {
           </div>
         </div>
       </div>
+
+      <Button isIconOnly size='lg' color="primary" aria-label="Like" className='fixed bottom-6 right-10 sm:hidden flex font-bold' onClick={() => setindexTab(5)}>
+        <TbFileCv size={30}/>
+      </Button>
+
     </div>
   );
 }

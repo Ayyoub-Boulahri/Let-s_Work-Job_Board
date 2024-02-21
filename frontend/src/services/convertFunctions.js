@@ -10,6 +10,11 @@ export const convertBufferToDataURL = (buffer) => {
     return `data:image/png;base64,${base64String}`;
 };
 
+export const convertBase64ToUrlFile = (buffer) => {
+    const base64String = buffer.toString('base64');
+    return `data:application/pdf;base64,${base64String}`;
+};
+
 export const fileToBase64 = async (file) => {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();

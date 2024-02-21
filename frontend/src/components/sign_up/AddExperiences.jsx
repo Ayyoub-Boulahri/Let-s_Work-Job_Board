@@ -43,8 +43,8 @@ function AddExperiences(props) {
         filledFields.forEach((field) => {
             experienceToAdd[field] = newExperience[field];
         });
-    
-        if (Object.keys(experienceToAdd).length > 0) {
+        console.log(experienceToAdd)
+        if (Object.keys(experienceToAdd).length > 2 && experienceToAdd?.company && experienceToAdd?.title ) {
             dispatch(addExperience(experienceToAdd));
             setNewExperience((prevState) => ({
                 ...prevState,

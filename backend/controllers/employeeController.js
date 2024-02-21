@@ -25,6 +25,16 @@ class EmployeeController {
             const photoBuffer = Buffer.from(profilePhoto, 'base64');
             const cvBuffer = Buffer.from(cv.blobObj, 'base64');
 
+            const cleanedExperiences = experiences.map(experience => {
+                const { id_experience, ...rest } = experience;
+                return rest;
+            });
+
+            const cleanedEducations = degrees.map(degree => {
+                const { id_education, ...rest } = degree;
+                return rest;
+            });
+
             const newEmployee = new Employee({
                 cin,
                 email,
@@ -36,8 +46,8 @@ class EmployeeController {
                 city,
                 country,
                 skills,
-                experiences,
-                educations: degrees,
+                experiences: cleanedExperiences,
+                educations: cleanedEducations,
                 about: aboutMe,
                 address,
                 profilePhoto: photoBuffer,
@@ -64,8 +74,10 @@ class EmployeeController {
 
             // Convert the buffer data to base64 string
             const base64Photo = employeeInfos.profilePhoto.toString('base64');
+            const base64Cv = employeeInfos.cv.toString('base64');
             // Replace the buffer data with base64 string in the response
             employeeInfos.profilePhoto = base64Photo;
+            employeeInfos.cv = base64Cv;
 
             // Format date_debut field in experiences array if it exists
             if (employeeInfos.experiences && employeeInfos.experiences.length > 0) {
@@ -144,14 +156,11 @@ class EmployeeController {
     }
 
     updateEmployeeInfos = async (req, res) => {
-        console.log("hhhhhhiiiiii")
         try {
-            const { _id, infos} = req.body;
-            console.log(infos)
-            console.log(_id)
+            const { _id, infos } = req.body;
             // Update profile photo for the employee
             const updateResult = await Employee.updateOne(
-                { _id: _id }, 
+                { _id: _id },
                 { $set: infos }
             );
 
@@ -166,6 +175,140 @@ class EmployeeController {
         }
     }
 
+    addEmployeeSkill = async (req, res) => {
+        try {
+            const { newSkill, _id } = req.body;
+            const addSkillResult = await Employee.updateOne(
+                { _id: _id },
+                { $push: { skills: newSkill } }
+            );
+
+            if(addSkillResult.nModified === 0) {
+                return res.status(404).json({ message: 'skill not adding or employee not found' })
+            }
+
+            res.status(200).json({ message: "Skill adding successfully" })
+        } catch (error) {
+            console.error("error adding new skill", error);
+            res.status(500).json({ message: "Internal server error" })
+        }
+    }
+
+    addEmployeeExperience = async (req, res) => {
+        try {
+            const { newExperience, _id } = req.body;
+            const addExperienceResult = await Employee.updateOne(
+                { _id: _id },
+                { $push: { experiences: newExperience } }
+            );
+
+            if(addExperienceResult.nModified === 0) {
+                return res.status(404).json({ message: 'Experience not adding or employee not found' })
+            }
+
+            res.status(200).json({ message: "Experience adding successfully" })
+        } catch (error) {
+            console.error("error adding new Experience", error);
+            res.status(500).json({ message: "Internal server error" })
+        }
+    }
+
+
+    removeEmployeeSkill = async (req, res) => {
+        try {
+            const { removedSkill, _id } = req.body;
+            const removeSkillResult = await Employee.updateOne(
+                { _id: _id },
+                { $pull: { skills: removedSkill } }
+            );
+
+            if(removeSkillResult.nModified === 0) {
+                return res.status(404).json({ message: 'skill not removed or employee not found' })
+            }
+
+            res.status(200).json({ message: "Skill removed successfully" })
+        } catch (error) {
+            console.error("error removing skill", error);
+            res.status(500).json({ message: "Internal server error" })
+        }
+    }
+
+    removeEmployeeExperience = async (req, res) => {
+        try {
+            const { removedExperienceId, _id } = req.body;
+            const removeExperienceResult = await Employee.updateOne(
+                { _id: _id },
+                { $pull: { experiences: { _id: removedExperienceId } } }
+            );
+
+            if(removeExperienceResult.nModified === 0) {
+                return res.status(404).json({ message: 'Experience not removed or employee not found' })
+            }
+
+            res.status(200).json({ message: "Experience removed successfully" })
+        } catch (error) {
+            console.error("error removing Experience", error);
+            res.status(500).json({ message: "Internal server error" })
+        }
+    }
+
+    addEmployeeEducation = async (req, res) => {
+        try {
+            const { newEducation, _id } = req.body;
+            const addEducationResult = await Employee.updateOne(
+                { _id: _id },
+                { $push: { educations: newEducation } }
+            );
+
+            if(addEducationResult.nModified === 0) {
+                return res.status(404).json({ message: 'Education not adding or employee not found' })
+            }
+
+            res.status(200).json({ message: "Education adding successfully" })
+        } catch (error) {
+            console.error("error adding new Education", error);
+            res.status(500).json({ message: "Internal server error" })
+        }
+    }
+
+    removeEmployeeEducation = async (req, res) => {
+        try {
+            const { removedEducationId, _id } = req.body;
+            const removeEducationResult = await Employee.updateOne(
+                { _id: _id },
+                { $pull: { educations: { _id: removedEducationId } } }
+            );
+
+            if(removeEducationResult.nModified === 0) {
+                return res.status(404).json({ message: 'Education not removed or employee not found' })
+            }
+
+            res.status(200).json({ message: "Education removed successfully" })
+        } catch (error) {
+            console.error("error removing Education", error);
+            res.status(500).json({ message: "Internal server error" })
+        }
+    }
+
+    updateEmployeeCv = async (req, res) => {
+        try {
+            const { _id, cv } = req.body;
+            const cvBuffer = Buffer.from(cv, 'base64');
+
+            const updateResult = await Employee.updateOne(
+                { _id: _id},
+                { $set: { "cv": cvBuffer } }
+            )
+
+            if(updateResult.nModified === 0)
+                return res.status(404).json({ message: "cv not updated ro employee not found" });
+            
+            return res.status(200).json({ message: "cv updated successfully" });
+        } catch (error) {
+            console.error("Error updating cv: " + error)
+            res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
 }
 
 

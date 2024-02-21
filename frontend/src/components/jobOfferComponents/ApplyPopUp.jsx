@@ -14,7 +14,7 @@ function ApplyPopUp(props) {
     return (
         <div>
             <Button onClick={onOpen} radius="sm" color="primary" className='w-full font-bold text-[18px]'>
-                <MdWork /> Apply for the job
+                <MdWork /> Apply
             </Button>
             <Modal size="sm" isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={"inside"} className="md:mb-0 mb-[10%]">
                 <ModalContent>

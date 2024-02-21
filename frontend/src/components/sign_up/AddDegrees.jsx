@@ -23,6 +23,7 @@ function AddDegrees(props) {
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: yupResolver(schema)
     });
+    
     const aa = []
     const getNextId = () => {
         var id = 1;

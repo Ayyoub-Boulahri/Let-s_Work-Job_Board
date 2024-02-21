@@ -2,14 +2,19 @@ import React from 'react'
 import { MdOutlineDelete } from "react-icons/md";
 import { useState } from 'react';
 import { HiPlus } from "react-icons/hi2";
+import { removeEmployeeSkill } from '../services/employeeServices';
+import { useSelector } from 'react-redux';
 
 function SkillItem(props) {
-    const [isHovered, setIsHovered] = useState(false);
+    const authInfo = useSelector((state) => state.isAuthenticated.value);
 
-    const handleDelete = () => {
+    const handleDelete = async () => {
         if (props.delete) {
             props.delete(props.skill);
-        } 
+        }
+        if(props.removeFromDb) {
+            const response = await removeEmployeeSkill(authInfo?.userId, props.skill);
+        }
     };
 
     return (

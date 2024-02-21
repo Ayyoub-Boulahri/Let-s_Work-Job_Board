@@ -19,9 +19,7 @@ function AddSkills(props) {
     });
 
     const HandelAddSkill = () => {
-        console.log("hi")
         const item = skills?.filter((sk) => sk.skill === inputValue);
-        console.log(item)
         if (inputValue !== "" && item.length > 0) {
             var isValid = true;
             employeeData.skills.forEach((item) => {

@@ -13,7 +13,6 @@ const employeeSchema = new mongoose.Schema({
   skills: Array,
   experiences: [
     {
-      id_experience: Number,
       company: String,
       title: String,
       date_debut: String,
@@ -23,7 +22,6 @@ const employeeSchema = new mongoose.Schema({
   ],
   educations: [
     {
-      id_education: Number,
       degreeName: String,
       school: String,
       year: Number,
