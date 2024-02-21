@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom';
 import styles from '../style';
 import WhatsApp from "../assets/WhatsApp.jpg";
@@ -7,9 +7,16 @@ import { Button } from '@nextui-org/react';
 import { MdWork } from "react-icons/md";
 import JobOfferInfos from '../components/jobOfferComponents/JobOfferInfos';
 import ApplyPopUp from '../components/jobOfferComponents/ApplyPopUp';
+import { getJobofferById } from '../services/jobOfferServices';
 
 function JobOffer() {
   const { job_id } = useParams();
+
+  useEffect(() => {
+    getJobofferById(job_id)
+        .then((reponse) => {console.log(reponse); console.log(job_id)})
+        .catch((error) => console.log(error));
+  }, [])
   
   const job_offer = {
     id: job_id,

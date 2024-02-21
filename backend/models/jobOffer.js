@@ -2,24 +2,24 @@ const mongoose = require('../db');
 
 const jobOfferSchema = new mongoose.Schema({
     company: mongoose.Schema.Types.ObjectId,
-    TITLE: String,
-    GRADE: String,
-    DESCRIPTION: String,
-    JOB_TYPE: String,
-    SALAIRE: Number,
-    CURRENCY: String,
-    pay_periode: String,
-    DATE_PUBLICATION: { type: Date, default: Date.now },
-    DELAIS_DEPOT: String,
-    JOB_STATUS: Boolean,
-    ATTACHEMENTS: Array,
-    SKILLS: Array,
-    POSTULATIONS: [
+    title: String,
+    grade: String,
+    description: String,
+    job_type: String,
+    salary: Number,
+    currency: String,
+    pay_period: String,
+    date_publication: { type: Date, default: Date.now },
+    delais_depot: Date,
+    job_status: Boolean,
+    attachements: Array,
+    skills: Array,
+    postulations: [
       {
-        EMPLOYEE: mongoose.Schema.Types.ObjectId,
-        DATE_POSTULATIONS: { type: Date, default: Date.now },
-        ATTACHEMENTS: Array,
-        STATUS: String,
+        employee: mongoose.Schema.Types.ObjectId,
+        date_postulation: { type: Date, default: Date.now },
+        attachements: Array,
+        status: String,
       }
     ]
   }, {

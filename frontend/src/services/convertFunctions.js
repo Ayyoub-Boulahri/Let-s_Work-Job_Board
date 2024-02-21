@@ -5,6 +5,19 @@ export function reverseDateFormat(formattedDate) {
     return `${year}-${month}`;
 }
 
+export function formatDate(dateFromMongo) {
+    // Create a new Date object
+    const date = new Date(dateFromMongo);
+
+    // Get day, month, and year from the date object
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear();
+
+    // Format the date as dd/mm/yyyy
+    return `${day}/${month}/${year}`;
+}
+
 export const convertBufferToDataURL = (buffer) => {
     const base64String = buffer.toString('base64');
     return `data:image/png;base64,${base64String}`;
