@@ -21,6 +21,7 @@ import { convertBufferToDataURL, fileToBase64 } from '../services/convertFunctio
 import { MdEdit } from "react-icons/md";
 import { TbFileCv } from "react-icons/tb";
 import MyCV from '../components/profileComponents/MyCV';
+import "../css/height.css"
 
 function Profile() {
   const [indexTab, setindexTab] = useState(1);
@@ -172,7 +173,7 @@ function Profile() {
 
   return (
     <div className={`pt-20 bg-section-dark-bg ${styles.flexStart} ${styles.paddingX}`}>
-      <div className={`${styles.boxWidth} ${styles.paddingY}`}>
+      <div className={`${styles.boxWidth} ${styles.paddingY} HeightTall`}>
         <div className={` flex sm:flex-row  flex-col justify-between`}>
           <div className='flex flex-col sm:w-[28%] items-center py-6 rounded-lg'>
             <div className="relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>

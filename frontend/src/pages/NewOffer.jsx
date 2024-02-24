@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import handleLogout from '../services/handleLogout';
 import { useDispatch} from 'react-redux';
 import { setLoginOut } from '../stores/authStore';
+import "../css/height.css"
 
 const NewOffer = () => {
   const navigate = useNavigate()
@@ -23,7 +24,7 @@ const NewOffer = () => {
 
   return (
     <div className={`${styles.flexStart} ${styles.paddingX} md:px-96 bg-section-dark-bg pt-36 xl:pb-4`}>
-      <div className={`${styles.boxWidth}`}>
+      <div className={`${styles.boxWidth} HeightTall`}>
         <div className='bg-[#18181B] rounded-md px-6 py-4 flex flex-col gap-6'>
 
           <div className="flex gap-4 items-center">

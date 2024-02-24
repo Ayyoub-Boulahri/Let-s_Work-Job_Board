@@ -68,7 +68,7 @@ class EmployeeController {
         try {
             const { email } = req.body;
             console.log(email)
-            const employeeInfos = await Employee.findOne({ email }).lean();
+            const employeeInfos = await Employee.findOne({ email }, {followings: 0}).lean();
             if (!employeeInfos)
                 return res.status(404).json({ message: 'Employee not found' });
 
@@ -126,7 +126,7 @@ class EmployeeController {
             res.status(200).json({ message: "Employee deleted successfully" });
         } catch (error) {
             console.error("Error deleting employee:", error);
-            res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "Internal server error" });
         }
     }
 
@@ -151,14 +151,13 @@ class EmployeeController {
             res.status(200).json({ message: "Profile photo updated successfully" });
         } catch (error) {
             console.error("Error updating photo:", error);
-            res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "Internal server error" });
         }
     }
 
     updateEmployeeInfos = async (req, res) => {
         try {
             const { _id, infos } = req.body;
-            // Update profile photo for the employee
             const updateResult = await Employee.updateOne(
                 { _id: _id },
                 { $set: infos }
@@ -171,7 +170,7 @@ class EmployeeController {
             res.status(200).json({ message: "infos updated successfully" });
         } catch (error) {
             console.error("Error updating employee infos:", error);
-            res.status(500).json({ message: "Internal server error" });
+            return res.status(500).json({ message: "Internal server error" });
         }
     }
 
@@ -190,7 +189,7 @@ class EmployeeController {
             res.status(200).json({ message: "Skill adding successfully" })
         } catch (error) {
             console.error("error adding new skill", error);
-            res.status(500).json({ message: "Internal server error" })
+            return res.status(500).json({ message: "Internal server error" })
         }
     }
 
@@ -209,7 +208,7 @@ class EmployeeController {
             res.status(200).json({ message: "Experience adding successfully" })
         } catch (error) {
             console.error("error adding new Experience", error);
-            res.status(500).json({ message: "Internal server error" })
+            return res.status(500).json({ message: "Internal server error" })
         }
     }
 
@@ -229,7 +228,7 @@ class EmployeeController {
             res.status(200).json({ message: "Skill removed successfully" })
         } catch (error) {
             console.error("error removing skill", error);
-            res.status(500).json({ message: "Internal server error" })
+            return res.status(500).json({ message: "Internal server error" })
         }
     }
 
@@ -248,7 +247,7 @@ class EmployeeController {
             res.status(200).json({ message: "Experience removed successfully" })
         } catch (error) {
             console.error("error removing Experience", error);
-            res.status(500).json({ message: "Internal server error" })
+            return res.status(500).json({ message: "Internal server error" })
         }
     }
 
@@ -267,7 +266,7 @@ class EmployeeController {
             res.status(200).json({ message: "Education adding successfully" })
         } catch (error) {
             console.error("error adding new Education", error);
-            res.status(500).json({ message: "Internal server error" })
+            return res.status(500).json({ message: "Internal server error" })
         }
     }
 
@@ -286,7 +285,7 @@ class EmployeeController {
             res.status(200).json({ message: "Education removed successfully" })
         } catch (error) {
             console.error("error removing Education", error);
-            res.status(500).json({ message: "Internal server error" })
+            return res.status(500).json({ message: "Internal server error" })
         }
     }
 
@@ -306,9 +305,55 @@ class EmployeeController {
             return res.status(200).json({ message: "cv updated successfully" });
         } catch (error) {
             console.error("Error updating cv: " + error)
-            res.status(500).json({ message: "Internal Server Error" });
+            return res.status(500).json({ message: "Internal Server Error" });
         }
     }
+
+    addFollowing = async (req, res) => {
+        try {
+            const { company_id, employee_id} = req.body;
+            const followResult = await Employee.updateOne(
+                { _id: employee_id },
+                {
+                    $push: {
+                        followings: {
+                            company: company_id,
+                        }
+                    }
+                }
+            )
+            if (followResult.nModified === 0)
+                return res.status(404).json({ message: "employee not found or following not add" });
+
+            return res.status(200).json({ message: "follow successfull" })
+        } catch (error) {
+            console.error("Error follow: " + error)
+            return res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+
+    removeFollowing = async (req, res) => {
+        try {
+            const { company_id, employee_id } = req.body;
+            const unfollowResult = await Employee.updateOne(
+                { _id: employee_id },
+                {
+                    $pull: {
+                        followings: { company: company_id }
+                    }
+                }
+            );
+    
+            if (unfollowResult.nModified === 0)
+                return res.status(404).json({ message: "Employee not found or following not removed" });
+    
+            return res.status(200).json({ message: "Following successfully removed" });
+        } catch (error) {
+            console.error("Error removing following: " + error);
+            return res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
+    
 }
 
 

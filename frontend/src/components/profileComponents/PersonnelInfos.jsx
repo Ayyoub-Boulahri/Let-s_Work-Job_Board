@@ -19,7 +19,7 @@ function PersonnelInfos(props) {
   const authInfo = useSelector((state) => state.isAuthenticated.value);
   const [selectedCountry, setSelectedCountry] = useState(props.userInfos.country)
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm({
     resolver: yupResolver(PersonnelInfosSchema)
   });
 
@@ -207,8 +207,7 @@ function PersonnelInfos(props) {
                   // Reset the city select to its default state
                   const citySelect = document.getElementById("citySelect");
                   citySelect.selectedIndex = 0;
-                  register('city', { value: null })
-                  console.log(register('city'))
+                  setValue('city', "")         
                 }}
               >
                 <option value={null} disabled selected>

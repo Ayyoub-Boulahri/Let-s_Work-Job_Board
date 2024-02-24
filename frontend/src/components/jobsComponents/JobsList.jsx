@@ -7,14 +7,18 @@ import { Pagination } from '@nextui-org/react';
 import JobFilters from './JobFilters';
 import { useQuery } from '@tanstack/react-query';
 import { getSomeJobOffers, getTotalOpenJobOffers } from '../../services/jobOfferServices';
+import { Spinner } from "@nextui-org/react";
 
 function JobsList() {
     const [currentPage, setCurrentPage] = useState(1);
     const [visibleJobs, setVisibleJobs] = useState(null);
     const [totalPages, setTotalPages] = useState(1)
+    const [isLoadingJobs, setIsLoadingJobs] = useState(true)
 
+    const jobPerPage = 10;
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
+        window.scrollTo({ top: 400 });
     };
 
 
@@ -38,8 +42,9 @@ function JobsList() {
                     "date_publication": 1,
                     "delais_depot": 1,
                     "job_status": 1,
-                }, (currentPage - 1) * 9, currentPage * 9).then(response => {
+                }, (currentPage - 1) * jobPerPage, jobPerPage).then(response => {
                     setVisibleJobs(response)
+                    setIsLoadingJobs(false)
                 }).catch(error => {
                     console.error(error);
                 });
@@ -51,7 +56,7 @@ function JobsList() {
         const getTotalJobs = async () => {
             try {
                 getTotalOpenJobOffers().then(response => {
-                    setTotalPages(Math.ceil(response / 9))
+                    setTotalPages(Math.ceil(response / jobPerPage))
                 }).catch(error => {
                     console.error(error);
                 });
@@ -67,21 +72,29 @@ function JobsList() {
 
     return (
         <div>
-            <JobFilters />
-            <div className='flex items-center flex-col'>
-                <div className='grid sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6'>
-                    {visibleJobs?.map((job) => (
-                        <div key={job.id}>
-                            <JobCard job={job} />
-                        </div>
-                    ))}
+
+            {isLoadingJobs
+                ? <div className='h-[200px] flex justify-center items-start mt-10'>
+                    <Spinner size='lg' />
                 </div>
-                <Pagination
-                    total={totalPages}
-                    current={currentPage}
-                    onChange={handlePageChange}
-                />
-            </div>
+                : <>
+                    <JobFilters />
+                    <div className='flex items-center flex-col'>
+                        <div className='grid sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6 mb-14'>
+                            {visibleJobs?.map((job) => (
+                                <div key={job.id}>
+                                    <JobCard job={job} />
+                                </div>
+                            ))}
+                        </div>
+                        <Pagination
+                            total={totalPages}
+                            current={currentPage}
+                            onChange={handlePageChange}
+                        />
+                    </div>
+                </>
+            }
         </div>
     )
 }

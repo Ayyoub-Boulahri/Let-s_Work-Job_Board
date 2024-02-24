@@ -15,6 +15,7 @@ import JobListings from './pages/JobListings'
 import NewOffer from './pages/NewOffer'
 import ProfileEmployee from './pages/ProfileEmployee'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import Error404Page from './pages/Error404Page'
 function App() {
   const client = new QueryClient()
   return (
@@ -35,7 +36,7 @@ function App() {
               <Route path='/profiles/profile/:profile_id' element={<ProfileEmployee />} />
               <Route path='/jobListings' element={<JobListings />} />
               <Route path='/newOffer' element={<NewOffer />} />
-              <Route path='*' element={<div>error 404</div>} />
+              <Route path='*' element={<Error404Page />} />
             </Routes>
             <Footer />
           </BrowserRouter>

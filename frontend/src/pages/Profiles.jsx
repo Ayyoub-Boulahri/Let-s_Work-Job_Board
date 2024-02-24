@@ -7,7 +7,7 @@ import ProfileList from '../components/profilesComponents/ProfileList';
 import handleLogout from '../services/handleLogout';
 import { useDispatch } from 'react-redux';
 import { setLoginOut } from '../stores/authStore';
-
+import "../css/height.css"
 
 function Profiles() {
     const [selectedFilters, setSelectedFilters] = useState([]);
@@ -50,7 +50,7 @@ function Profiles() {
 
     return (
         <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg pt-20 xl:pb-4`}>
-            <div className={`${styles.boxWidth}`}>
+            <div className={`${styles.boxWidth} HeightTall`}>
                 <div>
                     <div className='flex mt-8 gap-4 items-center'>
                         <div className='flex gap-4 overflow-x-auto max-w-full'>
@@ -85,9 +85,7 @@ function Profiles() {
                     </div>
                 </div>
                 <ProfileList />
-
             </div>
-
         </div>
     )
 }
