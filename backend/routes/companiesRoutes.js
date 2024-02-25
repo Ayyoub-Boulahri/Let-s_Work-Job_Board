@@ -14,5 +14,7 @@ router.put('/follow/addFollower', CompanyController.addFollower)
 router.put('/follow/removeFollower', CompanyController.removeFollower)
 router.post('/follow/isFollower', CompanyController.isFollower)
 router.put('/update/companyInfos', CompanyController.updateCompanyInfos)
+router.put('/update/profilePhoto', CompanyController.updateCompanyProfilePhoto)
+router.put('/update/coverPhoto', CompanyController.updateCompanyCoverPhoto)
 
 module.exports = router;

@@ -6,13 +6,13 @@ import { removeEmployeeSkill } from '../services/employeeServices';
 import { useSelector } from 'react-redux';
 
 function SkillItem(props) {
-    const authInfo = useSelector((state) => state.isAuthenticated.value);
+    const authInfo = useSelector((state) => state.isAuthenticated?.value);
 
     const handleDelete = async () => {
         if (props.delete) {
             props.delete(props.skill);
         }
-        if(props.removeFromDb) {
+        if(props?.removeFromDb) {
             const response = await removeEmployeeSkill(authInfo?.userId, props.skill);
         }
     };

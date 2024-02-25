@@ -33,10 +33,8 @@ class AuthController {
       if (!result) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
-      console.log("1")
 
       req.session.userId = result._id;  
-      console.log("2")   
       req.session.email = email;
       req.session.auth = true;
       req.session.typeUser = 'company';

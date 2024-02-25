@@ -163,7 +163,6 @@ class JobOfferController {
 
     getSomeCompanyJobOffers = async (req, res) => {
         const { id, project, skip, limit } = req.body;
-        console.log(id, skip)
         try {
             const jobOffers = await JobOffer.find({ company: id, job_status: true }, project).skip(skip).limit(limit)
 

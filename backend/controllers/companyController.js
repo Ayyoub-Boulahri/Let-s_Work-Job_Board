@@ -48,7 +48,6 @@ class CompanyController {
             });
 
             const savedCompany = await newCompany.save();
-            console.log("Successfully inserted company");
             res.status(201).json(savedCompany);
         } catch (error) {
             console.error(error);
@@ -95,7 +94,6 @@ class CompanyController {
     deleteCompany = async (req, res) => {
         try {
             const { _id } = req.body;
-            console.log("enter delete comp")
             const deleteResult = await Company.deleteOne({ _id: _id });
 
             if (deleteResult.deletedCount === 0) {
@@ -302,7 +300,7 @@ class CompanyController {
                 _id: company_id,
                 "followers.employee": employee_id
             });
-    
+
             if (!company)
                 return res.status(404).json({ message: "Not a follower" });
             else
@@ -315,7 +313,6 @@ class CompanyController {
 
     updateCompanyInfos = async (req, res) => {
         try {
-            console.log("hihihihi")
             const { _id, infos } = req.body;
             const updateResult = await Company.updateOne(
                 { _id: _id },
@@ -329,6 +326,54 @@ class CompanyController {
             res.status(200).json({ message: "infos updated successfully" });
         } catch (error) {
             console.error("Error updating company infos:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    }
+
+    updateCompanyProfilePhoto = async (req, res) => {
+        try {
+            const { _id, company_photo } = req.body;
+
+            // Convert base64 string to buffer
+            const photoBuffer = Buffer.from(company_photo, 'base64');
+
+            // Update profile photo for the employee
+            const updateResult = await Company.updateOne(
+                { _id: _id }, // Filter by _id
+                { $set: { "company_photo": photoBuffer } }
+            );
+
+            if (updateResult.nModified === 0) {
+                return res.status(404).json({ message: "Company not found or profile photo not updated" });
+            }
+
+            return res.status(200).json({ message: "Profile photo updated successfully" });
+        } catch (error) {
+            console.error("Error updating prfile photo:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    }
+
+    updateCompanyCoverPhoto = async (req, res) => {
+        try {
+            const { _id, company_cover } = req.body;
+
+            // Convert base64 string to buffer
+            const photoBuffer = Buffer.from(company_cover, 'base64');
+
+            // Update cover photo for the employee
+            const updateResult = await Company.updateOne(
+                { _id: _id }, // Filter by _id
+                { $set: { "company_cover": photoBuffer } }
+            );
+
+            if (updateResult.nModified === 0) {
+                return res.status(404).json({ message: "Company not found or cover photo not updated" });
+            }
+
+            return res.status(200).json({ message: "Cover photo updated successfully" });
+        } catch (error) {
+            console.error("Error updating cover photo:", error);
             return res.status(500).json({ message: "Internal server error" });
         }
     }

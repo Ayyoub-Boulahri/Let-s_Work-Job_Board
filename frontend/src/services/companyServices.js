@@ -125,3 +125,27 @@ export const updateCompanyInfos = async (_id, infos) => {
         throw error;
     }
 }
+
+export const updateCompanyProfilePhoto = async (_id, company_photo) => {
+    try {
+        const response = await axios.put('http://localhost:5000/api/companies/update/profilePhoto', { _id, company_photo } , { withCredentials: true })
+        if(response.status === 200){
+            return response
+        }
+    } catch (error) {
+        console.error('Error updating profile photo:', error);
+        throw error;
+    }
+}
+
+export const updateCompanyCoverPhoto = async (_id, company_cover) => {
+    try {
+        const response = await axios.put('http://localhost:5000/api/companies/update/coverPhoto', { _id, company_cover } , { withCredentials: true })
+        if(response.status === 200){
+            return response
+        }
+    } catch (error) {
+        console.error('Error updating cover photo:', error);
+        throw error;
+    }
+}

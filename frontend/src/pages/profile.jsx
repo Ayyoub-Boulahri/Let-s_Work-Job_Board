@@ -22,6 +22,7 @@ import { MdEdit } from "react-icons/md";
 import { TbFileCv } from "react-icons/tb";
 import MyCV from '../components/profileComponents/MyCV';
 import "../css/height.css"
+import ShareProfileModel from '../components/profileComponents/ShareProfileModel';
 
 function Profile() {
   const [indexTab, setindexTab] = useState(1);
@@ -50,7 +51,7 @@ function Profile() {
       } catch (error) {
         console.error("Error fetching employee data:", error);
       } finally {
-        setIsLoading(false); // Set loading to false after fetching data
+        setIsLoading(false); 
       }
     };
 
@@ -83,7 +84,7 @@ function Profile() {
     }));
   }
 
-  const removeExperience= (id_exp) => {
+  const removeExperience = (id_exp) => {
     setMyInfos(prevState => {
       const updatedExperiences = prevState.experiences.filter(experience => experience._id !== id_exp);
       return {
@@ -155,7 +156,7 @@ function Profile() {
       id: 3,
       title: "Skills & Experiences",
       logo: <GrAchievement />,
-      component: <ExperiencesSkills userInfos={{ skills: myInfos?.skills, experiences: myInfos?.experiences }} addSkill={addSkill} addExperience={addExperience} removeSkill={removeSkill} removeExperience={removeExperience}/>
+      component: <ExperiencesSkills userInfos={{ skills: myInfos?.skills, experiences: myInfos?.experiences }} addSkill={addSkill} addExperience={addExperience} removeSkill={removeSkill} removeExperience={removeExperience} />
     },
     {
       id: 4,
@@ -167,7 +168,7 @@ function Profile() {
       id: 5,
       title: "My CV",
       logo: <TbFileCv />,
-      component: <MyCV userInfos={{ cv: myInfos?.cv }}/>
+      component: <MyCV userInfos={{ cv: myInfos?.cv }} />
     }
   ];
 
@@ -194,7 +195,10 @@ function Profile() {
               )}
             </div>
             {isLoading ? <Spinner className='mt-6' /> : (
-              <h1 className={`${styles.heading3} text-center`}>{myInfos?.first_name} {myInfos?.last_name}</h1>
+              <div className='flex gap-4 items-center'>
+                <h1 className={`${styles.heading3} text-center`}>{myInfos?.first_name} {myInfos?.last_name}</h1>
+                <ShareProfileModel userId={authInfo?.userId}/>
+              </div>
             )}
             <div className='flex sm:flex-col flex-row list-none mt-6 '>
               {tabs.map((tab) => (
@@ -224,7 +228,7 @@ function Profile() {
       </div>
 
       <Button isIconOnly size='lg' color="primary" aria-label="Like" className='fixed bottom-6 right-10 sm:hidden flex font-bold' onClick={() => setindexTab(5)}>
-        <TbFileCv size={30}/>
+        <TbFileCv size={30} />
       </Button>
 
     </div>

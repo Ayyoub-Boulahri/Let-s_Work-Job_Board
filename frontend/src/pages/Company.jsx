@@ -12,11 +12,12 @@ import CompanyJobOffers from '../components/companyProfileComponents/CompanyJobO
 import Suggestions from '../components/companyProfileComponents/Suggestions';
 import { MdNotificationsActive } from "react-icons/md";
 import "../css/height.css"
-import { getCompanyById, getNumberOfFollowers } from '../services/companyServices';
-import { convertBufferToDataURL, formatNumFollowers } from '../services/convertFunctions';
+import { getCompanyById, updateCompanyCoverPhoto, updateCompanyProfilePhoto } from '../services/companyServices';
+import { convertBufferToDataURL, fileToBase64, formatNumFollowers } from '../services/convertFunctions';
 import { followCompany, isFollower, unfollowCompany } from '../services/followServices';
 import { useSelector } from 'react-redux';
 import CompanyProfileInfos from '../components/companyProfileComponents/CompanyProfileInfos';
+import { MdEdit } from "react-icons/md";
 
 function Company() {
   const [isAbout, setIsAbout] = useState(true);
@@ -24,6 +25,9 @@ function Company() {
   const { company_id } = useParams();
   const [companyInfos, setCompanyInfos] = useState(null)
   const authInfo = useSelector((state) => state.isAuthenticated.value);
+  const [isProfilePhotoHovered, setIsProfilePhotoHovered] = useState(false);
+  const [isCoverPhotoHovered, setIsCoverPhotoHovered] = useState(false);
+
 
   useEffect(() => {
     const getCompanyInfos = async () => {
@@ -48,6 +52,32 @@ function Company() {
 
     checkFollow()
   }, [authInfo])
+
+  const handleImageChange = async (event, type) => {
+    const photo = event.target.files[0];
+
+    if (photo) {
+      const reader = new FileReader();
+
+      reader.readAsDataURL(photo);
+
+      try {
+        const formData = new FormData();
+        formData.append('file', photo);
+
+        let fileData = formData.get('file');
+        let base64String = fileData instanceof Blob ? await fileToBase64(fileData) : fileData;
+
+        const response = 
+                    type == "profile" ? await updateCompanyProfilePhoto(company_id, base64String)
+                                      : await updateCompanyCoverPhoto(company_id, base64String)
+
+        window.location.reload();
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+  };
 
   const handleFollow = () => {
     if (!isFollowed) {
@@ -87,14 +117,59 @@ function Company() {
             : <div className='my-[12px] bg-[#121212] p-4 rounded-md'>  {/* CONTAINER */}
               <div className='bg-image rounded-md' style={{ backgroundImage: `url(${convertBufferToDataURL(companyInfos.company_cover)})`, backgroundSize: "cover", backgroundPosition: "center" }}>
                 {/* Cover Photo */}
-                <div className='h-[200px]'></div>
+                <div className='h-[200px] relative'
+                  onMouseEnter={() => setIsCoverPhotoHovered(true)}
+                  onMouseLeave={() => setIsCoverPhotoHovered(false)}>
+                  {isCoverPhotoHovered && authInfo?.typeUser == "company" &&
+
+                    <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 rounded-tl-md rounded-tr-md'>
+                      <label htmlFor='coverUpload' className='flex items-center justify-center w-full h-full cursor-pointer'>
+                        <MdEdit color='white' size={40} />
+                      </label>
+                    </div>
+                  }
+                  <input
+                    type='file'
+                    id='coverUpload'
+                    accept='.png, .jpg, .jpeg'
+                    onChange={(e) => handleImageChange(e, "cover")}
+                    hidden={true}
+                  />
+                </div>
 
                 {/* Profile Section */}
                 <div className='flex flex-col justify-end h-[100px] bg-[#191919] rounded-b-md'>
                   {/* Profile Picture and Info */}
                   <div className="flex items-center justify-between gap-4 px-6 pb-4">
                     <div className="flex items-center gap-6">
-                      <Avatar isBordered color="primary" src={convertBufferToDataURL(companyInfos.company_photo)} className="w-24 h-24" />
+                      <div className='relative'>
+                        <div
+                          className='flex items-center justify-center relative w-24 h-24'
+                          onMouseEnter={() => setIsProfilePhotoHovered(true)}
+                          onMouseLeave={() => setIsProfilePhotoHovered(false)}
+                        >
+                          <Avatar
+                            isBordered
+                            color='primary'
+                            src={convertBufferToDataURL(companyInfos.company_photo)}
+                            className='w-full h-full'
+                          />
+                          {isProfilePhotoHovered && authInfo?.typeUser == "company" && (
+                            <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50 rounded-full'>
+                              <label htmlFor='imageUpload' className='flex items-center justify-center w-full h-full cursor-pointer'>
+                                <MdEdit color='white' size={30} />
+                              </label>
+                            </div>
+                          )}
+                        </div>
+                        <input
+                          type='file'
+                          id='imageUpload'
+                          accept='.png, .jpg, .jpeg'
+                          onChange={(e) => handleImageChange(e, "profile")}
+                          hidden={true}
+                        />
+                      </div>
                       <div className="flex flex-col">
                         <h1 className="text-3xl font-bold text-white">{companyInfos.company_name}</h1>
                         <h1 className='font-bold text-primary-600 text-[18px]'>{formatNumFollowers(companyInfos.followersCount)}&nbsp;&nbsp;<span className='font-semibold text-default-400'>followers</span></h1>
@@ -134,10 +209,10 @@ function Company() {
                     </button>
                   </div>
                   {isAbout
-                    ? authInfo.typeUser == "company" 
-                        ? <CompanyProfileInfos company={{ company_id: companyInfos._id, description: companyInfos.description, password: companyInfos.password, company_name:companyInfos.company_name, email: companyInfos.company_email, city: companyInfos.city, country: companyInfos.country, industry: companyInfos.industry, phone: companyInfos.company_phone, address: companyInfos.address, founded_year: companyInfos.founded_year, size: companyInfos.size }} />
-                        : <AboutCompany company={{ description: companyInfos.description, email: companyInfos.company_email, city: companyInfos.city, country: companyInfos.country, industry: companyInfos.industry, phone: companyInfos.company_phone, address: companyInfos.address, founded_year: companyInfos.founded_year, size: companyInfos.size }} />
-                    : <CompanyJobOffers company_id={company_id} city={companyInfos.city} country={companyInfos.country} company_photo={companyInfos.company_photo} company_name={companyInfos.company_name} typeUser={authInfo.typeUser}/>
+                    ? authInfo.typeUser == "company"
+                      ? <CompanyProfileInfos company={{ company_id: companyInfos._id, description: companyInfos.description, password: companyInfos.password, company_name: companyInfos.company_name, email: companyInfos.company_email, city: companyInfos.city, country: companyInfos.country, industry: companyInfos.industry, phone: companyInfos.company_phone, address: companyInfos.address, founded_year: companyInfos.founded_year, size: companyInfos.size }} />
+                      : <AboutCompany company={{ description: companyInfos.description, email: companyInfos.company_email, city: companyInfos.city, country: companyInfos.country, industry: companyInfos.industry, phone: companyInfos.company_phone, address: companyInfos.address, founded_year: companyInfos.founded_year, size: companyInfos.size }} />
+                    : <CompanyJobOffers company_id={company_id} city={companyInfos.city} country={companyInfos.country} company_photo={companyInfos.company_photo} company_name={companyInfos.company_name} typeUser={authInfo.typeUser} />
                   }
                 </div>
                 {

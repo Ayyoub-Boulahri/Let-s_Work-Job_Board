@@ -57,17 +57,16 @@ class EmployeeController {
 
             const savedEmployee = await newEmployee.save();
             console.log("Employee successfully inserted");
-            res.status(201).json(savedEmployee);
+            return res.status(201).json(savedEmployee);
         } catch (error) {
             console.error(error);
-            res.status(500).json({ message: 'Internal Server Error' });
+            return res.status(500).json({ message: 'Internal Server Error' });
         }
     };
 
     getEmployeeByEmail = async (req, res) => {
         try {
             const { email } = req.body;
-            console.log(email)
             const employeeInfos = await Employee.findOne({ email }, {followings: 0}).lean();
             if (!employeeInfos)
                 return res.status(404).json({ message: 'Employee not found' });
@@ -123,7 +122,7 @@ class EmployeeController {
                 return res.status(404).json({ message: "Employee not found" });
             }
 
-            res.status(200).json({ message: "Employee deleted successfully" });
+            return res.status(200).json({ message: "Employee deleted successfully" });
         } catch (error) {
             console.error("Error deleting employee:", error);
             return res.status(500).json({ message: "Internal server error" });
@@ -148,7 +147,7 @@ class EmployeeController {
                 return res.status(404).json({ message: "Employee not found or profile photo not updated" });
             }
 
-            res.status(200).json({ message: "Profile photo updated successfully" });
+            return res.status(200).json({ message: "Profile photo updated successfully" });
         } catch (error) {
             console.error("Error updating photo:", error);
             return res.status(500).json({ message: "Internal server error" });
@@ -167,7 +166,7 @@ class EmployeeController {
                 return res.status(404).json({ message: "Employee not found" });
             }
 
-            res.status(200).json({ message: "infos updated successfully" });
+            return res.status(200).json({ message: "infos updated successfully" });
         } catch (error) {
             console.error("Error updating employee infos:", error);
             return res.status(500).json({ message: "Internal server error" });
@@ -186,7 +185,7 @@ class EmployeeController {
                 return res.status(404).json({ message: 'skill not adding or employee not found' })
             }
 
-            res.status(200).json({ message: "Skill adding successfully" })
+            return res.status(200).json({ message: "Skill adding successfully" })
         } catch (error) {
             console.error("error adding new skill", error);
             return res.status(500).json({ message: "Internal server error" })
@@ -205,7 +204,7 @@ class EmployeeController {
                 return res.status(404).json({ message: 'Experience not adding or employee not found' })
             }
 
-            res.status(200).json({ message: "Experience adding successfully" })
+            return res.status(200).json({ message: "Experience adding successfully" })
         } catch (error) {
             console.error("error adding new Experience", error);
             return res.status(500).json({ message: "Internal server error" })
@@ -225,7 +224,7 @@ class EmployeeController {
                 return res.status(404).json({ message: 'skill not removed or employee not found' })
             }
 
-            res.status(200).json({ message: "Skill removed successfully" })
+            return res.status(200).json({ message: "Skill removed successfully" })
         } catch (error) {
             console.error("error removing skill", error);
             return res.status(500).json({ message: "Internal server error" })
@@ -244,7 +243,7 @@ class EmployeeController {
                 return res.status(404).json({ message: 'Experience not removed or employee not found' })
             }
 
-            res.status(200).json({ message: "Experience removed successfully" })
+            return res.status(200).json({ message: "Experience removed successfully" })
         } catch (error) {
             console.error("error removing Experience", error);
             return res.status(500).json({ message: "Internal server error" })
@@ -263,7 +262,7 @@ class EmployeeController {
                 return res.status(404).json({ message: 'Education not adding or employee not found' })
             }
 
-            res.status(200).json({ message: "Education adding successfully" })
+            return res.status(200).json({ message: "Education adding successfully" })
         } catch (error) {
             console.error("error adding new Education", error);
             return res.status(500).json({ message: "Internal server error" })
@@ -282,7 +281,7 @@ class EmployeeController {
                 return res.status(404).json({ message: 'Education not removed or employee not found' })
             }
 
-            res.status(200).json({ message: "Education removed successfully" })
+            return res.status(200).json({ message: "Education removed successfully" })
         } catch (error) {
             console.error("error removing Education", error);
             return res.status(500).json({ message: "Internal server error" })
