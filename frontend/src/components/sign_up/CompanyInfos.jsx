@@ -1,33 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { PaginationItemType } from '@nextui-org/react';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { setcompanyInfos } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { useQuery } from '@tanstack/react-query';
 import getAllIndustries from '../../services/industriesServices';
 import getAllCountries from '../../services/countriesServices';
+import { companyInfosSchema } from '../../schemas/companyShema';
+import { sizes } from '../../schemas/data';
 
 function CompanyInfos(props) {
     const dispatch = useDispatch();
     let companyData = useSelector((state) => state.companyData.value);
-    
-    const schema = yup.object().shape({
-        companyName: yup.string().required('Company Name is required'),
-        phoneNumber: yup.string()
-                        .matches(/^\(\d{1,3}\) \d{3}-\d{6,}$/, 'Phone number must be in the format (212) 123-456789')
-                        .required('Phone Number is required'),
-        country: yup.string().required('Country is required'),
-        city: yup.string().required('City is required'),
-        address: yup.string().required('Address is required'),
-        size: yup.string().required('Size is required'),
-        foundedYear: yup.number().required('Year is required'),
-        industry: yup.string().required('Industry is required'),
-    });
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema),
+        resolver: yupResolver(companyInfosSchema),
     });
 
     const onSubmit = (data) => {
@@ -57,17 +45,6 @@ function CompanyInfos(props) {
             setCities(country?.cities)
         }
     }, [selectedCountry, countries])
-
-    const sizes = [
-        { id: 1, value: "1 - 50 employees" },
-        { id: 2, value: "51 - 200 employees" },
-        { id: 3, value: "201 - 500 employees" },
-        { id: 4, value: "501 - 1000 employees" },
-        { id: 5, value: "1001 - 5000 employees" },
-        { id: 6, value: "5001 - 10000 employees" },
-        { id: 7, value: "10000+ employees" }
-    ];
-    
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>

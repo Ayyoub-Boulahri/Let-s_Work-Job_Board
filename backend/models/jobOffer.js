@@ -19,7 +19,7 @@ const jobOfferSchema = new mongoose.Schema({
         employee: mongoose.Schema.Types.ObjectId,
         date_postulation: { type: Date, default: Date.now },
         attachements: Array,
-        status: String,
+        status: { type: String, default: "In Progress" },
       }
     ]
   }, {

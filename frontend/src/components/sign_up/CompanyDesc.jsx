@@ -2,20 +2,16 @@ import React from 'react'
 import { PaginationItemType } from "@nextui-org/react";
 import { setDescription } from '../../stores/signUpStore';
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { companyDescSchema } from '../../schemas/companyShema';
 
 function CompanyDesc(props) {
     const dispatch = useDispatch();
     const companyData = useSelector((state) => state.companyData.value);
 
-    const schema = yup.object().shape({
-        description: yup.string().min(500, "Your description must be at least 500 characters").required()
-    });
-
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: yupResolver(schema)
+        resolver: yupResolver(companyDescSchema)
     });
 
     const onSubmit = async (data) => {

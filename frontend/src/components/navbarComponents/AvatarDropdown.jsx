@@ -39,7 +39,6 @@ function AvatarDropdown() {
     const handleDeleteAccount = async () => {
         const deleteResult = await authInfo?.typeUser == "employee" ? deleteEmployeeById(myInfos.data._id) : deleteCompanyById(myInfos.data._id)
         if (deleteResult) {
-            console.log("hihihih")
             navigate("/");
         }
     }
@@ -71,7 +70,7 @@ function AvatarDropdown() {
                             </>
                         }
                     </DropdownItem>
-                    <DropdownItem key="profile" onClick={() => { navigate((authInfo?.typeUser == "employee" ? '/profile' : '/companies/company/1')) }}>
+                    <DropdownItem key="profile" onClick={() => { navigate((authInfo?.typeUser == "employee" ? '/profile' : '/companies/company/' + authInfo?.userId)) }}>
                         My Profile
                     </DropdownItem>
                     <DropdownItem key="delete" className="text-danger-400" onClick={onOpen}>

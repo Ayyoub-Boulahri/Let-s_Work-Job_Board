@@ -20,12 +20,12 @@ export function formatDate(dateFromMongo) {
 
 export const convertBufferToDataURL = (buffer) => {
     const base64String = buffer.toString('base64');
-    return `data:image/png;base64,${base64String}`;
+    return `data:image/*;base64,${base64String}`;
 };
 
 export const convertBase64ToUrlFile = (buffer) => {
     const base64String = buffer.toString('base64');
-    return `data:application/pdf;base64,${base64String}`;
+    return `data:application/pdf;base64,${base64String}#toolbar=0`;
 };
 
 export const fileToBase64 = async (file) => {
@@ -47,3 +47,9 @@ export const fetchAndConvertToBase64 = async (url) => {
         throw error;
     }
 };
+
+export const formatNumFollowers = (numFollowers) => {
+    if (numFollowers > 999)
+        return (numFollowers / 1000).toFixed(1) + "k";
+    return numFollowers
+}

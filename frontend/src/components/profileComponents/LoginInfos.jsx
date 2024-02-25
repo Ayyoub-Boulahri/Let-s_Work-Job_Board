@@ -1,12 +1,10 @@
 import React, { useState } from 'react'
-import styles from '../../style'
 import profile from '../../assets/work_boy.png'
 import "../../css/profile.css"
-import { Avatar, Divider } from "@nextui-org/react";
+import { Divider } from "@nextui-org/react";
 import { FaRegEdit } from "react-icons/fa";
 import { Input } from "@nextui-org/react";
 import { MdOutlineAlternateEmail } from "react-icons/md";
-import PasswordInput from '../PasswordInput';
 import { FaEyeSlash } from "react-icons/fa";
 import { FaEye } from "react-icons/fa6";
 import * as yup from 'yup'
@@ -19,8 +17,17 @@ import { useNavigate } from 'react-router-dom';
 function LoginInfos(props) {
   const [changeEmail, setChangeEmail] = useState(false);
   const [changePassword, setChangePassword] = useState(false);
-  const [isVisible, setIsVisible] = useState(false);
-  const toggleVisibility = () => setIsVisible(!isVisible);
+  const [isVisible, setIsVisible] = useState({
+    password: false,
+    currentPassword: false,
+    newPassword: false,
+    confirmPassword: false
+  });
+  const toggleVisibility = (property) => {
+    setIsVisible(prev => {
+      return { ...prev, [property]: !prev[property] };
+    });
+  };
   const authInfo = useSelector((state) => state.isAuthenticated.value);
 
   const navigate = useNavigate()
@@ -52,10 +59,10 @@ function LoginInfos(props) {
   });
 
   const handleUpdatePassword = async (data) => {
-    const formatedData = {"password": data.newPassword}
+    const formatedData = { "password": data.newPassword }
     try {
       const response = await updateEmployeeInfos(authInfo?.userId, formatedData)
-      if(response.status === 200){
+      if (response.status === 200) {
         window.scrollTo(0, 0);
         navigate("/")
       }
@@ -125,15 +132,15 @@ function LoginInfos(props) {
             placeholder="Enter your password"
             {...updateEmailRegister("password")}
             endContent={
-              <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                {isVisible ? (
+              <button className="focus:outline-none" type="button" onClick={() => toggleVisibility("password")}>
+                {isVisible.password ? (
                   <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
                 ) : (
                   <FaEye className="text-2xl text-default-400 pointer-events-none" />
                 )}
               </button>
             }
-            type={isVisible ? "text" : "password"}
+            type={isVisible.password ? "text" : "password"}
           />
           {emailUpdateErrors.password && <label style={{ color: '#E11D48' }}>{emailUpdateErrors.password.message}</label>}
 
@@ -168,18 +175,18 @@ function LoginInfos(props) {
               autoComplete='new-password'
               variant="bordered"
               className='sm:w-[60%]'
-              placeholder="Enter your password"
+              placeholder="Enter your current password"
               {...updatePasswordRegister("currentPassword")}
               endContent={
-                <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                  {isVisible ? (
+                <button className="focus:outline-none" type="button" onClick={() => toggleVisibility("currentPassword")}>
+                  {isVisible.currentPassword ? (
                     <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
                   ) : (
                     <FaEye className="text-2xl text-default-400 pointer-events-none" />
                   )}
                 </button>
               }
-              type={isVisible ? "text" : "password"}
+              type={isVisible.currentPassword ? "text" : "password"}
             />
             {passwordUpdateErrors.currentPassword && <label style={{ color: '#E11D48' }}>{passwordUpdateErrors.currentPassword.message}</label>}
 
@@ -189,18 +196,18 @@ function LoginInfos(props) {
               autoComplete='new-password'
               variant="bordered"
               className='sm:w-[60%]'
-              placeholder="Enter your password"
+              placeholder="Enter your new password"
               {...updatePasswordRegister("newPassword")}
               endContent={
-                <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                  {isVisible ? (
+                <button className="focus:outline-none" type="button" onClick={() => toggleVisibility("newPassword")}>
+                  {isVisible.newPassword ? (
                     <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
                   ) : (
                     <FaEye className="text-2xl text-default-400 pointer-events-none" />
                   )}
                 </button>
               }
-              type={isVisible ? "text" : "password"}
+              type={isVisible.newPassword ? "text" : "password"}
             />
             {passwordUpdateErrors.newPassword && <label style={{ color: '#E11D48' }}>{passwordUpdateErrors.newPassword.message}</label>}
 
@@ -210,18 +217,18 @@ function LoginInfos(props) {
               autoComplete='new-password'
               variant="bordered"
               className='sm:w-[60%]'
-              placeholder="Enter your password"
+              placeholder="confirm your password"
               {...updatePasswordRegister("confirmation")}
               endContent={
-                <button className="focus:outline-none" type="button" onClick={toggleVisibility}>
-                  {isVisible ? (
+                <button className="focus:outline-none" type="button" onClick={() => toggleVisibility("confirmPassword")}>
+                  {isVisible.confirmPassword ? (
                     <FaEyeSlash className="text-2xl text-default-400 pointer-events-none" />
                   ) : (
                     <FaEye className="text-2xl text-default-400 pointer-events-none" />
                   )}
                 </button>
               }
-              type={isVisible ? "text" : "password"}
+              type={isVisible.confirmPassword ? "text" : "password"}
             />
             {passwordUpdateErrors.confirmation && <label style={{ color: '#E11D48' }}>{passwordUpdateErrors.confirmation.message}</label>}
 

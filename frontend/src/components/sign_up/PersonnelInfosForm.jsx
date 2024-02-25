@@ -54,7 +54,7 @@ function PersonnelInfosForm(props) {
                 <p className="title py-4">Personnel Informations</p>
                 <div className='input-group flex gap-4'>
                     <div>
-                        {errors.cin ? <label style={{ color: '#E11D48' }}>ID</label> : <label>CIN</label>}
+                        {errors.cin ? <label style={{ color: '#E11D48' }}>ID</label> : <label>ID</label>}
                         <input type="text" placeholder='ID' {...register("cin")} className={`${errors.cin && "erreur"}`} defaultValue={employeeData.cin} />
                     </div>
 

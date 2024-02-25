@@ -33,7 +33,7 @@ const employeeSchema = new mongoose.Schema({
   cv: Buffer,
   followings: [
     {
-      company:mongoose.Schema.Types.ObjectId,
+      company: mongoose.Schema.Types.ObjectId,
       date_follow: { type: Date, default: Date.now },
     }
   ]
