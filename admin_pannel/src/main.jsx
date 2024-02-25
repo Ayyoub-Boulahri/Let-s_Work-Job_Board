@@ -13,6 +13,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <Theme appearance="dark">
         <main className="blue-dark text-foreground font-poppins">
           <App />
+          
         </main>
       </Theme>
     </ThemeProvider>
