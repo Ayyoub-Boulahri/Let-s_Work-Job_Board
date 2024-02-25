@@ -94,6 +94,12 @@ class JobOfferController {
     addPostulation = async (req, res) => {
         try {
             const { jobId, employeeId, attachements } = req.body;
+            
+            for (let i = 0; i < attachements.length; i++) {
+                let att = Buffer.from(attachements[i].file, 'base64');
+                attachements[i].file = att;
+            }
+            
             const postulation = await JobOffer.updateOne(
                 { _id: jobId },
                 {
@@ -106,18 +112,25 @@ class JobOfferController {
                 }
             )
             if (postulation.nModified === 0)
-                return res.status(404).json({ message: "job Offer not found or postulation not completed" });
-
-            return res.status(200).json({ message: "postulation successfull" })
+                return res.status(404).json({ message: "Job offer not found or postulation not completed" });
+    
+            return res.status(200).json({ message: "Postulation successful" })
         } catch (error) {
             console.error("Error postulation: " + error)
             return res.status(500).json({ message: "Internal Server Error" });
         }
     }
+    
 
     updateEmployeePostulation = async (req, res) => {
         try {
             const { jobId, employeeId, attachements } = req.body;
+
+            for (let i = 0; i < attachements.length; i++) {
+                let att = Buffer.from(attachements[i].file, 'base64');
+                attachements[i].file = att;
+            }
+            
             const postulation = await JobOffer.updateOne(
                 { _id: jobId },
                 {
@@ -142,10 +155,11 @@ class JobOfferController {
     getEmployeePostulation = async (req, res) => {
         try {
             const { jobId, employeeId } = req.body;
+            console.log(jobId)
             const postulationResult = await JobOffer.find({
                 $and: [
                     { _id: jobId },
-                    { "postulations.employee": employeeId }
+                    { "postulations.employee": new ObjectId(employeeId) }
                 ]
             },
                 { postulations: 1 }

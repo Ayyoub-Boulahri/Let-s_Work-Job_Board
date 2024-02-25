@@ -50,7 +50,6 @@ export const getEmployeePostulation = async (jobId, employeeId) => {
     try {
         const response = await axios.post('http://localhost:5000/api/jobOffers/employeePostulation', { jobId, employeeId}, { withCredentials: true });
         if (response.status === 200) {
-            console.log("postulation getted successfully")
             return response;
         }
     } catch (error) {
