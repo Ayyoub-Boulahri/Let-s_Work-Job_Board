@@ -27,7 +27,6 @@ function AboutEmployee(props) {
         try {
             dispatch(setAboutMe(data.aboutMe));
             employeeData = dispatch((dispatch, getState) => getState().employeeData.value);
-            console.log(employeeData)
             signUpFonction(employeeData);
             props.pagination.onNext() 
         } catch (err) {

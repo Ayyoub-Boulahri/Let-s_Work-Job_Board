@@ -4,6 +4,7 @@ import { EditIcon } from "../UIComponents/EditIcon";
 import { DeleteIcon } from "../UIComponents/DeleteIcon";
 import { MdDownload } from "react-icons/md";
 import CandidatPopUp from "./CandidatPopUp";
+import { useNavigate } from "react-router-dom";
 
 function JobListsTable(props) {
 
@@ -11,6 +12,8 @@ function JobListsTable(props) {
         "Open": "success",
         "close": "danger",
     };
+
+    const navigate = useNavigate()
 
     const headerColumns = ["Job Title", "Posted on", "Deadline", "total condidat", "Status", "Download List", "Actions"]
 
@@ -29,7 +32,7 @@ function JobListsTable(props) {
                 {
                     props.jobOffers.map((jobOffer) => (
                         <TableRow key={jobOffer.id}>
-                            <TableCell><span className="hover:text-rose-500 duration-200 cursor-pointer" onClick={() => { window.location.href = "/jobs/job/" + jobOffer.id }}>{jobOffer.title}</span></TableCell>
+                            <TableCell><span className="hover:text-rose-500 duration-200 cursor-pointer" onClick={() => navigate("/jobs/job/65c8ba120e171b8929074d3a" )}>{jobOffer.title}</span></TableCell>
                             <TableCell className="text-default-500">{jobOffer.date_poste}</TableCell>
                             <TableCell className="text-default-500">{jobOffer.Deadline}</TableCell>
                             <TableCell>{jobOffer.nbCondidat}</TableCell>

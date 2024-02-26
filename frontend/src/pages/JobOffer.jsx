@@ -23,7 +23,7 @@ function JobOffer() {
         .then((response) => { setJobOffer(response.data.jobOffer[0]);  setIsLoadingJobOffer(false)})
         .catch((error) => console.log(error));
     }
-
+    window.scrollTo(0, 0);
     fetchData()
   }, [])
 

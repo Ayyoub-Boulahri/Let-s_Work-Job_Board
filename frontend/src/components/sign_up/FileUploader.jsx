@@ -56,7 +56,6 @@ const FileUploader = (props) => {
         if (fileName != "" && typeUser == "employee")
             props.pagination.onNext()
         else if (fileName != "" && typeUser == "company") {
-            console.log(companyData)
             createCompany(companyData)
             props.pagination.onNext()
         }

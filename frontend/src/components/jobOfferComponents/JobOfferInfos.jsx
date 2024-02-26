@@ -4,6 +4,7 @@ import "../../css/card.css"
 import Markdown from 'react-markdown'
 import { convertBase64ToUrlFile, formatNumFollowers } from '../../services/convertFunctions';
 import { getNumberOfFollowers } from '../../services/companyServices';
+import { useNavigate } from 'react-router-dom';
 
 function JobOfferInfos(props) {
     const [showDesc, setShowDesc] = useState(false);
@@ -19,14 +20,15 @@ function JobOfferInfos(props) {
         getFollowers()
     }, [])
     
+    const navigate = useNavigate()
     return (
         <div className='flex md:w-[70%] flex-col shadowCard bg-[#141414] p-8 h-fit'>
             <div className='flex justify-between items-center'>
 
                 <div className='flex items-center gap-4'>
-                    <Avatar src={convertBase64ToUrlFile(props.job_offer.company[0].company_photo)} size="sm" className='cursor-pointer' onClick={() => { window.location.href = "/companies/company/" + props.job_offer.company[0]._id }} />
+                    <Avatar src={convertBase64ToUrlFile(props.job_offer.company[0].company_photo)} size="sm" className='cursor-pointer' onClick={() => navigate("/companies/company/" + props.job_offer.company[0]._id )} />
                     <div>
-                        <h4 className='font-bold text-default-600 text-[14px] cursor-pointer' onClick={() => { window.location.href = "/companies/company/" + props.job_offer.company[0]._id }}>{props.job_offer.company[0].company_name}</h4>
+                        <h4 className='font-bold text-default-600 text-[14px] cursor-pointer' onClick={() => navigate("/companies/company/" + props.job_offer.company[0]._id )} >{props.job_offer.company[0].company_name}</h4>
                         <h4 className='font-semibold text-default-400 text-[12px]'>{formatNumFollowers(numFollowers)} followers</h4>
                     
                     </div>

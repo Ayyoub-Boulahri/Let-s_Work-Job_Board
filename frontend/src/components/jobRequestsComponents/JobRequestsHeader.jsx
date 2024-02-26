@@ -5,6 +5,7 @@ import GlovoApp from '../../assets/GlovoApp.png'
 import WhatsApp from "../../assets/WhatsApp.jpg";
 import apple from "../../assets/apple.jpg";
 import { Divider, Tabs, Tab } from "@nextui-org/react";
+import { useSelector } from 'react-redux';
 
 function JobRequestsHeader() {
     const jobOffers = [
@@ -15,7 +16,7 @@ function JobRequestsHeader() {
             city: "New York",
             title: "Customer Service Representative",
             date_applayment: "17/01/2024",
-            status: "in progress",
+            status: "In Progress",
             photo: mac
         },
         {
@@ -35,7 +36,7 @@ function JobRequestsHeader() {
             city: "Cupertino",
             title: "Technical Support Specialist",
             date_applayment: "01/12/2024",
-            status: "rejected",
+            status: "Rejected",
             photo: apple
         },
         {
@@ -45,47 +46,52 @@ function JobRequestsHeader() {
             city: "Menlo Park",
             title: "Software Engineer - Messaging Platform",
             date_applayment: "18/01/2024",
-            status: "in progress",
+            status: "In Progress",
             photo: WhatsApp,
         }
     ]
+    const authInfo = useSelector((state) => state.isAuthenticated.value);
 
 
     return (
         <div className='min-h-[450px]'>
             <h1 className='text-[30px] text-default-800 my-6'>Manage Requests</h1>
-            <Tabs variant="light" aria-label="Tabs variants">
+            <Tabs variant="light" aria-label="Tabs variants" className='w-[100%] md:overflow-auto overflow-x-scroll'>
+
+
                 <Tab key="All" title="All" >
                     <Divider className='mb-6 mt-2' />
-                    {
-                        jobOffers.length > 0
-                            ? <JobRequestsTable jobOffers={jobOffers} />
-                            : <div className='w-full text-center font-bold text-default-500'>you dont have any job requests yet</div>
-                    }
+                    <JobRequestsTable condition={{}} />
                 </Tab>
+
+
                 <Tab key="Accepted" title="Accepted" >
                     <Divider className='mb-6 mt-2' />
-                    {
-                        jobOffers.filter(j => j.status === "Accept").length > 0
-                            ? <JobRequestsTable jobOffers={jobOffers.filter(j => j.status === "Accept")} />
-                            : <div className='w-full text-center font-bold text-default-500'>you dont have any Accepted job requests yet</div>
-                    }
+                    <JobRequestsTable condition={{ "postulations.status": "Accept" }} />
                 </Tab>
+
+
                 <Tab key="In Progress" title="In progress" >
                     <Divider className='mb-6 mt-2' />
-                    {
-                        jobOffers.filter(j => j.status === "in progress").length > 0
-                            ? <JobRequestsTable jobOffers={jobOffers.filter(j => j.status === "in progress")} />
-                            : <div className='w-full text-center font-bold text-default-500'>you dont have any job requests in progress yet</div>
-                    }
+                    <JobRequestsTable condition={{ "postulations.status": "In Progress" }} />
                 </Tab>
+
+
                 <Tab key="Rejected" title="Rejected" >
                     <Divider className='mb-6 mt-2' />
-                    {
-                        jobOffers.filter(j => j.status === "rejected").length > 0
-                            ? <JobRequestsTable jobOffers={jobOffers.filter(j => j.status === "rejected")} />
-                            : <div className='w-full text-center font-bold text-default-500'>you dont have any Accepted rejected job requests yet</div>
-                    }
+                    <JobRequestsTable condition={{ "postulations.status": "Rejected" }} />
+                </Tab>
+
+
+                <Tab key="Open" title="Open jobs" >
+                    <Divider className='mb-6 mt-2' />
+                    <JobRequestsTable condition={{ job_status: true }} />
+                </Tab>
+
+
+                <Tab key="Closed" title="Closed jobs" >
+                    <Divider className='mb-6 mt-2' />
+                    <JobRequestsTable condition={{ job_status: false }} />
                 </Tab>
             </Tabs>
 

@@ -8,10 +8,11 @@ import 'react-toastify/dist/ReactToastify.css';
 function ShareProfileModel(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const profileLink = "http://localhost:5173/profiles/profile/" + props.userId;
+    
     const handleCopyText = () => {
         navigator.clipboard.writeText(profileLink).then(() => {
             toast.success('Profile link Copied', {
-                position: "bottom-center",
+                position: "bottom-right",
                 autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
@@ -50,8 +51,9 @@ function ShareProfileModel(props) {
                         </>
                     )}
                 </ModalContent>
+                <ToastContainer />
             </Modal>
-            <ToastContainer className="z-[100000]"/>
+
         </>
     )
 }

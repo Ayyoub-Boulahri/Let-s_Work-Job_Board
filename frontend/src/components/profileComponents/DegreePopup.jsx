@@ -24,7 +24,6 @@ export default function DegreePopup(props) {
   });
 
   const onSubmit = async (data, onClose) => {
-    console.log(data)
     const response = await addEmployeeEducation(authInfo?.userId, data)
     if (response.status === 200) {
       props.addEducation(data)

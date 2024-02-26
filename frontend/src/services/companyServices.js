@@ -116,8 +116,8 @@ export const getSuggestionsByIndustry = async (industry, idExclu) => {
 
 export const updateCompanyInfos = async (_id, infos) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/companies/update/companyInfos', { _id, infos } , { withCredentials: true })
-        if(response.status === 200){
+        const response = await axios.put('http://localhost:5000/api/companies/update/companyInfos', { _id, infos }, { withCredentials: true })
+        if (response.status === 200) {
             return response;
         }
     } catch (error) {
@@ -128,8 +128,8 @@ export const updateCompanyInfos = async (_id, infos) => {
 
 export const updateCompanyProfilePhoto = async (_id, company_photo) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/companies/update/profilePhoto', { _id, company_photo } , { withCredentials: true })
-        if(response.status === 200){
+        const response = await axios.put('http://localhost:5000/api/companies/update/profilePhoto', { _id, company_photo }, { withCredentials: true })
+        if (response.status === 200) {
             return response
         }
     } catch (error) {
@@ -140,12 +140,24 @@ export const updateCompanyProfilePhoto = async (_id, company_photo) => {
 
 export const updateCompanyCoverPhoto = async (_id, company_cover) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/companies/update/coverPhoto', { _id, company_cover } , { withCredentials: true })
-        if(response.status === 200){
+        const response = await axios.put('http://localhost:5000/api/companies/update/coverPhoto', { _id, company_cover }, { withCredentials: true })
+        if (response.status === 200) {
             return response
         }
     } catch (error) {
         console.error('Error updating cover photo:', error);
+        throw error;
+    }
+}
+
+export const getCompanyFollowers = async (companyId, skip, limit) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/companies/follow/getFollowers', { companyId, skip, limit }, { withCredentials: true });
+        if (response.status === 200)
+            return response.data.followers; 
+        return null;
+    } catch (error) {
+        console.error('Error getting followers for company:', error);
         throw error;
     }
 }

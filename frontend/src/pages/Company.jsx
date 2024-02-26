@@ -18,6 +18,7 @@ import { followCompany, isFollower, unfollowCompany } from '../services/followSe
 import { useSelector } from 'react-redux';
 import CompanyProfileInfos from '../components/companyProfileComponents/CompanyProfileInfos';
 import { MdEdit } from "react-icons/md";
+import FollowersModel from '../components/companyProfileComponents/FollowersModel';
 
 function Company() {
   const [isAbout, setIsAbout] = useState(true);
@@ -51,7 +52,8 @@ function Company() {
     }
 
     checkFollow()
-  }, [authInfo])
+    window.scrollTo(0, 0);
+  }, [authInfo, company_id])
 
   const handleImageChange = async (event, type) => {
     const photo = event.target.files[0];
@@ -68,9 +70,9 @@ function Company() {
         let fileData = formData.get('file');
         let base64String = fileData instanceof Blob ? await fileToBase64(fileData) : fileData;
 
-        const response = 
-                    type == "profile" ? await updateCompanyProfilePhoto(company_id, base64String)
-                                      : await updateCompanyCoverPhoto(company_id, base64String)
+        const response =
+          type == "profile" ? await updateCompanyProfilePhoto(company_id, base64String)
+            : await updateCompanyCoverPhoto(company_id, base64String)
 
         window.location.reload();
       } catch (error) {
@@ -172,7 +174,10 @@ function Company() {
                       </div>
                       <div className="flex flex-col">
                         <h1 className="text-3xl font-bold text-white">{companyInfos.company_name}</h1>
-                        <h1 className='font-bold text-primary-600 text-[18px]'>{formatNumFollowers(companyInfos.followersCount)}&nbsp;&nbsp;<span className='font-semibold text-default-400'>followers</span></h1>
+                        {authInfo.typeUser == "company"
+                          ? <FollowersModel followersCount={companyInfos.followersCount} company_id={companyInfos._id} />
+                          : <h1 className='font-bold text-primary-600 text-[18px]'>{formatNumFollowers(companyInfos.followersCount)}&nbsp;&nbsp;<span className='font-semibold text-default-400'>followers</span></h1>
+                        }
                       </div>
                     </div>
 

@@ -24,7 +24,7 @@ function CompanyCard(props) {
   }, [])
 
   return (
-    <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md m-3 company-card' onClick={() => { window.location.href = "/companies/company/" + props.id }}>
+    <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md m-3 company-card' onClick={() => navigate("/companies/company/" + props.id )}>
       <div className='flex justify-between items-center'>
         <div className='flex gap-8 justify-start'>
           <Avatar radius='md' src={convertBufferToDataURL(props.logo)} size="lg" />

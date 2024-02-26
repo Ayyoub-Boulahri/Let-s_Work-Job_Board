@@ -352,6 +352,31 @@ class EmployeeController {
             return res.status(500).json({ message: "Internal Server Error" });
         }
     }
+
+    getSomeEmployees = async (req, res) => {
+        try {
+            const { project, skip, limit } = req.body;
+
+            const employees = await Employee.find({}, project)
+                .skip(parseInt(skip))
+                .limit(parseInt(limit)).lean();
+
+            for (let i = 0; i < employees.length; i++) {
+                const base64Photo = employees[i].profilePhoto.toString('base64');
+                employees[i].profilePhoto = base64Photo;
+            }
+
+
+            if (!employees || employees.length === 0) {
+                return res.status(404).json({ error: 'No employee found' });
+            }
+
+            return res.status(200).json({ employees: employees });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
     
 }
 

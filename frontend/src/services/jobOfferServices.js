@@ -48,7 +48,7 @@ export const addPostulation = async (jobId, employeeId, attachements) => {
 
 export const getEmployeePostulation = async (jobId, employeeId) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/jobOffers/employeePostulation', { jobId, employeeId}, { withCredentials: true });
+        const response = await axios.post('http://localhost:5000/api/jobOffers/employeePostulation', { jobId, employeeId }, { withCredentials: true });
         if (response.status === 200) {
             return response;
         }
@@ -92,3 +92,45 @@ export const getCompanyJobOffersCount = async (companyId) => {
         throw error;
     }
 }
+
+export const getEmployeeJobRequests = async (employeeId, skip, limit, condition, searchFilter) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/jobOffers/employeeJobRequests', { employeeId, skip, limit, condition, searchFilter }, { withCredentials: true });
+        if (response.status === 200) {
+            return response.data.result;
+        }
+        else if(response.status === 404)
+            return []
+    } catch (error) {
+        console.error('Error getting employee job requests:', error);
+        throw error;
+    }
+};
+
+export const getEmployeeJobRequestsCount = async (employeeId, condition, searchFilter) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/jobOffers/employeeJobRequestsCount', { employeeId, condition, searchFilter }, { withCredentials: true });
+
+        if (response.status === 200) {
+            return response.data.totalJobOffers;
+        }
+        else if(response.status === 404)
+            return []
+    } catch (error) {
+        console.error('Error getting employee job requests Count:', error);
+        throw error;
+    }
+};
+
+export const removeEmployeeJobPostulation = async (jobOfferId, employeeId) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/jobOffers/update/removeEmployeeJobPostulation', { jobOfferId, employeeId }, { withCredentials: true });
+
+        if (response.status === 200) 
+            return response;
+        
+    } catch (error) {
+        console.error('Error removing employee Postulation:', error);
+        throw error;
+    }
+};

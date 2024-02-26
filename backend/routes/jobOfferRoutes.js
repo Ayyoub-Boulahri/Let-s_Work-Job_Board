@@ -10,5 +10,8 @@ router.post('/employeePostulation', JobOfferController.getEmployeePostulation)
 router.put('/updateEmployeePostulation', JobOfferController.updateEmployeePostulation)
 router.post('/someCompanyJobOffers', JobOfferController.getSomeCompanyJobOffers) 
 router.post('/companyJobOffersCount', JobOfferController.getCompanyJobOffersCount)
+router.post('/employeeJobRequests', JobOfferController.getEmployeeJobRequests)
+router.post('/employeeJobRequestsCount', JobOfferController.getEmployeeJobRequestCount)
+router.post('/update/removeEmployeeJobPostulation', JobOfferController.removeEmployeeJobPostulation)
 
 module.exports = router;

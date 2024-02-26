@@ -2,13 +2,15 @@ import { Avatar } from '@nextui-org/react'
 import React from 'react'
 import "../../css/card.css"
 import { convertBufferToDataURL, formatNumFollowers } from '../../services/convertFunctions'
+import { useNavigate } from 'react-router-dom'
 function CompanyProfileCard(props) {
+    const navigate = useNavigate()
     return (
             <div className='flex justify-between items-center p-4 rounded-lg cursor-pointer'>
                 <div className='flex gap-8 justify-start'>
-                    <Avatar src={convertBufferToDataURL(props.logo)} size="lg" onClick={() => {window.location.href = "/companies/company/" + props.id}}/>
+                    <Avatar src={convertBufferToDataURL(props.logo)} size="lg" onClick={() => navigate("/companies/company/" + props.id)}/>
                     <div>
-                        <h1 className='font-bold text-default-600 text-[20px]'  onClick={() => {window.location.href = "/companies/company/" + props.id}}>{props.name}</h1>
+                        <h1 className='font-bold text-default-600 text-[20px]'  onClick={() => navigate("/companies/company/" + props.id)}>{props.name}</h1>
                         <h4 className='font-semibold text-default-400'>{props.city} ({props.country})</h4>
                     </div>
                 </div>
