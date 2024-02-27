@@ -1,8 +1,28 @@
-.isActive{
-    color:#15803D;
+li {
+    overflow: hidden;
 }
 
-.element:hover{
-    color:#15803D;
-    transition: color 0.3s ease;
+.nav-link {
+    position: relative;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.nav-link::before {
+    content: "";
+    background-color: white;
+    height: 2px;
+    width: 100%;
+    position: absolute;
+    top: 80%;
+    left: -100%;
+    transition: 0.5s;
+}
+
+.nav-link:hover, .isActive {
+    font-size: 20px;
+}
+
+.nav-link:hover::before, .isActive::before{
+    left: 0;
 }
