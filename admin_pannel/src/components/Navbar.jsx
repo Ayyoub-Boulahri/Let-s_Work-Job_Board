@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useLocation } from 'react-router-dom'; // Import useLocation hook
+import { useLocation } from 'react-router-dom'; 
 import '../css/navBar.css';
 
 function Navbar() {
-    const location = useLocation(); // Access current location using useLocation hook
+    const location = useLocation(); 
 
     const navList = [
         {
@@ -28,7 +28,7 @@ function Navbar() {
         <div className=''>
             <div className='w-full flex justify-between items-center navbar '>
                 <div >
-                    <h1 className='text-green-700 text-[30px] font-poppins font-extrabold py-5'>
+                    <h1 className='text-green-700 text-[30px] font-poppins font-extrabold py-5 cursor-pointer'>
                         Let's Work
                     </h1>
                 </div>
@@ -44,7 +44,9 @@ function Navbar() {
                     </ul>
                 </div>
                 <div>
-                    Answer clients
+                    <h1 className='text-green-700 text-[30px] font-poppins font-extrabold py-5 cursor-pointer'>
+                        Support
+                    </h1>
                 </div>
             </div>
         </div>
