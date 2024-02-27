@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Avatar } from '@nextui-org/react'
 import "../../css/jobCard.css"
 import { useNavigate } from 'react-router-dom'
@@ -6,8 +6,13 @@ import { convertBufferToDataURL, formatDate } from '../../services/convertFuncti
 
 function JobCard(props) {
     const navigate = useNavigate()
+    
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [])
+
     return (
-        <div className="rounded-md flex flex-col px-4 pb-2 pt-3 gap-2 bg-[#121212] card" onClick={() => {window.location.href = "/jobs/job/" + props.job._id}}>
+        <div className="rounded-md flex flex-col px-4 pb-2 pt-3 gap-2 bg-[#121212] card" onClick={() => navigate("/jobs/job/" + props.job._id)}>
             <div className='flex w-full justify-between'>
                 <p className='text-default-500 text-small font-bold'>{formatDate(props.job.date_publication)}</p>
                 <div className={`rounded-full  px-4 ${props.job.job_status ? "bg-green-700" : "bg-red-500"}`}>{props.job.job_status ? "Open" : "Closed"}</div>

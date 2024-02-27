@@ -30,7 +30,6 @@ export const unfollowCompany = async (company_id, employee_id) => {
 export const isFollower = async (company_id, employee_id) => {
     try {
         const isFollowerResponse = await axios.post("http://localhost:5000/api/companies/follow/isFollower", { company_id, employee_id });
-        console.log(isFollowerResponse.status)
         if (isFollowerResponse.status === 200)
             return true;
         return false

@@ -64,7 +64,6 @@ const employeeSlice = createSlice({
         },
         removeExperience: (state, action) => {
             const experienceIdToRemove = action.payload.id_experience;
-            console.log(experienceIdToRemove)
             state.value.experiences = state.value.experiences.filter(
                 experience => experience.id_experience !== experienceIdToRemove
             );

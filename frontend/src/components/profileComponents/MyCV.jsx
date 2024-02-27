@@ -43,7 +43,7 @@ function MyCV(props) {
             </label>
             <input type="file" id='cvInput' accept=".pdf" className='hidden' onChange={handleFile} />
             <div className="w-full max-w-4xl mx-auto">
-                <iframe src={convertBase64ToUrlFile(props.userInfos.cv)} title='kdksqf' className='w-full h-screen' />
+                <iframe src={convertBase64ToUrlFile(props.userInfos.cv)} className='w-full h-screen' />
             </div>
 
         </div>

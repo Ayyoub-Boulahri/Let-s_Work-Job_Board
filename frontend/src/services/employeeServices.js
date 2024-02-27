@@ -171,3 +171,37 @@ export const updateEmployeeCv = async (_id, cv) => {
         throw error;
     }
 }
+
+export const getSomeEmployees = async (project, skip, limit) => {
+    try {
+        const response = await axios.post("http://localhost:5000/api/employees/getSomeEmployees", { project, skip, limit }, { withCredentials: true });
+        if (response.status === 200)
+            return response.data.employees;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export const getTotalEmployees = async () => {
+    try {
+        const response = await axios.get("http://localhost:5000/api/employees/totalEmployees", { withCredentials: true });
+        if (response.status === 200) {
+            return response.data.totalEmployees;
+        }
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}
+
+export const getEmployeeById = async (employeeId) => {
+    try {
+        const response = await axios.post("http://localhost:5000/api/employees/employeeById", { employeeId }, { withCredentials: true });
+        if (response.status === 200)
+            return response.data.employeeInfos;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

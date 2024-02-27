@@ -352,6 +352,61 @@ class EmployeeController {
             return res.status(500).json({ message: "Internal Server Error" });
         }
     }
+
+    getSomeEmployees = async (req, res) => {
+        try {
+            const { project, skip, limit } = req.body;
+
+            const employees = await Employee.find({}, project)
+                .skip(parseInt(skip))
+                .limit(parseInt(limit)).lean();
+
+            for (let i = 0; i < employees.length; i++) {
+                const base64Photo = employees[i].profilePhoto.toString('base64');
+                employees[i].profilePhoto = base64Photo;
+            }
+
+
+            if (!employees || employees.length === 0) {
+                return res.status(404).json({ error: 'No employee found' });
+            }
+
+            return res.status(200).json({ employees: employees });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    getTotalEmployees = async (req, res) => {
+        try {
+            const count = await Employee.countDocuments();
+            return res.status(200).json({ totalEmployees: count });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+
+    getEmployeeById = async (req, res) => {
+        const { employeeId } = req.body;
+        try {
+            const employeeInfos = await Employee.findOne({ _id: employeeId }, { followings: 0, password: 0}).lean()
+            if (!employeeInfos)
+                return res.status(404).json({ message: 'Employee not found' });
+
+            const base64Photo = employeeInfos.profilePhoto.toString('base64');
+            const base64Cv = employeeInfos.cv.toString('base64');
+
+            employeeInfos.profilePhoto = base64Photo;
+            employeeInfos.cv = base64Cv;
+
+            return res.status(200).json({ employeeInfos: employeeInfos });
+        } catch (error) {
+            console.log('error getting employee : ' + error)
+            return res.status(500).json({ message: "Internal Server Error" });
+        }
+    }
     
 }
 

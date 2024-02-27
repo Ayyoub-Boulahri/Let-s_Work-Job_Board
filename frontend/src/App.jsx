@@ -33,7 +33,7 @@ function App() {
               <Route path='/jobs/job/:job_id' element={<JobOffer />} />
               <Route path='/jobRequests' element={<JobRequests />} />
               <Route path='/Profiles' element={<Profiles />} />
-              <Route path='/profiles/profile/:profile_id' element={<ProfileEmployee />} />
+              <Route path='/profiles/profile/:employee_id' element={<ProfileEmployee />} />
               <Route path='/jobListings' element={<JobListings />} />
               <Route path='/newOffer' element={<NewOffer />} />
               <Route path='*' element={<Error404Page />} />

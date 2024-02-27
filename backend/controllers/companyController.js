@@ -208,6 +208,7 @@ class CompanyController {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }
+
     getSuggestionsByIndustry = async (req, res) => {
         const { industry, idExclu } = req.query;
         const company_id = new ObjectId(idExclu)
@@ -377,6 +378,58 @@ class CompanyController {
             return res.status(500).json({ message: "Internal server error" });
         }
     }
+
+    getCompanyFollowers = async (req, res) => {
+        const { companyId, skip, limit } = req.body;
+        try {
+            const company = await Company.aggregate([
+                { $match: { _id: new ObjectId(companyId) } },
+                { $unwind: "$followers" }, 
+                { $skip: skip }, 
+                { $limit: limit }, 
+                {
+                    $lookup: {
+                        from: "employees",
+                        localField: "followers.employee",
+                        foreignField: "_id",
+                        as: "followerDetails"
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        follower: {
+                            $arrayElemAt: ["$followerDetails", 0] 
+                        }
+                    }
+                },
+                {
+                    $project: {
+                        _id: "$follower._id",
+                        profilePhoto: "$follower.profilePhoto",
+                        first_name: "$follower.first_name",
+                        last_name: "$follower.last_name",
+                        email: "$follower.email",
+                    }
+                }
+            ]);
+
+            if (!company || company.length === 0) {
+                return res.status(404).json({ message: "Company not found" });
+            }
+
+            for(var i = 0; i < company.length; i++) {
+                let followerPhoto = company[i].profilePhoto.toString('base64');
+                company[i].profilePhoto = followerPhoto
+            }
+
+            return res.status(200).json({ followers: company });
+        } catch (error) {
+            console.error("Error fetching company followers:", error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    };
+
 }
 
 module.exports = new CompanyController();

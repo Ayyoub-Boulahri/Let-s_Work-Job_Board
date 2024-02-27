@@ -32,7 +32,6 @@ function ApplyPopUp(props) {
                 })
 
                 setAttachedFiles(newAttachements)
-
                 if (!found) {
                     setAttachedFiles((prev) => [...prev, { name: attachment, file: base64String }]);
                 }
@@ -78,7 +77,6 @@ function ApplyPopUp(props) {
 
     const handleClosing = (onClose) => {
         onClose();
-        setAttachedFiles([])
     }
 
     return (
