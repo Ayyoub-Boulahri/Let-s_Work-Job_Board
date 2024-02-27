@@ -175,9 +175,9 @@ class JobOfferController {
     }
 
     getSomeCompanyJobOffers = async (req, res) => {
-        const { id, project, skip, limit } = req.body;
+        const { id, project, skip, limit, condition } = req.body;
         try {
-            const jobOffers = await JobOffer.find({ company: id, job_status: true }, project).skip(skip).limit(limit)
+            const jobOffers = await JobOffer.find(condition, project).skip(skip).limit(limit)
 
             if (!jobOffers || jobOffers.length === 0)
                 return res.status(404).json({ error: 'no jobOffer found' })
@@ -190,9 +190,9 @@ class JobOfferController {
     }
 
     getCompanyJobOffersCount = async (req, res) => {
-        const { companyId } = req.body;
+        const { companyId, condition } = req.body;
         try {
-            const jobOffersCount = await JobOffer.countDocuments({ company: companyId, job_status: true });
+            const jobOffersCount = await JobOffer.countDocuments(condition);
 
             if (jobOffersCount === 0)
                 return res.status(404).json({ error: 'No job offers found for the company' });

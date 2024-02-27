@@ -71,9 +71,9 @@ export const updateEmployeePostulation = async (jobId, employeeId, attachements)
     }
 }
 
-export const getSomeCompanyJobOffers = async (id, project, skip, limit) => {
+export const getSomeCompanyJobOffers = async (id, project, skip, limit, condition) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/jobOffers/someCompanyJobOffers", { id, project, skip, limit }, { withCredentials: true });
+        const response = await axios.post("http://localhost:5000/api/jobOffers/someCompanyJobOffers", { id, project, skip, limit, condition }, { withCredentials: true });
         if (response.status === 200)
             return response.data.jobOffers;
     } catch (error) {
@@ -82,9 +82,9 @@ export const getSomeCompanyJobOffers = async (id, project, skip, limit) => {
     }
 }
 
-export const getCompanyJobOffersCount = async (companyId) => {
+export const getCompanyJobOffersCount = async (companyId, condition) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/jobOffers/companyJobOffersCount", { companyId }, { withCredentials: true });
+        const response = await axios.post("http://localhost:5000/api/jobOffers/companyJobOffersCount", { companyId, condition }, { withCredentials: true });
         if (response.status === 200)
             return response.data.jobOffersCount;
     } catch (error) {

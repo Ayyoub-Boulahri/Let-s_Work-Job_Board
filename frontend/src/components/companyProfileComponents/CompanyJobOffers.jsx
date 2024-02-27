@@ -11,7 +11,7 @@ function CompanyJobOffers(props) {
     const jobPerTime = 10
 
     useEffect(() => {
-        getCompanyJobOffersCount(props.company_id)
+        getCompanyJobOffersCount(props.company_id, { company: props.company_id, job_status: true })
             .then((count) => setTotalJobOffers(count))
             .catch((err) => console.error(err));
     }, [])
@@ -42,7 +42,7 @@ function CompanyJobOffers(props) {
                 "delais_depot": 1,
                 "job_status": 1,
             },
-            ((page - 1) * jobPerTime), jobPerTime)
+            ((page - 1) * jobPerTime), jobPerTime, { company: props.company_id, job_status: true })
             .then(response => {
                 if (page != 1) setJobs(prevJobs => [...prevJobs, ...response])
                 else {
