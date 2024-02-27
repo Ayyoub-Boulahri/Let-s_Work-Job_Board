@@ -16,5 +16,8 @@ router.put('/update/removeEmployeeEducation', EmployeeController.removeEmployeeE
 router.put('/update/cv', EmployeeController.updateEmployeeCv)
 router.put('/follow/addFollowing', EmployeeController.addFollowing)
 router.put('/follow/removeFollowing', EmployeeController.removeFollowing)
+router.post('/getSomeEmployees', EmployeeController.getSomeEmployees)
+router.get('/totalEmployees', EmployeeController.getTotalEmployees)
+router.post('/employeeById', EmployeeController.getEmployeeById)
 
 module.exports = router;

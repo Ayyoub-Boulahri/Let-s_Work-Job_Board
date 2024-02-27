@@ -32,7 +32,7 @@ function JobOffer() {
     <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg md:pt-40 pt-28 xl:pb-4`}>
       <div className={`${styles.boxWidth} HeightTall`}>
         {
-          isLoadingJobOffer ? <div className='flex justify-center items-start'><Spinner size='lg' /> </div>
+          isLoadingJobOffer ? <div className='flex justify-center items-start'><Spinner size='lg' /></div>
           :
           <div className='flex md:flex-row-reverse flex-col gap-10'>
 

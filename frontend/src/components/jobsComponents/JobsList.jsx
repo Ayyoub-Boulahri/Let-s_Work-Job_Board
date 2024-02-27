@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import mac from "../../assets/mac.png";
 import JobCard from '../../components/jobsComponents/JobCard';
-import WhatsApp from "../../assets/WhatsApp.jpg";
-import apple from "../../assets/apple.jpg";
 import { Pagination } from '@nextui-org/react';
 import JobFilters from './JobFilters';
-import { useQuery } from '@tanstack/react-query';
 import { getSomeJobOffers, getTotalOpenJobOffers } from '../../services/jobOfferServices';
 import { Spinner } from "@nextui-org/react";
 
@@ -16,6 +12,7 @@ function JobsList() {
     const [isLoadingJobs, setIsLoadingJobs] = useState(true)
 
     const jobPerPage = 10;
+
     const handlePageChange = (newPage) => {
         setCurrentPage(newPage);
         window.scrollTo({ top: 400 });

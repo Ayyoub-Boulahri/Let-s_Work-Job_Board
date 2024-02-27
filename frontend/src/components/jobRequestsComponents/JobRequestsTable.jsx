@@ -22,7 +22,6 @@ function JobRequestsTable(props) {
 
     const headerColumns = ["Company", "Job Title", "Job Status", "Apply At", "Status", "Actions"]
     const authInfo = useSelector((state) => state.isAuthenticated.value);
-    const [hasMore, setHasMore] = useState(true)
     const [jobRequests, setJobRequests] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
