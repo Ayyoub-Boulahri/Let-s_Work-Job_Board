@@ -105,6 +105,7 @@ function ApplyPopUp(props) {
                                                 type="file"
                                                 id="fileInput"
                                                 name="fileInput"
+                                                accept=".pdf"
                                                 onChange={(e) => handleFileChange(e, attach)}
                                                 className="text-gray-300 p-2 rounded-md"
                                             />

@@ -1,36 +1,41 @@
-import React, { useEffect, useState } from "react";
+ import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip } from "@nextui-org/react";
 import { EditIcon } from "../UIComponents/EditIcon";
 import { DeleteIcon } from "../UIComponents/DeleteIcon";
-import { MdDownload } from "react-icons/md";
 import CandidatPopUp from "./CandidatPopUp";
 import { useNavigate } from "react-router-dom";
 import { getCompanyJobOffersCount, getSomeCompanyJobOffers, getTotalOpenJobOffers } from "../../services/jobOfferServices";
 import { useSelector } from "react-redux";
 import { formatDate } from "../../services/convertFunctions";
 import { Pagination } from "@nextui-org/react";
+import DeleteJobOffer from "./DeleteJobOffer";
+import DownloadPostulations from "./DownloadPostulations";
+import { Input } from "@nextui-org/react";
+import { CiSearch } from "react-icons/ci";
+import { MdClear } from "react-icons/md";
+import { MdDownload } from "react-icons/md";
+import { MdFileDownloadOff } from "react-icons/md";
 
 function JobListsTable(props) {
     const authInfo = useSelector((state) => state.isAuthenticated.value);
     const [jobListings, setJobListings] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
-    const jobListingPerTime = 5
+    const [isModified, setIsModified] = useState(false)
+    const [searchText, setSearchText] = useState("")
 
-    const statusColorMap = {
-        "Open": "success",
-        "Close": "danger",
-    };
+    const jobListingPerTime = 3
 
     const navigate = useNavigate()
 
     const headerColumns = ["Job Title", "Posted on", "Deadline", "total condidat", "Status", "Download List", "Actions"]
 
     useEffect(() => {
+        console.log(searchText)
 
         const getTotalJobs = async () => {
             try {
-                getCompanyJobOffersCount(authInfo?.userId, {company: authInfo?.userId}).then(response => {
+                getCompanyJobOffersCount(authInfo?.userId, { company: authInfo?.userId, ...props.condition }, searchText).then(response => {
                     setTotalPages(Math.ceil(response / jobListingPerTime))
                 }).catch(error => {
                     console.error(error);
@@ -40,10 +45,10 @@ function JobListsTable(props) {
             }
         }
 
-        getTotalJobs()
         getJobOffers()
+        getTotalJobs()
 
-    }, [authInfo, currentPage])
+    }, [authInfo, currentPage, isModified, searchText])
 
     const getJobOffers = async () => {
         try {
@@ -55,18 +60,69 @@ function JobListsTable(props) {
                     "date_publication": 1,
                     "delais_depot": 1,
                     "job_status": 1,
-                }, (currentPage - 1) * jobListingPerTime, jobListingPerTime, {company: authInfo?.userId}).then(response => {
+                    "numberOfPostulations": 1
+                }, (currentPage - 1) * jobListingPerTime, jobListingPerTime, props.condition, searchText)
+                .then(response => {
                     setJobListings(response)
+                    console.log(response)
                 }).catch(error => {
-                    console.error(error);
+                    setJobListings([])
                 });
         } catch (error) {
             console.error(error)
         }
     }
+
+    if (jobListings.length === 0 && !searchText) {
+        return (
+            <div className='flex justify-center mt-10'>
+                You don't have any Job Requests Yet
+            </div>
+        )
+    }
+
     return (
         <>
-            <Table aria-label="Example table with custom cells">
+            <div className="flex w-[100%] items-center justify-end mb-6">
+                <div className="md:w-[30%] w-[80%]">
+                    <Input
+                        label="Search"
+                        radius="lg"
+                        size="sm"
+                        classNames={{
+                            label: "text-black/50 dark:text-white/90",
+                            input: [
+                                "bg-transparent",
+                                "text-black/90 dark:text-white/90",
+                                "placeholder:text-default-700/50 dark:placeholder:text-white/60",
+                            ],
+                            innerWrapper: "bg-transparent",
+                            inputWrapper: [
+                                "shadow-xl",
+                                "bg-default-200/50",
+                                "dark:bg-default/60",
+                                "backdrop-blur-xl",
+                                "backdrop-saturate-200",
+                                "hover:bg-default-200/70",
+                                "dark:hover:bg-default/70",
+                                "group-data-[focused=true]:bg-default-200/50",
+                                "dark:group-data-[focused=true]:bg-default/60",
+                                "!cursor-text",
+                            ],
+                        }}
+                        placeholder="Type to search..."
+                        startContent={
+                            <CiSearch />
+                        }
+                        endContent={
+                            <MdClear className="cursor-pointer" onClick={() => setSearchText("")} />
+                        }
+                        value={searchText}
+                        onChange={(e) => { setCurrentPage(1); setSearchText(e.target.value) }}
+                    />
+                </div>
+            </div>
+            <Table aria-label="Job Listings Table">
                 <TableHeader>
                     {
                         headerColumns.map((headerColumn, index) => (
@@ -83,7 +139,7 @@ function JobListsTable(props) {
                                 <TableCell><span className="hover:text-rose-500 duration-200 cursor-pointer" onClick={() => navigate("/jobs/job/" + jobOffer._id)}>{jobOffer.title}</span></TableCell>
                                 <TableCell className="text-default-500">{formatDate(jobOffer.date_publication)}</TableCell>
                                 <TableCell className="text-default-500">{formatDate(jobOffer.delais_depot)}</TableCell>
-                                <TableCell>15</TableCell>
+                                <TableCell>{jobOffer.numberOfPostulations}</TableCell>
                                 <TableCell>
                                     <Chip className="capitalize" color={jobOffer.job_status ? "success" : "danger"} size="sm" variant="flat">
                                         {jobOffer.job_status ? "Open" : "Closed"}
@@ -91,27 +147,32 @@ function JobListsTable(props) {
                                 </TableCell>
                                 <TableCell align="center">
                                     <span className="text-lg text-default-400 cursor-pointer active:opacity-50 flex justify-center">
-                                        <MdDownload size={22} className="hover:text-green-600 duration-300" />
+                                        <DownloadPostulations
+                                            jobOfferId={jobOffer._id}
+                                            title={jobOffer.title}
+                                            echecContent={
+                                                <Tooltip color="danger" content="no Postulation Available">
+                                                    <span className="text-lg text-danger-400 cursor-pointer active:opacity-50">
+                                                        <MdFileDownloadOff />
+                                                    </span>
+                                                </Tooltip>
+                                            }
+                                            successContent={
+                                                <MdDownload size={22} className="hover:text-green-600 duration-300" />
+                                            }
+                                        />
                                     </span>
                                 </TableCell>
                                 <TableCell>
                                     <div className="relative flex items-center gap-2">
-                                        {/* <Tooltip content="Details">
-                                        <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                                            <EyeIcon />
-                                        </span>
-                                    </Tooltip> */}
-                                        <CandidatPopUp />
+                                        <CandidatPopUp jobOfferId={jobOffer._id} title={jobOffer.title} numberOfPostulations={jobOffer.numberOfPostulations}/>
                                         <Tooltip content="edit Job">
                                             <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
                                                 <EditIcon />
                                             </span>
                                         </Tooltip>
-                                        <Tooltip color="danger" content="Delete Job">
-                                            <span className="text-lg text-danger cursor-pointer active:opacity-50">
-                                                <DeleteIcon />
-                                            </span>
-                                        </Tooltip>
+
+                                        <DeleteJobOffer jobOfferId={jobOffer._id} setIsModified={setIsModified} />
                                     </div>
                                 </TableCell>
                             </TableRow>

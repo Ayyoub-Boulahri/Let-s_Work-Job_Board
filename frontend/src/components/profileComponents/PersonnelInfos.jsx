@@ -14,6 +14,7 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useQuery } from '@tanstack/react-query';
 import getAllCountries from '../../services/countriesServices';
+import { formatDate, formatDateForInput } from '../../services/convertFunctions';
 
 function PersonnelInfos(props) {
   const authInfo = useSelector((state) => state.isAuthenticated.value);
@@ -51,7 +52,7 @@ function PersonnelInfos(props) {
     {
       id: 5,
       name: "Date of Birth",
-      text: props.userInfos.date_of_birth
+      text: formatDate(props.userInfos.date_of_birth)
     },
     {
       id: 6,
@@ -194,7 +195,7 @@ function PersonnelInfos(props) {
               <Input type="text" variant={"underlined"} color={errors.firstName && "danger"} {...register("firstName")} defaultValue={props.userInfos.first_name} className='sm:w-[70%] w-[100%]' label="First Name" />
               <Input type="text" variant={"underlined"} color={errors.lastName && "danger"} {...register("lastName")} defaultValue={props.userInfos.last_name} className='sm:w-[70%] w-[100%]' label="Last Name" />
               <Input type="text" variant={"underlined"} color={errors.phoneNumber && "danger"} {...register("phoneNumber")} defaultValue={props.userInfos.phone} className='sm:w-[70%] w-[100%]' label="Phone" />
-              <Input type="date" variant={"underlined"} color={errors.dob && "danger"} {...register("dob")} defaultValue={props.userInfos.date_of_birth} className='sm:w-[70%] w-[100%]' label="Date of Birth" />
+              <Input type="date" variant={"underlined"} color={errors.dob && "danger"} {...register("dob")} defaultValue={formatDateForInput(props.userInfos.date_of_birth)} className='sm:w-[70%] w-[100%]' label="Date of Birth" />
               <Input type="text" variant={"underlined"} color={errors.address && "danger"} {...register("address")} defaultValue={props.userInfos.address} className='sm:w-[70%] w-[100%]' label="Adresse" />
 
               <label htmlFor="countrySelect" className={`mt-4 block ${errors.country && "text-danger"}`}>Country</label>

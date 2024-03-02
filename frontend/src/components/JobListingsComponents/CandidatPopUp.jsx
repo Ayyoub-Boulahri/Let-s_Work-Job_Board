@@ -1,5 +1,5 @@
-import React from "react";
-import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider } from "@nextui-org/react";
+import React, { useEffect, useState } from "react";
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider, Pagination } from "@nextui-org/react";
 import { RiListSettingsLine } from "react-icons/ri";
 import { Select, Tooltip, SelectItem, Input, Switch } from "@nextui-org/react";
 import { EyeIcon } from "../UIComponents/EyeIcon";
@@ -8,221 +8,26 @@ import { MdDownload } from "react-icons/md";
 import candidat from "../../assets/candidat.jpg"
 import candidat2 from "../../assets/candidat2.jpg"
 import CandidatsTable from "./CandidatsTable";
+import DownloadPostulations from "./DownloadPostulations";
+import { MdFileDownloadOff } from "react-icons/md";
+import { getJobOfferPostulationsTotal } from "../../services/jobOfferServices";
 
-function CandidatPopUp() {
+function CandidatPopUp(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-    const candidats = [
-        {
-            id: 1,
-            email: "john.doe@example.com",
-            firstname: "John",
-            lastname: "Doe",
-            phone: "0612345678",
-            birthdate: "1990-05-15",
-            address: "123 Main Street",
-            country: "United States",
-            city: "Las Vegas",
-            date_applayment: "12/01/2024",
-            photo: candidat,
-            cv_download: null,
-            attch_download: null,
-            experiences: [
-                "Software Developer at Tech Solutions Inc. (2015-2020)",
-                "Senior Developer at InnovateTech Ltd. (2021-present)"
-            ],
-            educations: [
-                {
-                    degree: "Bachelor of Science in Computer Science",
-                    school: "University of Techville",
-                    graduation_date: 2015
-                }
-            ],
-            skills: ["JavaScript", "React", "Node.js", "HTML", "CSS", "Git"]
-        },
-        {
-            id: 2,
-            email: "john.doe@example.com",
-            firstname: "ayyoub",
-            lastname: "Boulahri",
-            phone: "0615487523",
-            birthdate: "2003-05-15",
-            address: "123 Main Street",
-            country: "Morocco",
-            city: "Meknes",
-            date_applayment: "19/01/2024",
-            photo: candidat2,
-            cv_download: null,
-            attch_download: null,
-            experiences: [
-                "Lead Software Engineer at Cloud Innovations (2022-present)",
-                "Software Developer at Tech Solutions Inc. (2015-2020)",
-                "Senior Developer at InnovateTech Ltd. (2021)"
-            ],
-            educations: [
-                {
-                    degree: "Master of Science in Computer Science",
-                    school: "University of Techville",
-                    graduation_date: 2020
-                }
-            ],
-            skills: [
-                "JavaScript",
-                "React",
-                "Node.js",
-                "HTML",
-                "CSS",
-                "Git",
-                "Python",
-                "Docker",
-                "SQL",
-                "MongoDB",
-                "Vs code",
-                "unity",
-                ".net",
-                "Microsoft Office",
-            ]
-        },
-        {
-            id: 1,
-            email: "john.doe@example.com",
-            firstname: "John",
-            lastname: "Doe",
-            phone: "0612345678",
-            birthdate: "1990-05-15",
-            address: "123 Main Street",
-            country: "United States",
-            city: "Las Vegas",
-            date_applayment: "12/01/2024",
-            photo: candidat,
-            cv_download: null,
-            attch_download: null,
-            experiences: [
-                "Software Developer at Tech Solutions Inc. (2015-2020)",
-                "Senior Developer at InnovateTech Ltd. (2021-present)"
-            ],
-            educations: [
-                {
-                    degree: "Bachelor of Science in Computer Science",
-                    school: "University of Techville",
-                    graduation_date: 2015
-                }
-            ],
-            skills: ["JavaScript", "React", "Node.js", "HTML", "CSS", "Git"]
-        },
-        {
-            id: 2,
-            email: "john.doe@example.com",
-            firstname: "ayyoub",
-            lastname: "Boulahri",
-            phone: "0615487523",
-            birthdate: "2003-05-15",
-            address: "123 Main Street",
-            country: "Morocco",
-            city: "Meknes",
-            date_applayment: "19/01/2024",
-            photo: candidat2,
-            cv_download: null,
-            attch_download: null,
-            experiences: [
-                "Lead Software Engineer at Cloud Innovations (2022-present)",
-                "Software Developer at Tech Solutions Inc. (2015-2020)",
-                "Senior Developer at InnovateTech Ltd. (2021)"
-            ],
-            educations: [
-                {
-                    degree: "Master of Science in Computer Science",
-                    school: "University of Techville",
-                    graduation_date: 2020
-                }
-            ],
-            skills: [
-                "JavaScript",
-                "React",
-                "Node.js",
-                "HTML",
-                "CSS",
-                "Git",
-                "Python",
-                "Docker",
-                "SQL",
-                "MongoDB",
-                "Vs code",
-                "unity",
-                ".net",
-                "Microsoft Office",
-            ]
-        },
-        {
-            id: 1,
-            email: "john.doe@example.com",
-            firstname: "John",
-            lastname: "Doe",
-            phone: "0612345678",
-            birthdate: "1990-05-15",
-            address: "123 Main Street",
-            country: "United States",
-            city: "Las Vegas",
-            date_applayment: "12/01/2024",
-            photo: candidat,
-            cv_download: null,
-            attch_download: null,
-            experiences: [
-                "Software Developer at Tech Solutions Inc. (2015-2020)",
-                "Senior Developer at InnovateTech Ltd. (2021-present)"
-            ],
-            educations: [
-                {
-                    degree: "Bachelor of Science in Computer Science",
-                    school: "University of Techville",
-                    graduation_date: 2015
-                }
-            ],
-            skills: ["JavaScript", "React", "Node.js", "HTML", "CSS", "Git"]
-        },
-        {
-            id: 2,
-            email: "john.doe@example.com",
-            firstname: "ayyoub",
-            lastname: "Boulahri",
-            phone: "0615487523",
-            birthdate: "2003-05-15",
-            address: "123 Main Street",
-            country: "Morocco",
-            city: "Meknes",
-            date_applayment: "19/01/2024",
-            photo: candidat2,
-            cv_download: null,
-            attch_download: null,
-            experiences: [
-                "Lead Software Engineer at Cloud Innovations (2022-present)",
-                "Software Developer at Tech Solutions Inc. (2015-2020)",
-                "Senior Developer at InnovateTech Ltd. (2021)"
-            ],
-            educations: [
-                {
-                    degree: "Master of Science in Computer Science",
-                    school: "University of Techville",
-                    graduation_date: 2020
-                }
-            ],
-            skills: [
-                "JavaScript",
-                "React",
-                "Node.js",
-                "HTML",
-                "CSS",
-                "Git",
-                "Python",
-                "Docker",
-                "SQL",
-                "MongoDB",
-                "Vs code",
-                "unity",
-                ".net",
-                "Microsoft Office",
-            ]
-        }
-    ]
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(10)
+    const [searchText, setSearchText] = useState("")
+
+    const postulationPerPage = 4
+
+    useEffect(() => {
+        getTotalPostulations()
+    }, [searchText])
+
+    const getTotalPostulations = async () => {
+        getJobOfferPostulationsTotal(props.jobOfferId, searchText)
+            .then((response) => setTotalPages(Math.ceil(response / postulationPerPage)))
+    }
     return (
         <>
             <button onClick={onOpen}>
@@ -232,23 +37,49 @@ function CandidatPopUp() {
                     </span>
                 </Tooltip>
             </button>
-            <Modal isOpen={isOpen} size="5xl" onOpenChange={onOpenChange} scrollBehavior={"inside"}>
+            <Modal isOpen={isOpen} size="5xl" className="relative" placement="center" onOpenChange={onOpenChange} scrollBehavior={"inside"}>
                 <ModalContent>
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1 text-[20px]">Candidats List</ModalHeader>
-                            <ModalBody className="popupModel">
-
-                                <CandidatsTable candidats={candidats} />
-
+                            <ModalBody className="scrollbar-hide">
+                                <CandidatsTable jobOfferId={props.jobOfferId} postulationPerPage={postulationPerPage} currentPage={currentPage} totalPages={totalPages} setTotalPages={setTotalPages} setSearchText={setSearchText} searchText={searchText} />
                             </ModalBody>
-                            <ModalFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
-                                    Close
-                                </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    <MdDownload size={20} /> Download CSV
-                                </Button>
+
+                            <ModalFooter className={`${props.numberOfPostulations != 0 && "flex justify-between"}`}>
+                                {props.numberOfPostulations != 0 &&
+                                    <Pagination
+                                        showControls
+                                        classNames={{
+                                            cursor: "bg-foreground text-background",
+                                        }}
+                                        color="default"
+                                        page={currentPage}
+                                        total={totalPages}
+                                        onChange={setCurrentPage}
+                                        variant="light"
+                                    />
+                                }
+                                <div className="flex gap-4">
+                                    <Button color="danger" variant="light" onPress={onClose}>
+                                        Close
+                                    </Button>
+                                    <DownloadPostulations
+                                        jobOfferId={props.jobOfferId}
+                                        title={props.title}
+                                        echecContent={
+                                            props.numberOfPostulations != 0 &&
+                                            <Button color="danger">
+                                                <MdFileDownloadOff size={20} /> no postulations
+                                            </Button>
+                                        }
+                                        successContent={
+                                            <Button color="primary" id="myButton">
+                                                <MdDownload size={20} /> Download CSV
+                                            </Button>
+                                        }
+                                    />
+                                </div>
                             </ModalFooter>
                         </>
                     )}

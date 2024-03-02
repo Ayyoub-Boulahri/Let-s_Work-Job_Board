@@ -175,24 +175,41 @@ class JobOfferController {
     }
 
     getSomeCompanyJobOffers = async (req, res) => {
-        const { id, project, skip, limit, condition } = req.body;
+        const { id, project, skip, limit, condition, searchFilter } = req.body;
         try {
-            const jobOffers = await JobOffer.find(condition, project).skip(skip).limit(limit)
+            const jobOffers = await JobOffer.aggregate([
+                {
+                    $match: {
+                        company: new ObjectId(id),
+                        title: { $regex: searchFilter, $options: "i" },
+                        ...condition
+                    }
+                },
+                {
+                    $addFields: {
+                        numberOfPostulations: { $cond: { if: { $isArray: "$postulations" }, then: { $size: "$postulations" }, else: 0 } }
+                    }
+                },
+                { $sort: { date_publication: -1 } },
+                { $project: project },
+                { $skip: skip },
+                { $limit: limit },
+            ])
 
             if (!jobOffers || jobOffers.length === 0)
-                return res.status(404).json({ error: 'no jobOffer found' })
+                return res.status(404).json({ error: 'No job offers found' });
 
-            return res.status(200).json({ jobOffers: jobOffers });
+            return res.status(200).json({ jobOffers });
         } catch (error) {
-            console.error(error)
-            return res.status(500).json({ error: 'Internal Server Error' })
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
         }
     }
 
     getCompanyJobOffersCount = async (req, res) => {
-        const { companyId, condition } = req.body;
+        const { companyId, condition, searchFilter } = req.body;
         try {
-            const jobOffersCount = await JobOffer.countDocuments(condition);
+            const jobOffersCount = await JobOffer.countDocuments({ ...condition, title: { $regex: searchFilter, $options: "i" }, });
 
             if (jobOffersCount === 0)
                 return res.status(404).json({ error: 'No job offers found for the company' });
@@ -340,7 +357,7 @@ class JobOfferController {
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     };
-    
+
     removeEmployeeJobPostulation = async (req, res) => {
         const { jobOfferId, employeeId } = req.body;
         try {
@@ -349,7 +366,7 @@ class JobOfferController {
                 { $pull: { postulations: { employee: new ObjectId(employeeId) } } }
             )
 
-            if(removePostulation.nModified === 0) 
+            if (removePostulation.nModified === 0)
                 return res.status(404).json({ message: 'Postulation not removed or Job Offer not found' })
 
             return res.status(200).json({ message: "Postulation removed successfully" })
@@ -358,6 +375,148 @@ class JobOfferController {
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+
+    deleteJobOffer = async (req, res) => {
+        const { jobOfferId } = req.body;
+        try {
+            const removeJob = await JobOffer.deleteOne({ _id: new ObjectId(jobOfferId) })
+
+            if (removeJob.deletedCount === 0) {
+                return res.status(404).json({ message: "Job Offer not found" });
+            }
+
+            return res.status(200).json({ message: "Job Offer deleted successfully" });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' })
+        }
+    }
+
+    getJobOfferPostulations = async (req, res) => {
+        const { jobOfferId, project, skip, limit, searchFilter, condition } = req.body;
+        try {
+            const postulations = await JobOffer.aggregate([
+                { $match: { _id: new ObjectId(jobOfferId) } },
+                { $unwind: "$postulations" },
+                {
+                    $lookup: {
+                        from: "employees",
+                        localField: "postulations.employee",
+                        foreignField: "_id",
+                        as: "employee"
+                    }
+                },
+                { $unwind: "$employee" },
+                {
+                    $project: project
+                },
+                {
+                    $match: {
+                        $or: [
+                            { "first_name": { $regex: searchFilter, $options: "i" } }, // Case-insensitive search by first_name
+                            { "last_name": { $regex: searchFilter, $options: "i" } } // Case-insensitive search by last_name
+                        ],
+                        ...condition
+                    }
+                },
+                { $sort: { date_postulation: 1 } },
+                { $skip: skip },
+                { $limit: limit }
+            ]);
+
+            if (!postulations || postulations.length === 0)
+                return res.status(404).json({ message: "No postulation found" });
+
+            return res.status(200).json({ postulations });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    }
+
+    getJobOfferPostulationsTotal = async (req, res) => {
+        const { jobOfferId, searchFilter } = req.body;
+        try {
+            const postulationsCount = await JobOffer.aggregate([
+                { $match: { _id: new ObjectId(jobOfferId) } },
+                { $unwind: "$postulations" },
+                {
+                    $lookup: {
+                        from: "employees",
+                        localField: "postulations.employee",
+                        foreignField: "_id",
+                        as: "employee"
+                    }
+                },
+                { $unwind: "$employee" },
+                {
+                    $match: {
+                        $or: [
+                            { "employee.first_name": { $regex: searchFilter, $options: "i" } }, // Case-insensitive search by first_name
+                            { "employee.last_name": { $regex: searchFilter, $options: "i" } } // Case-insensitive search by last_name
+                        ]
+                    }
+                },
+                { $count: "totalPostulations" }
+            ]);
+
+            if (!postulationsCount || postulationsCount.length === 0)
+                return res.status(404).json({ message: "No postulation found" });
+
+            const totalPostulations = postulationsCount[0].totalPostulations;
+
+            return res.status(200).json({ totalPostulations });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    }
+
+
+    changePostulationStatus = async (req, res) => {
+        const { jobOfferId, status, employeeIds } = req.body;
+        try {
+            let result;
+            if (employeeIds !== "all")
+                result = await JobOffer.updateMany(
+                    {
+                        _id: new ObjectId(jobOfferId),
+                        "postulations.employee": { $in: employeeIds.map(id => new ObjectId(id)) }
+                    },
+                    {
+                        $set: {
+                            "postulations.$[elem].status": status
+                        }
+                    },
+                    {
+                        arrayFilters: [{ "elem.employee": { $in: employeeIds.map(id => new ObjectId(id)) } }]
+                    }
+                );
+            else {
+                result = await JobOffer.updateMany(
+                    {
+                        _id: new ObjectId(jobOfferId),
+                    },
+                    {
+                        $set: {
+                            "postulations.$[elem].status": status
+                        }
+                    },
+                    {
+                        arrayFilters: [{ "elem.employee": { $exists: true } }] // Match any postulation with employee field
+                    }
+                );
+            }
+
+            if (result.ok)
+                return res.status(200).json({ message: "Postulations status updated successfully" });
+
+            return res.status(404).json({ message: "Job offer or postulations not found" });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: "Internal server error" });
+        }
+    };
 }
 
 module.exports = new JobOfferController();

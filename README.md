@@ -29,3 +29,11 @@ here is you will find all the libraries we will use :
 
 - for the ui library we will use the radix ui here is the link for use it :
     - https://www.radix-ui.com/themes/docs/components/button
+
+********************************************************
+
+To install : 
+    - npm install react-infinite-scroll-component
+    - npm install react-csv
+    - npm install jszip
+    - npm install file-saver

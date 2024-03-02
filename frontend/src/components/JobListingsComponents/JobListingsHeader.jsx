@@ -44,15 +44,15 @@ function JobListingsHeader() {
             <Tabs variant="light" aria-label="Tabs variants">
                 <Tab key="All" title="All" >
                     <Divider className='mb-6 mt-2' />
-                    <JobListsTable jobOffers={jobOffers} />
+                    <JobListsTable jobOffers={jobOffers} condition={{}}/>
                 </Tab>
                 <Tab key="Accepted" title="Opens" >
                     <Divider className='mb-6 mt-2' />
-                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "Open")} />
+                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "Open")} condition={{job_status: true}}/>
                 </Tab>
                 <Tab key="In Progress" title="Closed" >
                     <Divider className='mb-6 mt-2' />
-                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "close")} />
+                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "close")} condition={{job_status: false}}/>
                 </Tab>
             </Tabs>
 

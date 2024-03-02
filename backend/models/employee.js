@@ -7,7 +7,7 @@ const employeeSchema = new mongoose.Schema({
   first_name: String,
   last_name: String,
   phone: String,
-  date_of_birth: String,
+  date_of_birth: Date,
   city: String,
   country: String,
   skills: Array,

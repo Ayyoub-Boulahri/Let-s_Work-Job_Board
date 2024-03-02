@@ -71,20 +71,21 @@ export const updateEmployeePostulation = async (jobId, employeeId, attachements)
     }
 }
 
-export const getSomeCompanyJobOffers = async (id, project, skip, limit, condition) => {
+export const getSomeCompanyJobOffers = async (id, project, skip, limit, condition, searchFilter) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/jobOffers/someCompanyJobOffers", { id, project, skip, limit, condition }, { withCredentials: true });
-        if (response.status === 200)
+        const response = await axios.post("http://localhost:5000/api/jobOffers/someCompanyJobOffers", { id, project, skip, limit, condition, searchFilter }, { withCredentials: true });
+        if (response.status === 200){
             return response.data.jobOffers;
+        }
     } catch (error) {
         console.error(error);
         throw error;
     }
 }
 
-export const getCompanyJobOffersCount = async (companyId, condition) => {
+export const getCompanyJobOffersCount = async (companyId, condition, searchFilter) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/jobOffers/companyJobOffersCount", { companyId, condition }, { withCredentials: true });
+        const response = await axios.post("http://localhost:5000/api/jobOffers/companyJobOffersCount", { companyId, condition, searchFilter }, { withCredentials: true });
         if (response.status === 200)
             return response.data.jobOffersCount;
     } catch (error) {
@@ -134,3 +135,48 @@ export const removeEmployeeJobPostulation = async (jobOfferId, employeeId) => {
         throw error;
     }
 };
+
+export const deleteJobOffer = async (jobOfferId) => {
+    try {
+        const response = await axios.delete('http://localhost:5000/api/jobOffers/deleteJobOffer', { data: { jobOfferId } }, { withCredentials: true })
+        if(response.status === 200)
+            return true;
+        return false
+    } catch(error) {
+        console.error('Error deleting employee:', error);
+        throw error;
+    }
+}
+
+export const getPostulations = async (jobOfferId, project, skip, limit, searchFilter, condition) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/jobOffers/postulations', { jobOfferId, project, skip, limit, searchFilter, condition }, { withCredentials: true })
+        if(response.status === 200)
+            return response.data.postulations
+    } catch (error) {
+        console.error("Error getting postulations : ", error)
+        throw error;
+    }
+}
+
+export const getJobOfferPostulationsTotal = async (jobOfferId, searchFilter) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/jobOffers/postulationsTotal', { jobOfferId, searchFilter }, { withCredentials: true });
+        if (response.status === 200)
+            return response.data.totalPostulations;
+    } catch (error) {
+        console.error("Error getting postulations total: ", error);
+        throw error;
+    }
+};
+
+export const changePostulationStatus = async (jobOfferId, status, employeeIds) => {
+    try {
+        const response = await axios.put('http://localhost:5000/api/jobOffers/changePostulationStatus', { jobOfferId, status, employeeIds }, { withCredentials: true })
+        if(response.status === 200)
+            return response;
+    } catch (error) {
+        console.log("Error changing postulation status : ", error)
+        throw error;
+    }
+}

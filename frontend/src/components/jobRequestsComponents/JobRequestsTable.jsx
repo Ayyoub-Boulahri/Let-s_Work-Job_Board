@@ -10,6 +10,7 @@ import { Input } from "@nextui-org/react";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import DeletePostulationModel from "./DeletePostulationModel";
+import { MdClear } from "react-icons/md";
 
 function JobRequestsTable(props) {
 
@@ -90,6 +91,10 @@ function JobRequestsTable(props) {
                         startContent={
                             <CiSearch />
                         }
+                        endContent={
+                            <MdClear className="cursor-pointer" onClick={() => setSearchText("")}/>
+                        }
+                        value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
                     />
                 </div>

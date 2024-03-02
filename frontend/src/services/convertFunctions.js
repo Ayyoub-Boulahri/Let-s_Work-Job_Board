@@ -18,6 +18,20 @@ export function formatDate(dateFromMongo) {
     return `${day}/${month}/${year}`;
 }
 
+export function formatDateForInput(dateString) {
+    // Create a new Date object from the provided date string
+    const date = new Date(dateString);
+
+    // Get the year, month, and day from the date object
+    const year = date.getFullYear();
+    // JavaScript months are 0-based, so we add 1 to get the correct month
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    // Return the formatted date string in the 'YYYY-MM-DD' format expected by input type="date"
+    return `${year}-${month}-${day}`;
+}
+
 export const convertBufferToDataURL = (buffer) => {
     const base64String = buffer.toString('base64');
     return `data:image/*;base64,${base64String}`;

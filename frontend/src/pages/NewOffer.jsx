@@ -22,6 +22,8 @@ const NewOffer = () => {
     }
   }, [])
 
+  const 
+
   return (
     <div className={`${styles.flexStart} ${styles.paddingX} md:px-96 bg-section-dark-bg pt-36 xl:pb-4`}>
       <div className={`${styles.boxWidth} HeightTall`}>

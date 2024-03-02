@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { setLoginOut } from '../stores/authStore';
 import "../css/height.css"
 import { getEmployeeById } from '../services/employeeServices';
-import { convertBufferToDataURL } from '../services/convertFunctions';
+import { convertBufferToDataURL, formatDate } from '../services/convertFunctions';
 import { FaWhatsapp } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaBirthdayCake } from "react-icons/fa";
@@ -26,7 +26,6 @@ function ProfileEmployee() {
  
 
   useEffect(() => {
-    console.log(employee_id)
     const typeUser = localStorage.getItem('typeUser');
     if (typeUser != "company") {
       handleLogout();
@@ -60,7 +59,6 @@ function ProfileEmployee() {
     <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg pt-20 xl:pb-4`}>
       <div className={`${styles.boxWidth} HeightTall`}>
         <div className='my-[12px] p-4 rounded-md'>
-          {/* CONTAINER */}
           <div className='flex md:flex-row flex-col w-[100%]'>
             <div className='md:w-[20%] p-5 flex flex-col gap-6 items-center'>
               <Avatar isBordered color="primary" src={convertBufferToDataURL(employeeInfos.profilePhoto)} className="w-[160px] h-[160px] sticky" />
@@ -88,7 +86,7 @@ function ProfileEmployee() {
 
                 <h1 className='font-semibold text-default-400 text-center flex gap-2 items-center mt-2'>
                   <FaBirthdayCake size={16} />
-                  {employeeInfos.date_of_birth}
+                  {formatDate(employeeInfos.date_of_birth)}
                 </h1>
                 <CvModel first_name={employeeInfos.first_name} last_name={employeeInfos.last_name} cv={employeeInfos.cv}/>
 

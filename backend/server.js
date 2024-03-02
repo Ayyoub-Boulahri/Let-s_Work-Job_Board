@@ -9,6 +9,7 @@ const skillsRoutes = require('./routes/skillsRoutes')
 const employeesRoutes = require('./routes/employeeRoutes')
 const companiesRoutes = require('./routes/companiesRoutes')
 const jobOfferRoutes = require('./routes/jobOfferRoutes')
+const currenciesRoutes = require('./routes/currenciesRoutes')
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -40,6 +41,7 @@ app.use('/api/skills', skillsRoutes)
 app.use('/api/employees', employeesRoutes)
 app.use('/api/companies', companiesRoutes)
 app.use('/api/jobOffers', jobOfferRoutes)
+app.use('/api/currencies', currenciesRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

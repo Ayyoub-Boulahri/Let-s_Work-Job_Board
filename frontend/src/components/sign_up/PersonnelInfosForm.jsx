@@ -20,11 +20,7 @@ function PersonnelInfosForm(props) {
 
     const onSubmit = async (data) => {
         try {
-            const formattedData = {
-                ...data,
-                dob: data.dob.toLocaleDateString('en-CA'),
-            };
-            dispatch(setPersonnelInfos(formattedData))
+            dispatch(setPersonnelInfos(data))
             props.pagination.onNext()
         } catch (err) {
             console.log(err);
