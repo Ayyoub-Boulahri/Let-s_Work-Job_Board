@@ -180,3 +180,24 @@ export const changePostulationStatus = async (jobOfferId, status, employeeIds) =
         throw error;
     }
 }
+
+export const insertJobOffer = async (jobOffer) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/jobOffers/insertJobOffer', { jobOffer }, { withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.error('Error inserting new job Offer:', error);
+        throw error;
+    }
+};
+
+export const updateJobOfferInfos = async (jobOfferId, newInfos) => {
+    try {
+        const response = await axios.put('http://localhost:5000/api/jobOffers/update/updateJobOfferInfos', { jobOfferId, newInfos }, { withCredentials: true });
+        return response;
+    } catch (error) {
+        console.error('Error inserting new job Offer:', error);
+        throw error;
+    }
+};
+

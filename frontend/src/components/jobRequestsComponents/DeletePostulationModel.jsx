@@ -8,7 +8,7 @@ function DeletePostulationModel(props) {
 
     const removePostulation = async (onClose) => {
         removeEmployeeJobPostulation(props.jobOfferId, props.employeeId)
-        props.setIsModified(true)
+        props.setIsModified(prev => (prev + 1))
         onClose()
     }
     return (

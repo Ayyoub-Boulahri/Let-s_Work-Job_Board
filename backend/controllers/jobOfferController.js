@@ -1,5 +1,7 @@
 const JobOffer = require('../models/jobOffer')
 const { ObjectId } = require('mongodb');
+const CompanyController = require('./companyController');
+const NotificationController = require('./notificationController');
 
 class JobOfferController {
     getSomeJobOffers = async (req, res) => {
@@ -517,6 +519,45 @@ class JobOfferController {
             return res.status(500).json({ message: "Internal server error" });
         }
     };
+
+    insertJobOffer = async (req, res) => {
+        try {
+            const { jobOffer } = req.body;
+            const newJobOffer = new JobOffer(jobOffer);
+            const savedJobOffer = await newJobOffer.save();
+
+            const followersIds = await CompanyController.getAllFollowersIds(jobOffer.company);
+            const companyName = await CompanyController.getCompanyName(jobOffer.company);
+
+            for (let i = 0; i < followersIds.length; i++) {
+                await NotificationController.createNotification(jobOffer.company, "company", followersIds[i], "employee", companyName + " has published a new job offer");
+            }
+
+            return res.status(201).json(savedJobOffer);
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    };
+
+
+    updateJobOfferInfos = async (req, res) => {
+        const { newInfos, jobOfferId } = req.body;
+        try {
+            const updateResult = await JobOffer.updateOne(
+                { _id: jobOfferId },
+                { $set: newInfos }
+            );
+
+
+            if (updateResult.nModified === 0)
+                return res.status(404).json({ message: 'job Offer not founf' })
+            return res.status(200).json({ message: 'update job offer infos successfull' })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'Internal Server Error' })
+        }
+    }
 }
 
 module.exports = new JobOfferController();

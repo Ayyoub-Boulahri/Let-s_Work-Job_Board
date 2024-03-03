@@ -2,25 +2,26 @@ import React from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Tooltip } from "@nextui-org/react";
 import { DeleteIcon } from "../UIComponents/DeleteIcon";
 import { deleteJobOffer } from '../../services/jobOfferServices';
+import { useNavigate } from 'react-router-dom';
 
 function DeleteJobOffer(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
+    const navigate = useNavigate()
     const removePostulation = async (onClose) => {
         const result = await deleteJobOffer(props.jobOfferId)
-        if (result) {
-            props.setIsModified(true)
-            onClose()
+        if (props.setIsModified) {
+            props.setIsModified(prev => (prev + 1))
         }
-        props.setIsModified(false)
+        else {
+            navigate("/jobListings")
+        }
+        onClose()
     }
     return (
         <>
-            <Tooltip color="danger" content="Delete Job">
-                <span onClick={onOpen} className="text-lg text-danger cursor-pointer active:opacity-50">
-                    <DeleteIcon />
-                </span>
-            </Tooltip >
+            <div className='w-full' onClick={onOpen}>
+                {props.content}
+            </div>
 
             <Modal size="sm" isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={"inside"} className="md:mb-0 mb-[10%]">
                 <ModalContent>

@@ -37,3 +37,5 @@ To install :
     - npm install react-csv
     - npm install jszip
     - npm install file-saver
+    - npm install socket.io-client
+    - npm install socket.io (backend)

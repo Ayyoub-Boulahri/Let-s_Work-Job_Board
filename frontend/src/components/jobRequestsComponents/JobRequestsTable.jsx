@@ -27,7 +27,7 @@ function JobRequestsTable(props) {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
     const [searchText, setSearchText] = useState("")
-    const [isModified, setIsModified] = useState(false)
+    const [isModified, setIsModified] = useState(0)
     const navigate = useNavigate()
     const jobRequestsPerTime = 2
 

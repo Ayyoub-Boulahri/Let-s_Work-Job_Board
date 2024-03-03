@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styles from '../style';
 import mac from '../assets/mac.png';
 import macCover from '../assets/macCover.webp';
@@ -28,9 +28,18 @@ function Company() {
   const authInfo = useSelector((state) => state.isAuthenticated.value);
   const [isProfilePhotoHovered, setIsProfilePhotoHovered] = useState(false);
   const [isCoverPhotoHovered, setIsCoverPhotoHovered] = useState(false);
-
+  const navigate = useNavigate()
 
   useEffect(() => {
+    const chekcisCompany = async () => {
+      if (await authInfo?.typeUser === "company") {
+        if (company_id != authInfo?.userId)
+          navigate("/companies/company/" + authInfo?.userId)
+      }
+    }
+    chekcisCompany()
+
+    
     const getCompanyInfos = async () => {
       getCompanyById(company_id).then((company) => {
         setCompanyInfos(company.data.companyInfos);

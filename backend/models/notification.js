@@ -2,9 +2,9 @@ const mongoose = require('../db');
 
 const notificationSchema = new mongoose.Schema({
     sender: { type: mongoose.Schema.Types.ObjectId, refPath: 'senderType' },
-    senderType: { type: String, enum: ['Company', 'Employee'] },
+    senderType: { type: String, enum: ['company', 'employee'] },
     receiver: { type: mongoose.Schema.Types.ObjectId, refPath: 'receiverType' },
-    receiverType: { type: String, enum: ['Company', 'Employee'] },
+    receiverType: { type: String, enum: ['company', 'employee'] },
     message: String,
     read: { type: Boolean, default: false },
     created_at: { type: Date, default: Date.now }

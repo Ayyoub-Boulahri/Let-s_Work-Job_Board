@@ -1,6 +1,8 @@
 import React from 'react'
-import { Divider, Tabs, Tab } from "@nextui-org/react";
+import { Divider, Tabs, Tab, Button } from "@nextui-org/react";
 import JobListsTable from './JobListsTable';
+import { FaPlus } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
 
 function JobListingsHeader() {
     const jobOffers = [
@@ -38,24 +40,28 @@ function JobListingsHeader() {
         }
     ]
 
+    const navigate = useNavigate()
     return (
         <div className='min-h-[450px]'>
             <h1 className='text-[30px] text-default-800 my-6'>Manage Job Offers</h1>
             <Tabs variant="light" aria-label="Tabs variants">
                 <Tab key="All" title="All" >
                     <Divider className='mb-6 mt-2' />
-                    <JobListsTable jobOffers={jobOffers} condition={{}}/>
+                    <JobListsTable jobOffers={jobOffers} condition={{}} />
                 </Tab>
                 <Tab key="Accepted" title="Opens" >
                     <Divider className='mb-6 mt-2' />
-                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "Open")} condition={{job_status: true}}/>
+                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "Open")} condition={{ job_status: true }} />
                 </Tab>
                 <Tab key="In Progress" title="Closed" >
                     <Divider className='mb-6 mt-2' />
-                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "close")} condition={{job_status: false}}/>
+                    <JobListsTable jobOffers={jobOffers.filter(j => j.status === "close")} condition={{ job_status: false }} />
                 </Tab>
             </Tabs>
 
+            <button onClick={() => {navigate("/newOffer")}} className="rounded-full w-[50px] h-[50px] bg-primary-500 flex justify-center items-center fixed bottom-10 right-20">
+                <FaPlus size={20}/>
+            </button>
         </div>
     )
 }

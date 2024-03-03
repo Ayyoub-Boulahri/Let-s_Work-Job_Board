@@ -1,4 +1,4 @@
- import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, User, Chip, Tooltip } from "@nextui-org/react";
 import { EditIcon } from "../UIComponents/EditIcon";
 import { DeleteIcon } from "../UIComponents/DeleteIcon";
@@ -31,8 +31,7 @@ function JobListsTable(props) {
     const headerColumns = ["Job Title", "Posted on", "Deadline", "total condidat", "Status", "Download List", "Actions"]
 
     useEffect(() => {
-        console.log(searchText)
-
+        console.log(isModified)
         const getTotalJobs = async () => {
             try {
                 getCompanyJobOffersCount(authInfo?.userId, { company: authInfo?.userId, ...props.condition }, searchText).then(response => {
@@ -165,14 +164,24 @@ function JobListsTable(props) {
                                 </TableCell>
                                 <TableCell>
                                     <div className="relative flex items-center gap-2">
-                                        <CandidatPopUp jobOfferId={jobOffer._id} title={jobOffer.title} numberOfPostulations={jobOffer.numberOfPostulations}/>
+                                        <CandidatPopUp jobOfferId={jobOffer._id} title={jobOffer.title} numberOfPostulations={jobOffer.numberOfPostulations} />
                                         <Tooltip content="edit Job">
-                                            <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
+                                            <span onClick={() => navigate("/editJobOffer/" + jobOffer._id)} className="text-lg text-primary-400 cursor-pointer active:opacity-50">
                                                 <EditIcon />
                                             </span>
                                         </Tooltip>
 
-                                        <DeleteJobOffer jobOfferId={jobOffer._id} setIsModified={setIsModified} />
+                                        <DeleteJobOffer
+                                            jobOfferId={jobOffer._id}
+                                            setIsModified={setIsModified}
+                                            content={
+                                                <Tooltip color="danger" content="Delete Job">
+                                                    <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                                                        <DeleteIcon />
+                                                    </span>
+                                                </Tooltip >
+                                            }
+                                        />
                                     </div>
                                 </TableCell>
                             </TableRow>

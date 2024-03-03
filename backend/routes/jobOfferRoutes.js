@@ -17,5 +17,7 @@ router.delete('/deleteJobOffer', JobOfferController.deleteJobOffer)
 router.post('/postulations', JobOfferController.getJobOfferPostulations)
 router.put('/changePostulationStatus', JobOfferController.changePostulationStatus)
 router.post('/postulationsTotal', JobOfferController.getJobOfferPostulationsTotal)
+router.post('/insertJobOffer', JobOfferController.insertJobOffer)
+router.put('/update/updateJobOfferInfos', JobOfferController.updateJobOfferInfos)
 
 module.exports = router;

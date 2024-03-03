@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const searchSkills = async () => {
+const getAllCurrencies = async () => {
     try {
         const response = await axios.get('http://localhost:5000/api/currencies/', {withCredentials: true})
         if(response.status === 200)
@@ -11,4 +11,4 @@ const searchSkills = async () => {
     }
 };
 
-export default searchSkills;
+export default getAllCurrencies;

@@ -16,7 +16,7 @@ import FileSaver from 'file-saver';
 function CandidatsTable(props) {
     const [postulations, setPostulations] = useState([])
     const [selectedKeys, setSelectedKeys] = useState(null)
-    const [isModified, setIsModified] = useState(false)
+    const [isModified, setIsModified] = useState(1)
     const navigate = useNavigate()
 
     const statusColorMap = {

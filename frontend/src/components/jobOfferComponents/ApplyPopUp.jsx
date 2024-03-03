@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { LuRefreshCw } from "react-icons/lu";
 import { ToastContainer, toast, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaCheck } from "react-icons/fa";
+import { TiDelete } from "react-icons/ti";
 
 function ApplyPopUp(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -45,7 +47,8 @@ function ApplyPopUp(props) {
     const getPostulation = async () => {
         const response = await getEmployeePostulation(props.jobId, authInfo?.userId);
         if (response.status === 200) {
-            setPostulation(response.data.postulations[0].postulations[0].attachements[0].file)
+            console.log(response.data.postulations[0].postulations[0])
+            setPostulation(response.data.postulations[0].postulations[0])
         }
     }
 
@@ -55,6 +58,7 @@ function ApplyPopUp(props) {
     }, [])
 
     const handleApplying = async (onClose) => {
+        console.log(authInfo?.userId)
         if (attachedFiles.length === props.attachements.length) {
             const response = postulation ? await updateEmployeePostulation(props.jobId, authInfo?.userId, attachedFiles) : await addPostulation(props.jobId, authInfo?.userId, attachedFiles)
             if (response.status === 200) {
@@ -79,14 +83,68 @@ function ApplyPopUp(props) {
         onClose();
     }
 
+    const handleApplywithoutAttch = async () => {
+        if (props.attachements.length > 0)
+            onOpen();
+        else if (postulation) {
+            toast.success('you have already applied', {
+                position: "bottom-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+            return;
+        }
+        else {
+            await addPostulation(props.jobId, authInfo?.userId, [])
+            toast.success('you have applied successfully', {
+                position: "bottom-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+            });
+            getPostulation()
+        }
+
+    }
+
+    if (!props.job_status) {
+        return (<Button radius="sm" color={"danger"} className='w-full text-white font-bold text-[18px]'>
+            <TiDelete size={24}/> Job Closed
+        </Button>)
+    }
+
     return (
         <div>
-            <Button onClick={onOpen} radius="sm" color={postulation ? "danger" : "primary"} className='w-full font-bold text-[18px]'>
-                {postulation
-                    ? <><LuRefreshCw /> ReApply</>
-                    : <><MdWork /> Apply</>
-                }
-            </Button>
+            {
+                postulation?.status == "Accept" ?
+                    <Button radius="sm" color={"success"} className='w-full text-white font-bold text-[18px]'>
+                        <FaCheck /> Accepted
+                    </Button>
+
+                    : postulation?.status == "Rejected"
+                        ? <Button radius="sm" color={"danger"} className='w-full text-white font-bold text-[18px]'>
+                            <TiDelete size={24}/> Rejected
+                        </Button>
+                        : <Button onClick={handleApplywithoutAttch} radius="sm" color={postulation ? "danger" : "primary"} className='w-full font-bold text-[18px]'>
+                            {postulation
+                                ? props.attachements.length > 0
+                                    ? <><LuRefreshCw /> ReApply</>
+                                    : <><MdWork /> applied</>
+                                : <><MdWork /> Apply</>
+                            }
+                        </Button>
+            }
             <Modal size="sm" isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={"inside"} className="md:mb-0 mb-[10%]">
                 <ModalContent>
                     {(onClose) => (

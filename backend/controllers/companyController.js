@@ -430,6 +430,30 @@ class CompanyController {
         }
     };
 
+    getAllFollowersIds = async (companyId) => {
+        try {
+            const company = await Company.findOne(
+                { _id: companyId }, 
+                { _id: 0, "followers.employee": 1}
+            )
+            const followerIds = company.followers.map(follower => follower.employee.toString());
+
+            return followerIds
+        } catch (error) {
+            console.error(error)
+            throw error
+        }
+    }
+
+    getCompanyName = async (companyId) => {
+        try {
+            const { company_name }= await Company.findOne({_id: companyId}, { _id: 0, "company_name": 1})
+            return company_name
+        } catch (error) {
+            throw error
+        }
+    }
+
 }
 
 module.exports = new CompanyController();

@@ -13,24 +13,24 @@ function JobOfferInfos(props) {
     useEffect(() => {
         const getFollowers = async () => {
             getNumberOfFollowers(props.job_offer.company[0]._id)
-            .then((response) => setNumFollowers(response))
-            .catch((error) => console.log(error))
+                .then((response) => setNumFollowers(response))
+                .catch((error) => console.log(error))
         }
 
         getFollowers()
     }, [])
-    
+
     const navigate = useNavigate()
     return (
         <div className='flex md:w-[70%] flex-col shadowCard bg-[#141414] p-8 h-fit'>
             <div className='flex justify-between items-center'>
 
                 <div className='flex items-center gap-4'>
-                    <Avatar src={convertBase64ToUrlFile(props.job_offer.company[0].company_photo)} size="sm" className='cursor-pointer' onClick={() => navigate("/companies/company/" + props.job_offer.company[0]._id )} />
+                    <Avatar src={convertBase64ToUrlFile(props.job_offer.company[0].company_photo)} size="sm" className='cursor-pointer' onClick={() => navigate("/companies/company/" + props.job_offer.company[0]._id)} />
                     <div>
-                        <h4 className='font-bold text-default-600 text-[14px] cursor-pointer' onClick={() => navigate("/companies/company/" + props.job_offer.company[0]._id )} >{props.job_offer.company[0].company_name}</h4>
+                        <h4 className='font-bold text-default-600 text-[14px] cursor-pointer' onClick={() => navigate("/companies/company/" + props.job_offer.company[0]._id)} >{props.job_offer.company[0].company_name}</h4>
                         <h4 className='font-semibold text-default-400 text-[12px]'>{formatNumFollowers(numFollowers)} followers</h4>
-                    
+
                     </div>
                 </div>
 
@@ -46,9 +46,9 @@ function JobOfferInfos(props) {
 
             <div className='mt-10 flex flex-col gap-4'>
                 <h1 className="font-bold text-default-600 text-[20px]">Job Description</h1>
-                
+
                 <p>
-                <Markdown children={props.job_offer.description} className={`text-small text-default-400 leading-[1.6] ${showDesc ? 'line-clamp-none' : 'line-clamp-[6]'} `} />
+                    <Markdown children={props.job_offer.description} className={`text-small text-default-400 leading-[1.6] ${showDesc ? 'line-clamp-none' : 'line-clamp-[6]'} `} />
                     <span className='text-primary-600 cursor-pointer' onClick={() => setShowDesc((prev) => !prev)}>
                         {showDesc ? "show Less" : "show more"}
                     </span>
@@ -57,27 +57,37 @@ function JobOfferInfos(props) {
 
             <Divider className='bg-default-100 my-6' />
 
-            <div className='mt-2 flex flex-col gap-4'>
-                <h1 className="font-bold text-default-600 text-[20px]">Required Skills</h1>
-                <div className='flex flex-col text-small text-default-400 leading-[1.7]'>
-                    {props.job_offer.skills.map((skill, index) => (
-                        <span key={index} className='ml-4'>• &nbsp;&nbsp; {skill}</span>
-                    ))}
-                </div>
-            </div>
+            {
+                props.job_offer.skills.length > 0 &&
+                <>
+                    <div className='mt-2 flex flex-col gap-4'>
+                        <h1 className="font-bold text-default-600 text-[20px]">Required Skills</h1>
+                        <div className='flex flex-col text-small text-default-400 leading-[1.7]'>
+                            {props.job_offer.skills.map((skill, index) => (
+                                <span key={index} className='ml-4'>• &nbsp;&nbsp; {skill}</span>
+                            ))}
+                        </div>
+                    </div>
 
-            <Divider className='bg-default-100 my-6' />
+                    <Divider className='bg-default-100 my-6' />
+                </>
+            }
 
-            <div className='mt-2 flex flex-col gap-4'>
-                <h1 className="font-bold text-default-600 text-[20px]">Attachments</h1>
-                <div className='flex flex-col text-small text-default-400 leading-[1.7]'>
-                    {props.job_offer.attachements.map((attch, index) => (
-                        <span key={index} className='ml-4'>• &nbsp;&nbsp; {attch}</span>
-                    ))}
-                </div>
-            </div>
+            {
+                props.job_offer.attachements.length > 0 &&
+                <>
+                    <div className='mt-2 flex flex-col gap-4'>
+                        <h1 className="font-bold text-default-600 text-[20px]">Attachments</h1>
+                        <div className='flex flex-col text-small text-default-400 leading-[1.7]'>
+                            {props.job_offer.attachements.map((attch, index) => (
+                                <span key={index} className='ml-4'>• &nbsp;&nbsp; {attch}</span>
+                            ))}
+                        </div>
+                    </div>
 
-            <Divider className='bg-default-100 my-6' />
+                    <Divider className='bg-default-100 my-6' />
+                </>
+            }
 
             <div className='mt-2 flex flex-col gap-4'>
                 <h1 className="font-bold text-default-600 text-[20px]">Company Overview</h1>
