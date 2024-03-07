@@ -146,7 +146,7 @@ function NavBar() {
             }
             {/* notification Dropdown */}
 
-            {authInfo?.auth && <NotificationDropdown userId={authInfo?.userId} />}
+            {authInfo?.auth && <NotificationDropdown userId={authInfo?.userId} typeUser={authInfo?.typeUser} />}
 
             {/* Profile Avatar Bar */}
 

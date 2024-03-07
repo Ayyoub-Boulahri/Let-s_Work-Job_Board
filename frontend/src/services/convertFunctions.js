@@ -75,3 +75,26 @@ export function formatDateForInput2(date) {
     let day = date.getDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
+
+export function formatNotificationDate(date) {
+    const currentDate = new Date();
+    const notificationDate = new Date(date)
+    const elapsedMilliseconds = currentDate - notificationDate;
+    const elapsedSeconds = Math.floor(elapsedMilliseconds / 1000);
+    const elapsedMinutes = Math.floor(elapsedSeconds / 60);
+    const elapsedHours = Math.floor(elapsedMinutes / 60);
+    const elapsedDays = Math.floor(elapsedHours / 24);
+    const elapsedWeeks = Math.floor(elapsedDays / 7);
+
+    if (elapsedWeeks >= 1) {
+        return notificationDate.toLocaleDateString(); // Return full date if more than 1 week
+    } else if (elapsedDays >= 1) {
+        return `${elapsedDays} day${elapsedDays > 1 ? 's' : ''} ago`;
+    } else if (elapsedHours >= 1) {
+        return `${elapsedHours} hour${elapsedHours > 1 ? 's' : ''} ago`;
+    } else if (elapsedMinutes >= 1) {
+        return `${elapsedMinutes} minute${elapsedMinutes > 1 ? 's' : ''} ago`;
+    } else {
+        return 'Just now';
+    }
+}

@@ -7,7 +7,8 @@ const notificationSchema = new mongoose.Schema({
     receiverType: { type: String, enum: ['company', 'employee'] },
     message: String,
     read: { type: Boolean, default: false },
-    created_at: { type: Date, default: Date.now }
+    created_at: { type: Date, default: Date.now },
+    notification_link: String
 }, {
     versionKey: false
 });

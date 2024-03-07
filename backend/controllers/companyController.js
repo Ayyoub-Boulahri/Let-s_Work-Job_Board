@@ -1,5 +1,6 @@
 const Company = require('../models/company');
 const { ObjectId } = require('mongodb');
+const NotificationController = require('./notificationController');
 
 class CompanyController {
     insertCompany = async (req, res) => {
@@ -248,7 +249,7 @@ class CompanyController {
         }
     }
 
-    addFollower = async (req, res) => {
+    addFollower = async (req, res, io, connectedUsers) => {
         try {
             const { company_id, employee_id } = req.body;
             const followResult = await Company.updateOne(
@@ -264,6 +265,9 @@ class CompanyController {
             if (followResult.nModified === 0)
                 return res.status(404).json({ message: "company not found or follower not add" });
 
+            await NotificationController.createNotification(employee_id, "employee", company_id, "company", "You have a new Follower", "/profiles/profile/" + employee_id);
+            let socketId = connectedUsers[company_id];
+            io.to(socketId).emit('sendNotification', { message: 'you have new follower' });
             return res.status(200).json({ message: "follow successfull" })
         } catch (error) {
             console.error("Error follow: " + error)
@@ -384,9 +388,9 @@ class CompanyController {
         try {
             const company = await Company.aggregate([
                 { $match: { _id: new ObjectId(companyId) } },
-                { $unwind: "$followers" }, 
-                { $skip: skip }, 
-                { $limit: limit }, 
+                { $unwind: "$followers" },
+                { $skip: skip },
+                { $limit: limit },
                 {
                     $lookup: {
                         from: "employees",
@@ -399,7 +403,7 @@ class CompanyController {
                     $project: {
                         _id: 0,
                         follower: {
-                            $arrayElemAt: ["$followerDetails", 0] 
+                            $arrayElemAt: ["$followerDetails", 0]
                         }
                     }
                 },
@@ -418,7 +422,7 @@ class CompanyController {
                 return res.status(404).json({ message: "Company not found" });
             }
 
-            for(var i = 0; i < company.length; i++) {
+            for (var i = 0; i < company.length; i++) {
                 let followerPhoto = company[i].profilePhoto.toString('base64');
                 company[i].profilePhoto = followerPhoto
             }
@@ -433,8 +437,8 @@ class CompanyController {
     getAllFollowersIds = async (companyId) => {
         try {
             const company = await Company.findOne(
-                { _id: companyId }, 
-                { _id: 0, "followers.employee": 1}
+                { _id: companyId },
+                { _id: 0, "followers.employee": 1 }
             )
             const followerIds = company.followers.map(follower => follower.employee.toString());
 
@@ -447,7 +451,7 @@ class CompanyController {
 
     getCompanyName = async (companyId) => {
         try {
-            const { company_name }= await Company.findOne({_id: companyId}, { _id: 0, "company_name": 1})
+            const { company_name } = await Company.findOne({ _id: companyId }, { _id: 0, "company_name": 1 })
             return company_name
         } catch (error) {
             throw error

@@ -42,7 +42,7 @@ function CompanyJobOffers(props) {
                 "delais_depot": 1,
                 "job_status": 1,
             },
-            ((page - 1) * jobPerTime), jobPerTime, { job_status: true })
+            ((page - 1) * jobPerTime), jobPerTime, { job_status: true }, "")
             .then(response => {
                 if (page != 1) setJobs(prevJobs => [...prevJobs, ...response])
                 else {

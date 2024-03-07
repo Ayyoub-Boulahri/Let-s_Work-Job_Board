@@ -170,9 +170,9 @@ export const getJobOfferPostulationsTotal = async (jobOfferId, searchFilter) => 
     }
 };
 
-export const changePostulationStatus = async (jobOfferId, status, employeeIds) => {
+export const changePostulationStatus = async (jobOfferId, status, employeeIds, companyId) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/jobOffers/changePostulationStatus', { jobOfferId, status, employeeIds }, { withCredentials: true })
+        const response = await axios.put('http://localhost:5000/api/jobOffers/changePostulationStatus', { jobOfferId, status, employeeIds, companyId }, { withCredentials: true })
         if(response.status === 200)
             return response;
     } catch (error) {

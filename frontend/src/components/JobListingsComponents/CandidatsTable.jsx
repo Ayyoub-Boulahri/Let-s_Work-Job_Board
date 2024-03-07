@@ -12,12 +12,14 @@ import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import JSZip from 'jszip';
 import FileSaver from 'file-saver';
+import { useSelector } from "react-redux";
 
 function CandidatsTable(props) {
     const [postulations, setPostulations] = useState([])
     const [selectedKeys, setSelectedKeys] = useState(null)
     const [isModified, setIsModified] = useState(1)
     const navigate = useNavigate()
+    const authInfo = useSelector((state) => state.isAuthenticated.value);
 
     const statusColorMap = {
         "Accept": "success",
@@ -86,7 +88,7 @@ function CandidatsTable(props) {
     const changeStatusPostulations = async (status) => {
         if (selectedKeys) {
             const keys = selectedKeys != "all" ? [...selectedKeys] : "all"
-            changePostulationStatus(props.jobOfferId, status, keys)
+            changePostulationStatus(props.jobOfferId, status, keys, authInfo?.userId)
             setIsModified(prev => !prev)
         }
     }

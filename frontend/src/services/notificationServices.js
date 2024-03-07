@@ -12,10 +12,30 @@ export const getTotalUnreadNotifications = async (userId) => {
 
 export const getEmployeeNotifications = async (employeeId) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/notifications/employeeNotification', { employeeId }, { withCredentials: true });
+        const response = await axios.post('http://localhost:5000/api/notifications/employeeNotifications', { employeeId }, { withCredentials: true });
         if (response.status === 200)
             return response.data.notifications;
     } catch (error) {
         throw error;
     }
 };
+
+export const getCompanyNotifications = async (companyId) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/notifications/companyNotifications', { companyId }, { withCredentials: true });
+        if (response.status === 200)
+            return response.data.notifications;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const changeNotificationStatus = async (notificationId) => {
+    try {
+        const response = await axios.post('http://localhost:5000/api/notifications/changeNotificationStatus', { notificationId }, { withCredentials: true });
+        if (response.status === 200)
+            return response;
+    } catch (error) {
+        throw error;
+    }
+}

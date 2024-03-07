@@ -50,10 +50,10 @@ class AuthController {
     if (req.session.auth) {
       const { email, auth, typeUser, userId } = req.session;
       // If authenticated, send the information
-      res.status(200).json({ email, auth, typeUser, userId });
+      console.log(email)
+      return res.status(200).json({ email, auth, typeUser, userId });
     } else {
-      // If not authenticated, send an error status
-      res.status(401).json({ error: 'Not authenticated' });
+      return res.status(401).json({ error: 'Not authenticated' });
     }
   };
 
@@ -64,7 +64,7 @@ class AuthController {
         console.error(err);
         return res.status(500).json({ error: 'Internal Server Error' });
       }
-      res.status(200).json({ message: 'Logout successful' });
+      return res.status(200).json({ message: 'Logout successful' });
     });
   };
 }

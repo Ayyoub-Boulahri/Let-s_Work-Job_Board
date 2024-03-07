@@ -39,7 +39,7 @@ function Company() {
     }
     chekcisCompany()
 
-    
+
     const getCompanyInfos = async () => {
       getCompanyById(company_id).then((company) => {
         setCompanyInfos(company.data.companyInfos);

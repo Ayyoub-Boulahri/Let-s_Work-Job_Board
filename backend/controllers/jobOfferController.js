@@ -475,11 +475,12 @@ class JobOfferController {
     }
 
 
-    changePostulationStatus = async (req, res) => {
-        const { jobOfferId, status, employeeIds } = req.body;
+    changePostulationStatus = async (req, res, io, connectedUsers) => {
+        const { jobOfferId, status, employeeIds, companyId } = req.body;
         try {
             let result;
-            if (employeeIds !== "all")
+            let ids;
+            if (employeeIds !== "all") {
                 result = await JobOffer.updateMany(
                     {
                         _id: new ObjectId(jobOfferId),
@@ -494,6 +495,9 @@ class JobOfferController {
                         arrayFilters: [{ "elem.employee": { $in: employeeIds.map(id => new ObjectId(id)) } }]
                     }
                 );
+
+                ids = employeeIds;
+            }
             else {
                 result = await JobOffer.updateMany(
                     {
@@ -508,6 +512,16 @@ class JobOfferController {
                         arrayFilters: [{ "elem.employee": { $exists: true } }] // Match any postulation with employee field
                     }
                 );
+                const employees = await JobOffer.find({ _id: jobOfferId }, { "postulations.employee": 1 });
+                ids = employees.map(jobOffer => jobOffer.postulations.map(postulation => postulation.employee));
+            }
+
+
+            const statusTxt = status == "Accept" ? "Accepted" : "Rejected"
+            for (var i = 0; i < ids.length; i++) {
+                let socketId = connectedUsers[ids[i]];
+                await NotificationController.createNotification(companyId, "company", ids[i], "employee", "Your postulation was " + statusTxt + " in this Job", "/jobs/job/" + jobOfferId);
+                io.to(socketId).emit('sendNotification', { message: 'you are ' + statusTxt + ' in a job offer'});
             }
 
             if (result.ok)
@@ -520,17 +534,20 @@ class JobOfferController {
         }
     };
 
-    insertJobOffer = async (req, res) => {
+    insertJobOffer = async (req, res, io, connectedUsers) => {
         try {
             const { jobOffer } = req.body;
             const newJobOffer = new JobOffer(jobOffer);
             const savedJobOffer = await newJobOffer.save();
 
+            const jobOfferId = savedJobOffer._id; // Obtain the ID of the saved job offer
             const followersIds = await CompanyController.getAllFollowersIds(jobOffer.company);
             const companyName = await CompanyController.getCompanyName(jobOffer.company);
 
             for (let i = 0; i < followersIds.length; i++) {
-                await NotificationController.createNotification(jobOffer.company, "company", followersIds[i], "employee", companyName + " has published a new job offer");
+                let socketId = connectedUsers[followersIds[i]];
+                await NotificationController.createNotification(jobOffer.company, "company", followersIds[i], "employee", companyName + " has published a new job offer", "/jobs/job/" + jobOfferId);
+                io.to(socketId).emit('sendNotification', { message: 'A new job offer has been inserted!' });
             }
 
             return res.status(201).json(savedJobOffer);

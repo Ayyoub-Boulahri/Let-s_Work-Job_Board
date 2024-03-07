@@ -21,18 +21,28 @@ function JobOffer() {
   const [jobOffer, setJobOffer] = useState(null)
   const navigate = useNavigate()
   const [isLoadingJobOffer, setIsLoadingJobOffer] = useState(true)
+  const [isJobNotFound, setIsJobNotFound] = useState(false)
   const authInfo = useSelector((state) => state.isAuthenticated.value);
 
   useEffect(() => {
     const fetchData = async () => {
       getJobofferById(job_id)
         .then((response) => { setJobOffer(response.data.jobOffer[0]); setIsLoadingJobOffer(false) })
-        .catch((error) => console.log(error));
+        .catch((error) => { setIsJobNotFound(true); setIsLoadingJobOffer(false) });
     }
     window.scrollTo(0, 0);
     fetchData()
-  }, [])
+  }, [job_id])
 
+  if (isJobNotFound) {
+    return (
+      <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg md:pt-40 pt-28 xl:pb-4`}>
+        <div className={`${styles.boxWidth} HeightTall flex justify-center items center`}>
+          <div>Job Offer not found !!!</div>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg md:pt-40 pt-28 xl:pb-4`}>

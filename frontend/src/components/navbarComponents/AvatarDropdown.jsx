@@ -18,9 +18,9 @@ function AvatarDropdown() {
     const { data: myInfos, isLoading: isLoadingInfos } = useQuery({
         queryKey: ["myInfos"],
         queryFn: () => {
-            if(authInfo.typeUser == "employee")
-                return getEmployeeByEmail(authInfo.email) 
-            else if(authInfo.typeUser == "company")
+            if (authInfo.typeUser == "employee")
+                return getEmployeeByEmail(authInfo.email)
+            else if (authInfo.typeUser == "company")
                 return getCompanyByEmail(authInfo.email)
         }
     })
@@ -34,6 +34,7 @@ function AvatarDropdown() {
                 setProfilePhoto(base64Image);
             }
         }
+
     }, [myInfos])
 
     const handleDeleteAccount = async () => {
@@ -72,9 +73,6 @@ function AvatarDropdown() {
                     </DropdownItem>
                     <DropdownItem key="profile" onClick={() => { navigate((authInfo?.typeUser == "employee" ? '/profile' : '/companies/company/' + authInfo?.userId)) }}>
                         My Profile
-                    </DropdownItem>
-                    <DropdownItem key="delete" className="text-danger-400" onClick={onOpen}>
-                        <span>Delete My Account</span>
                     </DropdownItem>
                     <DropdownItem key="logout" className="text-danger-400" onClick={() => window.location.href = '/'}>
                         Log Out
