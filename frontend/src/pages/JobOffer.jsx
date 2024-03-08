@@ -25,10 +25,12 @@ function JobOffer() {
   const authInfo = useSelector((state) => state.isAuthenticated.value);
 
   useEffect(() => {
+    setIsJobNotFound(false)
+    setIsLoadingJobOffer(true)
     const fetchData = async () => {
       getJobofferById(job_id)
         .then((response) => { setJobOffer(response.data.jobOffer[0]); setIsLoadingJobOffer(false) })
-        .catch((error) => { setIsJobNotFound(true); setIsLoadingJobOffer(false) });
+        .catch((error) => { setIsJobNotFound(true); setIsLoadingJobOffer(false)});
     }
     window.scrollTo(0, 0);
     fetchData()

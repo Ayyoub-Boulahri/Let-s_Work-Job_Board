@@ -5,7 +5,7 @@ import NotificationCard from './NotificationCard';
 import { changeNotificationStatus, getCompanyNotifications, getEmployeeNotifications, getTotalUnreadNotifications } from '../../services/notificationServices';
 import { useNavigate } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
-
+import notificationSound from '../../assets/audios/notification_sound.wav'
 const ENDPOINT = 'http://localhost:5000';
 
 function NotificationDropdown(props) {
@@ -26,12 +26,10 @@ function NotificationDropdown(props) {
 
         // Listen for the 'jobOfferInserted' event from the server
         socket.on('sendNotification', (data) => {
+            new Audio(notificationSound).play()
             getNotifications()
             setTotalUnreadNotifications(prev => (prev + 1))
         });
-        
-
-
 
         return () => socket.disconnect()
     }, []);

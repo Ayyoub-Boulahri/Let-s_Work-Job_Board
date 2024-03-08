@@ -43,9 +43,9 @@ const io = socketIo(server, {
     methods: ["GET", "POST", "PUT"],
     credentials: true
   },
-  allowEIO3: true, // Enable Engine.IO v3 protocol for better performance
-  maxHttpBufferSize: 1e8, // Increase maximum HTTP buffer size
-  pingInterval: 10000, // Adjust ping interval as needed
+  allowEIO3: true, 
+  maxHttpBufferSize: 1e8, 
+  pingInterval: 10000,
   pingTimeout: 5000
 });
 

@@ -50,7 +50,6 @@ class AuthController {
     if (req.session.auth) {
       const { email, auth, typeUser, userId } = req.session;
       // If authenticated, send the information
-      console.log(email)
       return res.status(200).json({ email, auth, typeUser, userId });
     } else {
       return res.status(401).json({ error: 'Not authenticated' });
