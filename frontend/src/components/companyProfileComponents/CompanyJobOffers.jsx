@@ -11,7 +11,7 @@ function CompanyJobOffers(props) {
     const jobPerTime = 10
 
     useEffect(() => {
-        getCompanyJobOffersCount(props.company_id, { company: props.company_id, job_status: true })
+        getCompanyJobOffersCount(props.company_id, { company: props.company_id, job_status: true }, "")
             .then((count) => setTotalJobOffers(count))
             .catch((err) => console.error(err));
     }, [])
@@ -67,7 +67,7 @@ function CompanyJobOffers(props) {
                 jobs.length === 0
                     ? <div>this company have no job Offers</div>
                     : <>
-                        <div className={`${props.typeUser == "company" ? "grid sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6 mb-14" : "flex flex-col gap-8"}`}>
+                        <div className={`${props.typeUser == "company" ? "grid sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6 mb-14" : "flex flex-col gap-8"} w-full`}>
                             {jobs.map(job => (
                                 <JobCard key={job._id} job={{ ...job, company: [{ _id: props.company_id, company_name: props.company_name, city: props.city, country: props.country, company_photo: props.company_photo }] }} />
                             ))}

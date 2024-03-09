@@ -407,6 +407,19 @@ class EmployeeController {
             return res.status(500).json({ message: "Internal Server Error" });
         }
     }
+
+    getEmployeeProfilePhoto = async (employeeId) => {
+        try {
+            const { profilePhoto } = await Employee.findOne({ _id: employeeId }, { _id: 0, profilePhoto: 1}).lean();
+            let photoBase64 = null;
+            if (profilePhoto) {
+                photoBase64 = profilePhoto.toString('base64');
+            }
+            return { profilePhoto: photoBase64 }
+        } catch (error) {
+            throw error
+        }
+    }
     
 }
 

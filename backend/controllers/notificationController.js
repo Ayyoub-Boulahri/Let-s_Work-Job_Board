@@ -23,10 +23,10 @@ class NotificationController {
         }
     };
 
-    getTotalUnreadNotifications = async (req, res) => {
-        const { userId } = req.body;
+    getTotalNotification = async (req, res) => {
+        const { userId, condition } = req.body;
         try {
-            const totalNotification = await Notification.find({ receiver: userId, read: false }).countDocuments();
+            const totalNotification = await Notification.find({ receiver: userId, ...condition }).countDocuments();
             return res.status(200).json({ totalNotification })
         } catch (error) {
             console.error(error)
@@ -88,7 +88,7 @@ class NotificationController {
     }
 
     getCompanyNotifications = async (req, res) => {
-        const { companyId } = req.body;
+        const { companyId, skip, limit } = req.body;
         try {
             const notifications = await Notification.aggregate([
                 {
@@ -112,6 +112,8 @@ class NotificationController {
                     }
                 },
                 { $sort: { created_at: -1 } },
+                { $skip: skip },
+                { $limit: limit },
                 {
                     $project: {
                         _id: 1,

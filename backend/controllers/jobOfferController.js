@@ -516,12 +516,20 @@ class JobOfferController {
                 ids = employees.map(jobOffer => jobOffer.postulations.map(postulation => postulation.employee));
             }
 
+            const { company_photo } = await CompanyController.getCompanyNameAndPhoto(companyId);
 
             const statusTxt = status == "Accept" ? "Accepted" : "Rejected"
             for (var i = 0; i < ids.length; i++) {
                 let socketId = connectedUsers[ids[i]];
-                await NotificationController.createNotification(companyId, "company", ids[i], "employee", "Your postulation was " + statusTxt + " in this Job", "/jobs/job/" + jobOfferId);
-                io.to(socketId).emit('sendNotification', { message: 'you are ' + statusTxt + ' in a job offer'});
+                const notification = await NotificationController.createNotification(companyId, "company", ids[i], "employee", "Your postulation was " + statusTxt + " in this Job", "/jobs/job/" + jobOfferId);
+                io.to(socketId).emit('sendNotification', {
+                    _id: notification._id,
+                    photo: company_photo,
+                    message: notification.message,
+                    read: false,
+                    notification_link: notification.notification_link,
+                    created_at: notification.created_at
+                });
             }
 
             if (result.ok)
@@ -542,12 +550,20 @@ class JobOfferController {
 
             const jobOfferId = savedJobOffer._id; // Obtain the ID of the saved job offer
             const followersIds = await CompanyController.getAllFollowersIds(jobOffer.company);
-            const companyName = await CompanyController.getCompanyName(jobOffer.company);
+            const { company_name, company_photo } = await CompanyController.getCompanyNameAndPhoto(jobOffer.company);
+
 
             for (let i = 0; i < followersIds.length; i++) {
                 let socketId = connectedUsers[followersIds[i]];
-                await NotificationController.createNotification(jobOffer.company, "company", followersIds[i], "employee", companyName + " has published a new job offer", "/jobs/job/" + jobOfferId);
-                io.to(socketId).emit('sendNotification', { message: 'A new job offer has been inserted!' });
+                const notification = await NotificationController.createNotification(jobOffer.company, "company", followersIds[i], "employee", company_name + " has published a new job offer", "/jobs/job/" + jobOfferId);
+                io.to(socketId).emit('sendNotification', {
+                    _id: notification._id,
+                    photo: company_photo,
+                    message: notification.message,
+                    read: false,
+                    notification_link: notification.notification_link,
+                    created_at: notification.created_at
+                });
             }
 
             return res.status(201).json(savedJobOffer);

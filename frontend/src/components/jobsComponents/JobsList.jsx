@@ -77,7 +77,7 @@ function JobsList() {
                 : <>
                     <JobFilters />
                     <div className='flex items-center flex-col'>
-                        <div className='grid sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6 mb-14'>
+                        <div className='grid w-full sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6 mb-14'>
                             {visibleJobs?.map((job) => (
                                 <div key={job.id}>
                                     <JobCard job={job} />

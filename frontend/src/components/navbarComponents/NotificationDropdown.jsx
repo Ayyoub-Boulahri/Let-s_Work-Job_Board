@@ -2,21 +2,23 @@ import React, { useEffect, useState } from 'react'
 import { FaRegBell } from "react-icons/fa";
 import { Dropdown, DropdownSection, DropdownTrigger, DropdownMenu, DropdownItem, Divider } from "@nextui-org/react";
 import NotificationCard from './NotificationCard';
-import { changeNotificationStatus, getCompanyNotifications, getEmployeeNotifications, getTotalUnreadNotifications } from '../../services/notificationServices';
+import { changeNotificationStatus, getCompanyNotifications, getEmployeeNotifications, getTotalNotification } from '../../services/notificationServices';
 import { useNavigate } from 'react-router-dom';
 import socketIOClient from 'socket.io-client';
 import notificationSound from '../../assets/audios/notification_sound.wav'
 import InfiniteScrillingLast from './InfiniteScrillingLast';
-import { SERVERPOINT } from '../../schemas/data' 
+import { SERVERPOINT } from '../../schemas/data'
 function NotificationDropdown(props) {
     const [totalUnreadNotifications, setTotalUnreadNotifications] = useState(0)
     const [notifications, setNotifications] = useState([])
+    const [totalNotifications, setTotalNotifications] = useState(0)
     const navigate = useNavigate()
     const notificationPerTime = 10
     const [page, setPage] = useState(1)
 
     useEffect(() => {
         getUnreadNotificationsCount();
+        getUserNotificationCount()
         getNotifications()
 
 
@@ -29,28 +31,34 @@ function NotificationDropdown(props) {
         // Listen for the 'jobOfferInserted' event from the server
         socket.on('sendNotification', (data) => {
             new Audio(notificationSound).play()
-            getNotifications()
-            setTotalUnreadNotifications(prev => (prev + 1))
+            setTotalUnreadNotifications(prev => prev + 1)
+            setNotifications(prev => [data, ...prev.slice(0, -1)]);
+
         });
 
         return () => socket.disconnect()
     }, [page]);
 
     const getUnreadNotificationsCount = () => {
-        getTotalUnreadNotifications(props.userId)
+        getTotalNotification(props.userId, { read: false })
             .then((total) => {
                 setTotalUnreadNotifications(total);
             })
             .catch(() => setTotalUnreadNotifications(0));
     }
 
+    const getUserNotificationCount = () => {
+        getTotalNotification(props.userId, {})
+            .then((total) => {
+                setTotalNotifications(total);
+            })
+            .catch(() => setTotalNotifications(0));
+    }
+
     const getNotifications = async () => {
         if (props.typeUser == "employee") {
             getEmployeeNotifications(props.userId, (page - 1) * notificationPerTime, notificationPerTime)
                 .then((response) => {
-                    for(var i=0; i<response.length; i++) {
-                        console.log(response[i].read)
-                    }
                     if (page == 1) {
                         setNotifications(response)
                     }
@@ -59,8 +67,15 @@ function NotificationDropdown(props) {
                     }
                 })
         } else if (props.typeUser == "company") {
-            getCompanyNotifications(props.userId)
-                .then((response) => setNotifications(response))
+            getCompanyNotifications(props.userId, (page - 1) * notificationPerTime, notificationPerTime)
+                .then((response) => {
+                    if (page == 1) {
+                        setNotifications(response)
+                    }
+                    else {
+                        setNotifications(prev => [...prev, ...response])
+                    }
+                })
         }
     }
 
@@ -111,7 +126,10 @@ function NotificationDropdown(props) {
                                 </DropdownItem>
                             ))
                         }
-                        <DropdownItem><InfiniteScrillingLast setPage={setPage} page={page} notificationPerTime={notificationPerTime} /></DropdownItem>
+                        {totalNotifications != notifications.length &&
+                            <DropdownItem><InfiniteScrillingLast setPage={setPage} getNotifications={getNotifications} page={page} notificationPerTime={notificationPerTime} /></DropdownItem>
+
+                        }
                     </DropdownSection>
                 </DropdownMenu>
             </Dropdown>

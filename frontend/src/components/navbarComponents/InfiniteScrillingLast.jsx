@@ -1,18 +1,24 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 
 function InfiniteScrillingLast(props) {
     useEffect(() => {
-        const test = document.getElementById('hi')
+        const observeDiv = document.getElementById('observeDiv');
         const observer = new IntersectionObserver(en => {
-            if(en[0].isIntersecting) {
-                    props.setPage(prev => (prev + 1))
+            if (en[0].isIntersecting) {
+                props.setPage(prev => (prev + 1));
             }
-        })
-        observer.observe(test)
-    }, [])
+        });
+        observer.observe(observeDiv);
+
+        // Cleanup function
+        return () => {
+            observer.disconnect(); // Disconnect the observer
+        };
+    }, []);
+
     return (
-        <div id="hi">InfiniteScrillingLast</div>
-    )
+        <div id="observeDiv"></div>
+    );
 }
 
-export default InfiniteScrillingLast
+export default InfiniteScrillingLast;

@@ -1,6 +1,7 @@
 const Company = require('../models/company');
 const { ObjectId } = require('mongodb');
 const NotificationController = require('./notificationController');
+const EmployeeController = require('./employeeController');
 
 class CompanyController {
     insertCompany = async (req, res) => {
@@ -264,10 +265,18 @@ class CompanyController {
             )
             if (followResult.nModified === 0)
                 return res.status(404).json({ message: "company not found or follower not add" });
-
-            await NotificationController.createNotification(employee_id, "employee", company_id, "company", "You have a new Follower", "/profiles/profile/" + employee_id);
+                
+            const notification  = await NotificationController.createNotification(employee_id, "employee", company_id, "company", "You have a new Follower", "/profiles/profile/" + employee_id);
+            const { profilePhoto } = await EmployeeController.getEmployeeProfilePhoto(employee_id);
             let socketId = connectedUsers[company_id];
-            io.to(socketId).emit('sendNotification', { message: 'you have new follower' });
+            io.to(socketId).emit('sendNotification', {
+                _id: notification._id,
+                photo: profilePhoto,
+                message: notification.message,
+                read: false,
+                notification_link: notification.notification_link,
+                created_at: notification.created_at
+            });
             return res.status(200).json({ message: "follow successfull" })
         } catch (error) {
             console.error("Error follow: " + error)
@@ -449,12 +458,16 @@ class CompanyController {
         }
     }
 
-    getCompanyName = async (companyId) => {
+    getCompanyNameAndPhoto = async (companyId) => {
         try {
-            const { company_name } = await Company.findOne({ _id: companyId }, { _id: 0, "company_name": 1 })
-            return company_name
+            const { company_name, company_photo } = await Company.findOne({ _id: companyId }, { _id: 0, company_name: 1, company_photo: 1 }).lean();
+            let photoBase64 = null;
+            if (company_photo) {
+                photoBase64 = company_photo.toString('base64');
+            }
+            return { company_name, company_photo: photoBase64 };
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 
