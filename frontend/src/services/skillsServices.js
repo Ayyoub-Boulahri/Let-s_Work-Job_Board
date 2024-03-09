@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { SERVERPOINT } from '../schemas/data';
 
 const searchSkills = async (searchString = '') => {
   if (searchString.trim().length < 2) {
@@ -6,7 +7,7 @@ const searchSkills = async (searchString = '') => {
   }
 
   try {
-    const response = await axios.get(`http://localhost:5000/api/skills/searchSkills/${searchString}`, { withCredentials: true });
+    const response = await axios.get(`${SERVERPOINT}/api/skills/searchSkills/${searchString}`, { withCredentials: true });
 
     if (response.status === 200) {
       return response.data.skills;

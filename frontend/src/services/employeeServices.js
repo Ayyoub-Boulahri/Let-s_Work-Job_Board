@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { SERVERPOINT } from '../schemas/data';
 
 export const createEmployee = async (newEmployee) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/signup/newEmployee', newEmployee, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + '/api/signup/newEmployee', newEmployee, { withCredentials: true });
         return response.data;
     } catch (error) {
         console.error('Error creating new employee:', error);
@@ -13,7 +14,7 @@ export const createEmployee = async (newEmployee) => {
 
 export const getEmployeeByEmail = async (email) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/employees/employeeByEmail', { email }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + '/api/employees/employeeByEmail', { email }, { withCredentials: true });
         if (response.status === 200) {
             return response;
           } else {
@@ -27,7 +28,7 @@ export const getEmployeeByEmail = async (email) => {
 
 export const getAllEmployeeEmails = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/employees/emails', { withCredentials: true });
+        const response = await axios.get(SERVERPOINT + '/api/employees/emails', { withCredentials: true });
         if (response.status === 200) {
             return response.data.emails;
           } else {
@@ -41,7 +42,7 @@ export const getAllEmployeeEmails = async () => {
 
 export const deleteEmployeeById = async (employeeId) => {
     try {
-        const response = await axios.delete('http://localhost:5000/api/employees/deleteEmployeeById', { data: { _id: employeeId } }, { withCredentials: true })
+        const response = await axios.delete(SERVERPOINT + '/api/employees/deleteEmployeeById', { data: { _id: employeeId } }, { withCredentials: true })
         if(response.status === 200) {
             console.log("delete successfully")
             return true;
@@ -57,7 +58,7 @@ export const deleteEmployeeById = async (employeeId) => {
 
 export const updateProfilePhoto = async (_id, profilePhoto) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/profilePhoto', { _id, profilePhoto } , { withCredentials: true })
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/profilePhoto', { _id, profilePhoto } , { withCredentials: true })
         if(response.status === 200){
             console.log("update successfully")
             return response
@@ -70,7 +71,7 @@ export const updateProfilePhoto = async (_id, profilePhoto) => {
 
 export const updateEmployeeInfos = async (_id, infos) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/employeeInfos', { _id, infos } , { withCredentials: true })
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/employeeInfos', { _id, infos } , { withCredentials: true })
         if(response.status === 200){
             console.log("update successfully")
             return response;
@@ -83,7 +84,7 @@ export const updateEmployeeInfos = async (_id, infos) => {
 
 export const addEmployeeSkill = async (_id, newSkill) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/addEmployeeSkill', { _id, newSkill } , { withCredentials: true });
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/addEmployeeSkill', { _id, newSkill } , { withCredentials: true });
         if(response.status === 200) {
             console.log("add successfully")
             return response;
@@ -96,7 +97,7 @@ export const addEmployeeSkill = async (_id, newSkill) => {
 
 export const addEmployeeExperience = async (_id, newExperience) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/addEmployeeExperience', { _id, newExperience } , { withCredentials: true });
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/addEmployeeExperience', { _id, newExperience } , { withCredentials: true });
         if(response.status === 200) {
             console.log("add successfully")
             return response;
@@ -109,7 +110,7 @@ export const addEmployeeExperience = async (_id, newExperience) => {
 
 export const removeEmployeeSkill = async (_id, removedSkill) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/removeEmployeeSkill', { _id, removedSkill } , { withCredentials: true });
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/removeEmployeeSkill', { _id, removedSkill } , { withCredentials: true });
         if(response.status === 200) {
             console.log("remove successfully")
             return response;
@@ -122,7 +123,7 @@ export const removeEmployeeSkill = async (_id, removedSkill) => {
 
 export const removeEmployeeExperience = async (_id, removedExperienceId) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/removeEmployeeExperience', { _id, removedExperienceId } , { withCredentials: true });
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/removeEmployeeExperience', { _id, removedExperienceId } , { withCredentials: true });
         if(response.status === 200) {
             console.log("remove successfully")
             return response;
@@ -135,7 +136,7 @@ export const removeEmployeeExperience = async (_id, removedExperienceId) => {
 
 export const addEmployeeEducation = async (_id, newEducation) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/addEmployeeEducation', { _id, newEducation } , { withCredentials: true });
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/addEmployeeEducation', { _id, newEducation } , { withCredentials: true });
         if(response.status === 200) {
             console.log("add successfully")
             return response;
@@ -148,7 +149,7 @@ export const addEmployeeEducation = async (_id, newEducation) => {
 
 export const removeEmployeeEducation = async (_id, removedEducationId) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/removeEmployeeEducation', { _id, removedEducationId } , { withCredentials: true });
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/removeEmployeeEducation', { _id, removedEducationId } , { withCredentials: true });
         if(response.status === 200) {
             console.log("remove successfully")
             return response;
@@ -161,7 +162,7 @@ export const removeEmployeeEducation = async (_id, removedEducationId) => {
 
 export const updateEmployeeCv = async (_id, cv) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/employees/update/cv', { _id, cv } , { withCredentials: true })
+        const response = await axios.put(SERVERPOINT + '/api/employees/update/cv', { _id, cv } , { withCredentials: true })
         if(response.status === 200){
             console.log("update successfully")
             return response
@@ -174,7 +175,7 @@ export const updateEmployeeCv = async (_id, cv) => {
 
 export const getSomeEmployees = async (project, skip, limit) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/employees/getSomeEmployees", { project, skip, limit }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/employees/getSomeEmployees", { project, skip, limit }, { withCredentials: true });
         if (response.status === 200)
             return response.data.employees;
     } catch (error) {
@@ -185,7 +186,7 @@ export const getSomeEmployees = async (project, skip, limit) => {
 
 export const getTotalEmployees = async () => {
     try {
-        const response = await axios.get("http://localhost:5000/api/employees/totalEmployees", { withCredentials: true });
+        const response = await axios.get(SERVERPOINT + "/api/employees/totalEmployees", { withCredentials: true });
         if (response.status === 200) {
             return response.data.totalEmployees;
         }
@@ -197,7 +198,7 @@ export const getTotalEmployees = async () => {
 
 export const getEmployeeById = async (employeeId) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/employees/employeeById", { employeeId }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/employees/employeeById", { employeeId }, { withCredentials: true });
         if (response.status === 200)
             return response.data.employeeInfos;
     } catch (error) {

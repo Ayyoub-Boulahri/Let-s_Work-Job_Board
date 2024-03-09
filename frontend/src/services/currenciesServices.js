@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { SERVERPOINT } from '../schemas/data';
 
 const getAllCurrencies = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/currencies/', {withCredentials: true})
+        const response = await axios.get(SERVERPOINT + '/api/currencies/', {withCredentials: true})
         if(response.status === 200)
             return response.data.currencies
     } catch (error) {

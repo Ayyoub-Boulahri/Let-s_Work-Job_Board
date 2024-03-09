@@ -1,8 +1,8 @@
 import axios from 'axios';
-
+import { SERVERPOINT } from '../schemas/data';
 export const createCompany = async (newCompany) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/signup/newCompany', newCompany, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + '/api/signup/newCompany', newCompany, { withCredentials: true });
         return response.data;
     } catch (error) {
         console.error('Error creating company:', error);
@@ -12,7 +12,7 @@ export const createCompany = async (newCompany) => {
 
 export const getCompanyByEmail = async (email) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/companies/companyByEmail', { email }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + '/api/companies/companyByEmail', { email }, { withCredentials: true });
         if (response.status === 200) {
             return response;
         } else {
@@ -26,7 +26,7 @@ export const getCompanyByEmail = async (email) => {
 
 export const getAllCompanyEmails = async () => {
     try {
-        const response = await axios.get('http://localhost:5000/api/companies/emails', { withCredentials: true });
+        const response = await axios.get(SERVERPOINT + '/api/companies/emails', { withCredentials: true });
         if (response.status === 200) {
             return response.data.emails;
         } else {
@@ -40,7 +40,7 @@ export const getAllCompanyEmails = async () => {
 
 export const deleteCompanyById = async (companyId) => {
     try {
-        const response = await axios.delete('http://localhost:5000/api/companies/deleteCompanyById', { data: { _id: companyId } }, { withCredentials: true })
+        const response = await axios.delete(SERVERPOINT + '/api/companies/deleteCompanyById', { data: { _id: companyId } }, { withCredentials: true })
         if (response.status === 200) {
             console.log("delete successfully")
             return true;
@@ -56,7 +56,7 @@ export const deleteCompanyById = async (companyId) => {
 
 export const getSomeCompanies = async (project, skip, limit) => {
     try {
-        const response = await axios.post("http://localhost:5000/api/companies/getSomeCompanies", { project, skip, limit }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/companies/getSomeCompanies", { project, skip, limit }, { withCredentials: true });
         if (response.status === 200)
             return response.data.companies;
     } catch (error) {
@@ -67,7 +67,7 @@ export const getSomeCompanies = async (project, skip, limit) => {
 
 export const getNumberOfFollowers = async (id) => {
     try {
-        const response = await axios.get("http://localhost:5000/api/companies/companyFollowersNumber/?id=" + id, { withCredentials: true });
+        const response = await axios.get(SERVERPOINT + "/api/companies/companyFollowersNumber/?id=" + id, { withCredentials: true });
         if (response.status === 200) {
             return response.data.numberOfFollowers;
         }
@@ -79,7 +79,7 @@ export const getNumberOfFollowers = async (id) => {
 
 export const getTotalCompanies = async () => {
     try {
-        const response = await axios.get("http://localhost:5000/api/companies/totalCompanies", { withCredentials: true });
+        const response = await axios.get(SERVERPOINT + "/api/companies/totalCompanies", { withCredentials: true });
         if (response.status === 200) {
             return response.data.totalCompanies;
         }
@@ -91,7 +91,7 @@ export const getTotalCompanies = async () => {
 
 export const getCompanyById = async (id) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/companies/companyById', { id }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + '/api/companies/companyById', { id }, { withCredentials: true });
         if (response.status === 200) {
             return response;
         } else {
@@ -105,7 +105,7 @@ export const getCompanyById = async (id) => {
 
 export const getSuggestionsByIndustry = async (industry, idExclu) => {
     try {
-        const response = await axios.get("http://localhost:5000/api/companies/suggestionsByIndustry/?industry=" + industry + "&idExclu=" + idExclu, { withCredentials: true });
+        const response = await axios.get(SERVERPOINT + "/api/companies/suggestionsByIndustry/?industry=" + industry + "&idExclu=" + idExclu, { withCredentials: true });
         if (response.status === 200)
             return response.data.suggestions;
     } catch (error) {
@@ -116,7 +116,7 @@ export const getSuggestionsByIndustry = async (industry, idExclu) => {
 
 export const updateCompanyInfos = async (_id, infos) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/companies/update/companyInfos', { _id, infos }, { withCredentials: true })
+        const response = await axios.put(SERVERPOINT + '/api/companies/update/companyInfos', { _id, infos }, { withCredentials: true })
         if (response.status === 200) {
             return response;
         }
@@ -128,7 +128,7 @@ export const updateCompanyInfos = async (_id, infos) => {
 
 export const updateCompanyProfilePhoto = async (_id, company_photo) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/companies/update/profilePhoto', { _id, company_photo }, { withCredentials: true })
+        const response = await axios.put(SERVERPOINT + '/api/companies/update/profilePhoto', { _id, company_photo }, { withCredentials: true })
         if (response.status === 200) {
             return response
         }
@@ -140,7 +140,7 @@ export const updateCompanyProfilePhoto = async (_id, company_photo) => {
 
 export const updateCompanyCoverPhoto = async (_id, company_cover) => {
     try {
-        const response = await axios.put('http://localhost:5000/api/companies/update/coverPhoto', { _id, company_cover }, { withCredentials: true })
+        const response = await axios.put(SERVERPOINT + '/api/companies/update/coverPhoto', { _id, company_cover }, { withCredentials: true })
         if (response.status === 200) {
             return response
         }
@@ -152,7 +152,7 @@ export const updateCompanyCoverPhoto = async (_id, company_cover) => {
 
 export const getCompanyFollowers = async (companyId, skip, limit) => {
     try {
-        const response = await axios.post('http://localhost:5000/api/companies/follow/getFollowers', { companyId, skip, limit }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + '/api/companies/follow/getFollowers', { companyId, skip, limit }, { withCredentials: true });
         if (response.status === 200)
             return response.data.followers; 
         return null;

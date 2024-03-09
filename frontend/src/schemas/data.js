@@ -7,3 +7,6 @@ export const sizes = [
     { id: 6, value: "5001 - 10000 employees" },
     { id: 7, value: "10000+ employees" }
 ];
+
+
+export const SERVERPOINT = 'http://localhost:5000';

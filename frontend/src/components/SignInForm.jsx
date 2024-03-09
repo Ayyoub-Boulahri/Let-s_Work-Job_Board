@@ -8,6 +8,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import checkAuthentication from '../services/checkAuthentication';
 import { setAuthenticated } from '../stores/authStore';
+import { SERVERPOINT } from '../schemas/data';
 
 function SignInForm() {
     const dispatch = useDispatch();
@@ -38,7 +39,7 @@ function SignInForm() {
         const { email, password } = loginInfos;
         const formatedEmail = email?.toLowerCase()
         try {
-            const response = await axios.post('http://localhost:5000/api/login/' + type, { email: formatedEmail, password }, { withCredentials: true });
+            const response = await axios.post(SERVERPOINT + '/api/login/' + type, { email: formatedEmail, password }, { withCredentials: true });
             if (response.status === 200) {
                 const authInfo = await checkAuthentication();
                 dispatch(setAuthenticated(authInfo))

@@ -36,7 +36,7 @@ class NotificationController {
 
 
     getEmployeeNotifications = async (req, res) => {
-        const { employeeId } = req.body;
+        const { employeeId, skip, limit } = req.body;
         try {
             const notifications = await Notification.aggregate([
                 {
@@ -59,7 +59,9 @@ class NotificationController {
                         sender: { $arrayElemAt: ["$sender", 0] }
                     }
                 },
-                { $sort: {created_at: -1 }}, 
+                { $sort: { created_at: -1 } },
+                { $skip: skip },
+                { $limit: limit },
                 {
                     $project: {
                         _id: 1,
@@ -76,6 +78,7 @@ class NotificationController {
                 var photobase64 = notifications[i].photo.toString('base64')
                 notifications[i].photo = photobase64
             }
+
 
             return res.status(200).json({ notifications });
         } catch (error) {
@@ -108,7 +111,7 @@ class NotificationController {
                         sender: { $arrayElemAt: ["$sender", 0] }
                     }
                 },
-                { $sort: {created_at: -1 }}, 
+                { $sort: { created_at: -1 } },
                 {
                     $project: {
                         _id: 1,
@@ -141,9 +144,9 @@ class NotificationController {
                 { $set: { read: true } }
             )
 
-            if(changeNotification.nModified === 0)
+            if (changeNotification.nModified === 0)
                 return res.status(404).json({ message: 'notification not found' })
-            
+
             return res.status(200).json({ message: "notification status changed" })
         } catch (error) {
             console.error(error);
