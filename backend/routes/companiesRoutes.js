@@ -7,7 +7,7 @@ module.exports = function (io, connectedUsers) {
     router.get('/emails', CompanyController.getAllEmails)
     router.delete('/deleteCompanyById', CompanyController.deleteCompany)
     router.post('/getSomeCompanies', CompanyController.getSomeCompanies)
-    router.get('/totalCompanies', CompanyController.getTotalCompanies)
+    router.post('/totalCompanies', CompanyController.getTotalCompanies)
     router.get('/companyFollowersNumber', CompanyController.getFollowersNumber)
     router.post('/companyById', CompanyController.getCompanyById)
     router.get('/suggestionsByIndustry', CompanyController.getSuggestionsByIndustry)

@@ -5,32 +5,73 @@ const NotificationController = require('./notificationController');
 
 class JobOfferController {
     getSomeJobOffers = async (req, res) => {
-        const { project, skip, limit } = req.body;
+        const { project, skip, limit, searchTxt, filters } = req.body;
         try {
-            const jobOffers = await JobOffer.aggregate([
-                {
-                    $lookup: {
-                        from: 'companies',
-                        localField: 'company',
-                        foreignField: '_id',
-                        as: 'company'
+            var jobOffers = null
+            if (filters && filters.date_publication) {
+                var datePublication = new Date(filters.date_publication)
+                delete filters.date_publication
+                jobOffers = await JobOffer.aggregate([
+                    {
+                        $lookup: {
+                            from: 'companies',
+                            localField: 'company',
+                            foreignField: '_id',
+                            as: 'company'
+                        }
+                    },
+                    {
+                        $match: {
+                            job_status: true,
+                            $or: [
+                                { "company.company_name": { $regex: searchTxt, $options: 'i' } },
+                                { title: { $regex: searchTxt, $options: 'i' } }
+                            ],
+                            date_publication: { $gte: datePublication },
+                            ...filters
+                        }
+                    },
+                    {
+                        $project: project,
+                    },
+                    {
+                        $skip: skip,
+                    },
+                    {
+                        $limit: limit,
                     }
-                },
-                {
-                    $match: {
-                        job_status: true
+                ]);
+            } else {
+                jobOffers = await JobOffer.aggregate([
+                    {
+                        $lookup: {
+                            from: 'companies',
+                            localField: 'company',
+                            foreignField: '_id',
+                            as: 'company'
+                        }
+                    },
+                    {
+                        $match: {
+                            job_status: true,
+                            $or: [
+                                { "company.company_name": { $regex: searchTxt, $options: 'i' } },
+                                { title: { $regex: searchTxt, $options: 'i' } }
+                            ],
+                            ...filters
+                        }
+                    },
+                    {
+                        $project: project,
+                    },
+                    {
+                        $skip: skip,
+                    },
+                    {
+                        $limit: limit,
                     }
-                },
-                {
-                    $project: project,
-                },
-                {
-                    $skip: skip,
-                },
-                {
-                    $limit: limit,
-                }
-            ]);
+                ]);
+            }
 
             for (var i = 0; i < jobOffers.length; i++) {
                 for (var j = 0; j < jobOffers[i].company.length; j++) {
@@ -53,14 +94,74 @@ class JobOfferController {
     }
 
     getTotalOpenJobOffers = async (req, res) => {
+        const { searchTxt, filters } = req.body;
         try {
-            const count = await JobOffer.countDocuments({ job_status: true });
-            return res.status(200).json({ totalJobOffers: count });
+            var count = null;
+
+            if (filters && filters.date_publication) {
+                var datePublication = new Date(filters.date_publication);
+                delete filters.date_publication;
+                count = await JobOffer.aggregate([
+                    {
+                        $lookup: {
+                            from: 'companies',
+                            localField: 'company',
+                            foreignField: '_id',
+                            as: 'company'
+                        }
+                    },
+                    {
+                        $match: {
+                            job_status: true,
+                            $or: [
+                                { "company.company_name": { $regex: searchTxt, $options: 'i' } },
+                                { title: { $regex: searchTxt, $options: 'i' } }
+                            ],
+                            date_publication: { $gte: datePublication },
+                            ...filters
+                        }
+                    },
+                    {
+                        $count: 'totalJobOffers'
+                    }
+                ]);
+            } else {
+                count = await JobOffer.aggregate([
+                    {
+                        $lookup: {
+                            from: 'companies',
+                            localField: 'company',
+                            foreignField: '_id',
+                            as: 'company'
+                        }
+                    },
+                    {
+                        $match: {
+                            job_status: true,
+                            $or: [
+                                { "company.company_name": { $regex: searchTxt, $options: 'i' } },
+                                { title: { $regex: searchTxt, $options: 'i' } }
+                            ],
+                            ...filters
+                        }
+                    },
+                    {
+                        $count: 'totalJobOffers'
+                    }
+                ]);
+            }
+
+            if (Array.isArray(count) && count.length > 0) {
+                return res.status(200).json({ totalJobOffers: count[0].totalJobOffers });
+            } else {
+                return res.status(200).json({ totalJobOffers: 1 }); // Return 0 if no results found
+            }
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
-    }
+    };
+
 
     getJobOfferById = async (req, res) => {
         try {

@@ -206,3 +206,14 @@ export const getEmployeeById = async (employeeId) => {
         throw error;
     }
 }
+
+export const getEmployeeInfos = async (employeeId, project) => {
+    try {
+        const response = await axios.post(SERVERPOINT + "/api/employees/employeeInfos", { employeeId, project }, { withCredentials: true });
+        if (response.status === 200)
+            return response.data.infos;
+    } catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

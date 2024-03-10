@@ -420,6 +420,21 @@ class EmployeeController {
             throw error
         }
     }
+
+    getEmployeeInfos = async (req, res) => {
+        const { employeeId, project } = req.body;
+        try {
+            const infos = await Employee.find({ _id: employeeId }, project);
+
+            if(!infos || infos.length === 0)
+                return res.status(404).json({ message: 'Employee not found' });
+
+            return res.status(200).json({ infos })
+        } catch (error) {
+            console.error(error)
+            return res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
     
 }
 

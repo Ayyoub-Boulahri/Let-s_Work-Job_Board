@@ -4,7 +4,7 @@ import CompanyPhoto from '../../assets/Companies.svg'
 import { Input } from "@nextui-org/react";
 import { IoIosSearch } from "react-icons/io";
 
-function CompanyLeading() {
+function CompanyLeading(props) {
   return (
     <section>
       <div className='flex gap-10 py-10 sm:flex-row flex-col'>
@@ -29,6 +29,7 @@ function CompanyLeading() {
         </h1>
         <Input
           type="email" variant="bordered" placeholder='Serach a company' className='md:w-[40%]'
+          onChange={(e) => props.setSearchTxt(e.target.value)}
           endContent={
             <button>
               <IoIosSearch className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />

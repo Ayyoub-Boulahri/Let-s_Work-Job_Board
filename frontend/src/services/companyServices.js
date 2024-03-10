@@ -54,9 +54,9 @@ export const deleteCompanyById = async (companyId) => {
     }
 }
 
-export const getSomeCompanies = async (project, skip, limit) => {
+export const getSomeCompanies = async (project, skip, limit, searchTxt, filters) => {
     try {
-        const response = await axios.post(SERVERPOINT + "/api/companies/getSomeCompanies", { project, skip, limit }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/companies/getSomeCompanies", { project, skip, limit, searchTxt, filters }, { withCredentials: true });
         if (response.status === 200)
             return response.data.companies;
     } catch (error) {
@@ -77,9 +77,9 @@ export const getNumberOfFollowers = async (id) => {
     }
 }
 
-export const getTotalCompanies = async () => {
+export const getTotalCompanies = async (searchTxt, filters) => {
     try {
-        const response = await axios.get(SERVERPOINT + "/api/companies/totalCompanies", { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/companies/totalCompanies", { searchTxt, filters }, { withCredentials: true });
         if (response.status === 200) {
             return response.data.totalCompanies;
         }
@@ -154,7 +154,7 @@ export const getCompanyFollowers = async (companyId, skip, limit) => {
     try {
         const response = await axios.post(SERVERPOINT + '/api/companies/follow/getFollowers', { companyId, skip, limit }, { withCredentials: true });
         if (response.status === 200)
-            return response.data.followers; 
+            return response.data.followers;
         return null;
     } catch (error) {
         console.error('Error getting followers for company:', error);

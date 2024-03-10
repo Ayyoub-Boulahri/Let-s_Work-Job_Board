@@ -8,5 +8,14 @@ export const sizes = [
     { id: 7, value: "10000+ employees" }
 ];
 
+export const datePostedOptions = [
+    { value: "any", label: "Any time" },
+    { value: "lastDay", label: "Last Day" },
+    { value: "lastWeek", label: "Last Week" },
+    { value: "last2Weeks", label: "Last 2 weeks" },
+    { value: "lastMonth", label: "Last month" },
+];
+
+export const jobTypes = ["Full-time", "Contract", "Part-time", "Temporary"];
 
 export const SERVERPOINT = 'http://localhost:5000';

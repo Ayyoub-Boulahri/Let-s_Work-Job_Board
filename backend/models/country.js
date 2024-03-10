@@ -1,12 +1,12 @@
 const mongoose = require('../db'); 
 
 const countrySchema = new mongoose.Schema({
-  ID_PAYS: String,
-  PAYS_NAME: String,
-  CITIES: [
+  id_pays: String,
+  pays_name: String,
+  cities: [
     {
-        ID_CITY: String,
-        CITY_NAME: String
+        id_city: String,
+        city_name: String
     }
   ]
 }, {

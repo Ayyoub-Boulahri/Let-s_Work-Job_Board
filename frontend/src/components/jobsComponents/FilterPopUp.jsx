@@ -1,9 +1,92 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, Button, useDisclosure, Divider } from "@nextui-org/react";
 import { RiListSettingsLine } from "react-icons/ri";
 import { Select, SelectItem, Input, Switch } from "@nextui-org/react";
-function FilterPopUp() {
+import { datePostedOptions, jobTypes } from '../../schemas/data';
+import getAllIndustries from '../../services/industriesServices';
+import { useQuery } from '@tanstack/react-query';
+import { getCities } from "../../services/countriesServices";
+
+function FilterPopUp(props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [searchCity, setSearchCity] = useState("")
+  const [filtersObj, setFiltersObj] = useState({
+    job_type: "all",
+    city: "all",
+    industry: "all"
+  })
+
+  const handleSelectChange = (property, value) => {
+    if (value == "all") {
+      if (props.filters.hasOwnProperty(property)) {
+        props.setFilters(prevFilters => {
+          const { [property]: removedProperty, ...remainingFilters } = prevFilters;
+          return remainingFilters;
+        });
+      }
+    } else {
+      props.setFilters(prevFilters => {
+        return {
+          ...prevFilters,
+          [property]: value,
+        };
+      });
+    }
+  };
+
+  const { data: industries, isLoading: isLoadingIndustries } = useQuery({
+    queryKey: ["industries"],
+    queryFn: () => getAllIndustries()
+  })
+
+  const { data: cities, isLoading: isLoadingCities } = useQuery({
+    queryKey: ["cities", searchCity],
+    queryFn: () => getCities(searchCity)
+  })
+
+  const confirmFilters = (onClose) => {
+    let city = "";
+    if (cities?.includes(searchCity)) {
+      setFiltersObj(prev => ({
+        ...prev,
+        city: searchCity,
+      }));
+      city = searchCity
+    } else {
+      setFiltersObj(prev => ({
+        ...prev,
+        city: "all",
+      }));
+      city = "all"
+    }
+
+    handleSelectChange("job_type", filtersObj.job_type)
+    handleSelectChange("company.industry", filtersObj.industry)
+    handleSelectChange("company.city", city)
+    onClose()
+  };
+
+  const resetAllFilters = (onClose) => {
+    props.setFilters({})
+    onClose()
+  }
+
+  useEffect(() => {
+    let init = {
+      job_type: "all",
+      city: "all",
+      industry: "all"
+    }
+    if (props.filters.hasOwnProperty("job_type"))
+      init.job_type = props.filters.job_type
+    if (props.filters.hasOwnProperty("industry"))
+      init.industry = props.filters.industry
+    if(props.filters.hasOwnProperty("company.city")) {
+      init.city = props.filters["company.city"]
+    }
+
+    setFiltersObj(init)
+  }, [])
 
   return (
     <>
@@ -14,151 +97,71 @@ function FilterPopUp() {
             <>
               <ModalHeader className="flex flex-col gap-1 text-[20px]">Filter Jobs</ModalHeader>
               <ModalBody className="popupModel">
-                <div className="flex flex-col gap-2">
-                <Divider />
 
-                  <div className="flex justify-between py-2">
-                    <h1 className='font-bold text-default-600 text-[16px]'>Only Open Jobs</h1>
-                    <Switch size="sm"/>
-                  </div>
-                  <Divider />
-                  <h1>Salary range per month</h1>
-                  <div className="flex gap-10 justify-center">
-                    <Input
-                      label="Min"
-                      placeholder="0.00"
-                      labelPlacement="outside"
-                      startContent={
-                        <div className="pointer-events-none flex items-center">
-                          <span className="text-default-400 text-small">$</span>
-                        </div>
-                      }
-                      endContent={
-                        <div className="flex items-center">
-                          <label className="sr-only" htmlFor="currency">
-                            Currency
-                          </label>
-                          <select
-                            className="outline-none border-0 bg-transparent text-default-400 text-small"
-                            id="currency"
-                            name="currency"
-                          >
-                            <option>USD</option>
-                            <option>ARS</option>
-                            <option>EUR</option>
-                          </select>
-                        </div>
-                      }
-                      type="number"
-                    />
-                    <Input
-                      label="Max"
-                      placeholder="0.00"
-                      labelPlacement="outside"
-                      startContent={
-                        <div className="pointer-events-none flex items-center">
-                          <span className="text-default-400 text-small">$</span>
-                        </div>
-                      }
-                      endContent={
-                        <div className="flex items-center">
-                          <label className="sr-only" htmlFor="currency">
-                            Currency
-                          </label>
-                          <select
-                            className="outline-none border-0 bg-transparent text-default-400 text-small"
-                            id="currency"
-                            name="currency"
-                          >
-                            <option>USD</option>
-                            <option>ARS</option>
-                            <option>EUR</option>
-                          </select>
-                        </div>
-                      }
-                      type="number"
-                    />
-                  </div>
-                </div>
-                <Divider />
-                <div className="flex flex-col gap-2">
-                  <h1>Date Posted</h1>
-                  <Select
-                    size={"sm"}
-                    label="Select a date"
-                  >
-                    <SelectItem value="cat">
-                      cat
-                    </SelectItem>
-                  </Select>
-                </div>
-                <Divider />
                 <div className="flex flex-col gap-2">
                   <h1>Jobs Type</h1>
-                  <Select
-                    size={"sm"}
-                    label="Select a job type"
+                  <select
+                    className="bg-[#27272A] px-2 py-3 rounded-md"
+                    // onChange={(e) => handleSelectChange("job_type", e.target.value)}
+                    onChange={(e) => setFiltersObj(prev => { return { ...prev, "job_type": e.target.value } })}
                   >
-                    <SelectItem value="cat">
-                      cat
-                    </SelectItem>
-                  </Select>
+                    <option value="all">
+                      all
+                    </option>
+                    {jobTypes.map((jobType, index) => (
+                      <option value={jobType} textValue={jobType} selected={jobType == filtersObj.job_type}>
+                        {jobType}
+                      </option>
+                    ))}
+
+                  </select>
                 </div>
+
+
                 <Divider />
+
+
                 <div className="flex flex-col gap-2">
                   <h1>City</h1>
-                  <Select
-                    size={"sm"}
-                    label="Select a city"
-                  >
-                    <SelectItem value="cat">
-                      cat
-                    </SelectItem>
-                  </Select>
+                  <input
+                    className="bg-[#27272A] px-2 py-3 rounded-md"
+                    onChange={(e) => setSearchCity(e.target.value)}
+                    list="cities"
+                    defaultValue={filtersObj.city == "all" ? "" : filtersObj.city}
+                  />
+                  <datalist id="cities">
+                    {cities?.map((city, index) => <option key={index} value={city} />)}
+                  </datalist>
                 </div>
+
+
                 <Divider />
+
+
                 <div className="flex flex-col gap-2">
                   <h1>Industry</h1>
-                  <Select
-                    size={"sm"}
-                    label="Select an industry"
+                  <select
+                    className="bg-[#27272A] px-2 py-3 rounded-md"
+                    onChange={(e) => setFiltersObj(prev => { return { ...prev, "industry": e.target.value } })}
                   >
-                    <SelectItem value="cat">
-                      cat
-                    </SelectItem>
-                  </Select>
+                    <option value="all" selected>all</option>
+                    {industries?.map((industry, index) => (
+                      <option key={index} value={industry.industry_name} selected={industry.industry_name == filtersObj.industry}>
+                        {industry.industry_name}
+                      </option>
+                    ))}
+
+                  </select>
                 </div>
-                <Divider />
-                <div className="flex flex-col gap-2">
-                  <h1>Company</h1>
-                  <Select
-                    size={"sm"}
-                    label="Select a company"
-                  >
-                    <SelectItem value="cat">
-                      cat
-                    </SelectItem>
-                  </Select>
-                </div>
-                <Divider />
-                <div className="flex flex-col gap-2">
-                  <h1>Company size</h1>
-                  <Select
-                    size={"sm"}
-                    label="Select a size"
-                  >
-                    <SelectItem value="cat">
-                      cat
-                    </SelectItem>
-                  </Select>
-                </div>
+
+
 
               </ModalBody>
               <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+                <Button color="danger" variant="light" onPress={() => resetAllFilters(onClose)}>
+                  reset
                 </Button>
-                <Button color="primary" onPress={onClose}>
+                <Button color="primary" onPress={() => confirmFilters(onClose)}>
                   save
                 </Button>
               </ModalFooter>

@@ -111,9 +111,12 @@ class CompanyController {
 
     getSomeCompanies = async (req, res) => {
         try {
-            const { project, skip, limit } = req.body;
+            const { project, skip, limit, searchTxt, filters } = req.body;
 
-            const companies = await Company.find({}, project)
+            const companies = await Company.find({
+                "company_name": { $regex: searchTxt, $options: 'i' },
+                ...filters
+            }, project)
                 .skip(parseInt(skip))
                 .limit(parseInt(limit)).lean();
 
@@ -162,13 +165,21 @@ class CompanyController {
 
     getTotalCompanies = async (req, res) => {
         try {
-            const count = await Company.countDocuments({ isApproved: true });
+            const { searchTxt, filters } = req.body;
+    
+            const count = await Company.countDocuments({
+                "company_name": { $regex: searchTxt, $options: 'i' },
+                ...filters,
+                isApproved: true
+            });
+    
             return res.status(200).json({ totalCompanies: count });
         } catch (error) {
-            console.log(error);
+            console.error(error);
             return res.status(500).json({ error: 'Internal Server Error' });
         }
     }
+    
 
     getCompanyById = async (req, res) => {
         try {

@@ -1,58 +1,100 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiListSettingsLine } from "react-icons/ri";
 import FilterPopUp from "./FilterPopUp";
+import { datePostedOptions } from '../../schemas/data';
+import { getEmployeeInfos } from '../../services/employeeServices';
+import { useSelector } from 'react-redux';
 
-function JobFilters() {
+function JobFilters(props) {
     const [selectedFilters, setSelectedFilters] = useState([]);
+    const authInfo = useSelector((state) => state.isAuthenticated.value);
+    const [city, setCity] = useState("");
 
-    const options = [
-        { value: "any", label: "Any time" },
-        { value: "lastDay", label: "Last Day" },
-        { value: "last3Days", label: "Last 3 days" },
-        { value: "lastWeek", label: "Last Week" },
-        { value: "last2Weeks", label: "Last 2 weeks" },
-        { value: "lastMonth", label: "Last month" },
-    ];
+    useEffect(() => {
+        getEmployeeInfos(authInfo?.userId, { city: 1 })
+            .then((response) => setCity(response[0].city))
+            .catch((response) => setCity(""))
+    }, []);
 
-    const toggleFilter = (filter) => {
-        if (selectedFilters.includes(filter)) {
-            setSelectedFilters(selectedFilters.filter((item) => item !== filter));
-        } else {
-            setSelectedFilters([...selectedFilters, filter]);
+
+    const handleMyLocationFilters = (filter, value) => {
+        props.setFilters(prevFilters => {
+            if (prevFilters.hasOwnProperty(filter) && prevFilters[filter] == city) {
+                const { [filter]: removedFilter, ...remainingFilters } = prevFilters;
+                return remainingFilters;
+            } else {
+                return {
+                    ...prevFilters,
+                    [filter]: value
+                };
+            }
+        });
+    };
+
+    const handleDatePostedChange = (event) => {
+        const selectedValue = event.target.value;
+        let dateValue;
+
+        switch (selectedValue) {
+            case "lastDay":
+                dateValue = calculateDate(-1);
+                break;
+            case "lastWeek":
+                dateValue = calculateDate(-7);
+                break;
+            case "last2Weeks":
+                dateValue = calculateDate(-14);
+                break;
+            case "lastMonth":
+                dateValue = calculateDate(-30);
+                break;
+            default:
+                dateValue = null; // For "any" or other cases
         }
+
+        if (dateValue == null) {
+            props.setFilters(prevFilters => {
+                const { date_publication, ...remainingFilters } = prevFilters;
+                return remainingFilters;
+            });
+        } else {
+            props.setFilters(prevFilters => {
+                return {
+                    ...prevFilters,
+                    "date_publication": dateValue,
+                }
+            })
+        }
+    };
+
+    const calculateDate = (daysAgo) => {
+        const lastDate = new Date();
+        lastDate.setDate(lastDate.getDate() + daysAgo);
+        lastDate.setHours(0, 0, 0, 0);
+        return lastDate.toISOString();
     };
 
     return (
         <div className='flex mt-8 gap-4 items-center'>
             <div className='flex gap-4 overflow-x-auto max-w-full'>
+                {console.log(props.filters)}
                 <select
                     className='rounded-full text-[10px] sm:text-[18px] px-4 py-1 bg-section-bright-bg cursor-pointer hover:bg-default-200 duration-300'
+                    onChange={handleDatePostedChange}
                 >
                     <option value="" selected disabled>Date posted</option>
-                    {options.map(option => (
+                    {datePostedOptions.map(option => (
                         <option key={option.value} value={option.value}>{option.label}</option>
                     ))}
                 </select>
                 <div
-                    className={`rounded-full text-[10px] min-w-fit sm:text-[18px] px-4 py-1 cursor-pointer duration-300 ${selectedFilters.includes('Open Jobs') ? 'bg-blue-600 hover:bg-blue-800' : 'bg-section-bright-bg hover:bg-default-200'}`}
-                    onClick={() => toggleFilter('Open Jobs')}
-                >
-                    Open Jobs
-                </div>
-                <div
-                    className={`rounded-full text-[10px] min-w-fit sm:text-[18px] px-4 py-1 cursor-pointer duration-300 ${selectedFilters.includes('Salary') ? 'bg-blue-600 hover:bg-blue-800' : 'bg-section-bright-bg hover:bg-default-200'}`}
-                    onClick={() => toggleFilter('Salary')}
-                >
-                    Salary
-                </div>
-                <div
-                    className={`rounded-full text-[10px] min-w-fit sm:text-[16px] px-4 py-1 cursor-pointer duration-300 ${selectedFilters.includes('My Location') ? 'bg-blue-600 hover:bg-blue-800' : 'bg-section-bright-bg hover:bg-default-200'}`}
-                    onClick={() => toggleFilter('My Location')}
+                    className={`rounded-full text-[10px] min-w-fit sm:text-[16px] px-4 py-1 cursor-pointer duration-300 ${props.filters["company.city"] == city ? 'bg-blue-600 hover:bg-blue-800' : 'bg-section-bright-bg hover:bg-default-200'}`}
+                    onClick={() => { handleMyLocationFilters("company.city", city) }}
                 >
                     My Location
                 </div>
             </div>
-            <FilterPopUp />
+            <FilterPopUp filters={props.filters} setFilters={props.setFilters} />
         </div>
     );
 }

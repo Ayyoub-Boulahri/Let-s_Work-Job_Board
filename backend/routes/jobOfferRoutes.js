@@ -5,7 +5,7 @@ const JobOfferController = require('../controllers/jobOfferController')
 module.exports = function (io, connectedUsers) {
 
     router.post('/', JobOfferController.getSomeJobOffers)
-    router.get('/totalOpenJobOffers', JobOfferController.getTotalOpenJobOffers)
+    router.post('/totalOpenJobOffers', JobOfferController.getTotalOpenJobOffers)
     router.get('/jobOfferById', JobOfferController.getJobOfferById)
     router.put('/postulation', JobOfferController.addPostulation)
     router.post('/employeePostulation', JobOfferController.getEmployeePostulation)

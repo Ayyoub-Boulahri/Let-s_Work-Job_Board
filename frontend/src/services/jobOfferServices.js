@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { SERVERPOINT } from '../schemas/data';
 
-export const getSomeJobOffers = async (project, skip, limit) => {
+export const getSomeJobOffers = async (project, skip, limit, searchTxt, filters) => {
     try {
-        const response = await axios.post(SERVERPOINT + "/api/jobOffers", { project, skip, limit }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/jobOffers", { project, skip, limit, searchTxt, filters }, { withCredentials: true });
         if (response.status === 200)
             return response.data.jobOffers;
     } catch (error) {
@@ -12,9 +12,9 @@ export const getSomeJobOffers = async (project, skip, limit) => {
     }
 }
 
-export const getTotalOpenJobOffers = async () => {
+export const getTotalOpenJobOffers = async (searchTxt, filters) => {
     try {
-        const response = await axios.get(SERVERPOINT + "/api/jobOffers/totalOpenJobOffers", { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/jobOffers/totalOpenJobOffers", { searchTxt, filters }, { withCredentials: true });
         if (response.status === 200)
             return response.data.totalJobOffers;
     } catch (error) {

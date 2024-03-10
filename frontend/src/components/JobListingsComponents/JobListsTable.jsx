@@ -4,7 +4,7 @@ import { EditIcon } from "../UIComponents/EditIcon";
 import { DeleteIcon } from "../UIComponents/DeleteIcon";
 import CandidatPopUp from "./CandidatPopUp";
 import { useNavigate } from "react-router-dom";
-import { getCompanyJobOffersCount, getSomeCompanyJobOffers, getTotalOpenJobOffers } from "../../services/jobOfferServices";
+import { getCompanyJobOffersCount, getSomeCompanyJobOffers } from "../../services/jobOfferServices";
 import { useSelector } from "react-redux";
 import { formatDate } from "../../services/convertFunctions";
 import { Pagination } from "@nextui-org/react";

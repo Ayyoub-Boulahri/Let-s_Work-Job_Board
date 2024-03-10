@@ -92,7 +92,7 @@ function JobRequestsTable(props) {
                             <CiSearch />
                         }
                         endContent={
-                            <MdClear className="cursor-pointer" onClick={() => setSearchText("")}/>
+                            <MdClear className="cursor-pointer" onClick={() => setSearchText("")} />
                         }
                         value={searchText}
                         onChange={(e) => setSearchText(e.target.value)}
@@ -142,14 +142,13 @@ function JobRequestsTable(props) {
                                                 <EyeIcon />
                                             </span>
                                         </Tooltip>
-                                        {/* <Tooltip content="edit attachements">
-                                            <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
-                                                <EditIcon />
-                                            </span>
-                                        </Tooltip> */}
-                                        <Tooltip color="danger" content="remove applyment">
-                                            <DeletePostulationModel jobOfferId={jobRequest._id} employeeId={authInfo?.userId} setIsModified={setIsModified}/>
-                                        </Tooltip>
+                                        {
+                                            jobRequest.Offer_status != "Accept" && jobRequest.Offer_status != "Rejected"
+                                            &&
+                                            <Tooltip color="danger" content="remove applyment">
+                                                <DeletePostulationModel jobOfferId={jobRequest._id} employeeId={authInfo?.userId} setIsModified={setIsModified} />
+                                            </Tooltip>
+                                        }
                                     </div>
                                 </TableCell>
                             </TableRow>

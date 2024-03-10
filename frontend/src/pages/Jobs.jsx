@@ -13,9 +13,11 @@ function Jobs() {
   const navigate = useNavigate();
   const authInfo = useSelector((state) => state.isAuthenticated.value);
   const dispatch = useDispatch()
+  const [searchTxt, setSearchTxt] = useState("")
 
   useEffect(() => {
     const typeUser = localStorage.getItem('typeUser');
+    
     if (typeUser != "employee") {
       handleLogout();
       dispatch(setLoginOut());
@@ -26,9 +28,9 @@ function Jobs() {
   return (
     <div className={`${styles.flexStart} ${styles.paddingX} bg-section-dark-bg pt-20 xl:pb-4`}>
       <div className={`${styles.boxWidth} HeightTall`}>
-        <JobsLeading />
+        <JobsLeading searchTxt={searchTxt} setSearchTxt={setSearchTxt} />
         <Divider className='mt-20' />
-        <JobsList />
+        <JobsList searchTxt={searchTxt} setSearchTxt={setSearchTxt} />
       </div>
     </div>
   );

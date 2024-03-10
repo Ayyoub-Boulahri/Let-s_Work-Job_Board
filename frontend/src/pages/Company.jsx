@@ -211,22 +211,25 @@ function Company() {
 
                 <div className={`${authInfo.typeUser == "employee" ? "w-[60%]" : "w-[100%]"} bg-[#191919] rounded-lg px-4 pb-4 h-fit`}>
                   <div className='flex justify-between p-2 rounded-md gap-2'>
-                    <button className={`w-[50%] flex justify-center  ${isAbout && 'selected'} p-4 font-bold text-default-600`} onClick={() => {
+                    <button className={`w-[50%] flex justify-center  ${isAbout && 'selected'} ${authInfo.typeUser === "company" && 'w-full'} p-4 font-bold text-default-600`} onClick={() => {
                       setIsAbout(true)
                     }}>
                       {authInfo.typeUser == "company" ? "Company Information" : "About us"}
                     </button>
-                    <button className={`w-[50%] flex justify-center  ${!isAbout && 'selected'} p-4 font-bold text-default-600`} onClick={() => {
-                      setIsAbout(false)
-                    }}>
-                      Job Offers
-                    </button>
+                    {
+                      authInfo.typeUser == "employee" &&
+                      <button className={`w-[50%] flex justify-center  ${!isAbout && 'selected'} p-4 font-bold text-default-600`} onClick={() => {
+                        setIsAbout(false)
+                      }}>
+                        Job Offers
+                      </button>
+                    }
                   </div>
                   {isAbout
                     ? authInfo.typeUser == "company"
                       ? <CompanyProfileInfos company={{ company_id: companyInfos._id, description: companyInfos.description, password: companyInfos.password, company_name: companyInfos.company_name, email: companyInfos.company_email, city: companyInfos.city, country: companyInfos.country, industry: companyInfos.industry, phone: companyInfos.company_phone, address: companyInfos.address, founded_year: companyInfos.founded_year, size: companyInfos.size }} />
                       : <AboutCompany company={{ description: companyInfos.description, email: companyInfos.company_email, city: companyInfos.city, country: companyInfos.country, industry: companyInfos.industry, phone: companyInfos.company_phone, address: companyInfos.address, founded_year: companyInfos.founded_year, size: companyInfos.size }} />
-                    : <CompanyJobOffers company_id={company_id} city={companyInfos.city} country={companyInfos.country} company_photo={companyInfos.company_photo} company_name={companyInfos.company_name} typeUser={authInfo.typeUser} />
+                    : authInfo.typeUser == "employee" && <CompanyJobOffers company_id={company_id} city={companyInfos.city} country={companyInfos.country} company_photo={companyInfos.company_photo} company_name={companyInfos.company_name} typeUser={authInfo.typeUser} />
                   }
                 </div>
                 {
