@@ -39,3 +39,5 @@ To install :
     - npm install file-saver
     - npm install socket.io-client
     - npm install socket.io (backend)
+    - npm install node-schedule
+    - npm install bcrypt (backend and frontend)

@@ -1,4 +1,5 @@
 const Employee = require('../models/employee');
+const bcrypt = require('bcryptjs'); // Import bcryptjs
 
 class EmployeeController {
     insertEmployee = async (req, res) => {
@@ -24,6 +25,7 @@ class EmployeeController {
 
             const photoBuffer = Buffer.from(profilePhoto, 'base64');
             const cvBuffer = Buffer.from(cv.blobObj, 'base64');
+            const hashedPassword = await bcrypt.hash(password, 10);
 
             const cleanedExperiences = experiences.map(experience => {
                 const { id_experience, ...rest } = experience;
@@ -38,7 +40,7 @@ class EmployeeController {
             const newEmployee = new Employee({
                 cin,
                 email,
-                password,
+                password: hashedPassword,
                 first_name: firstName,
                 last_name: lastName,
                 phone: phoneNumber,
@@ -67,7 +69,7 @@ class EmployeeController {
     getEmployeeByEmail = async (req, res) => {
         try {
             const { email } = req.body;
-            const employeeInfos = await Employee.findOne({ email }, {followings: 0}).lean();
+            const employeeInfos = await Employee.findOne({ email }, { followings: 0 }).lean();
             if (!employeeInfos)
                 return res.status(404).json({ message: 'Employee not found' });
 
@@ -181,7 +183,7 @@ class EmployeeController {
                 { $push: { skills: newSkill } }
             );
 
-            if(addSkillResult.nModified === 0) {
+            if (addSkillResult.nModified === 0) {
                 return res.status(404).json({ message: 'skill not adding or employee not found' })
             }
 
@@ -200,7 +202,7 @@ class EmployeeController {
                 { $push: { experiences: newExperience } }
             );
 
-            if(addExperienceResult.nModified === 0) {
+            if (addExperienceResult.nModified === 0) {
                 return res.status(404).json({ message: 'Experience not adding or employee not found' })
             }
 
@@ -220,7 +222,7 @@ class EmployeeController {
                 { $pull: { skills: removedSkill } }
             );
 
-            if(removeSkillResult.nModified === 0) {
+            if (removeSkillResult.nModified === 0) {
                 return res.status(404).json({ message: 'skill not removed or employee not found' })
             }
 
@@ -239,7 +241,7 @@ class EmployeeController {
                 { $pull: { experiences: { _id: removedExperienceId } } }
             );
 
-            if(removeExperienceResult.nModified === 0) {
+            if (removeExperienceResult.nModified === 0) {
                 return res.status(404).json({ message: 'Experience not removed or employee not found' })
             }
 
@@ -258,7 +260,7 @@ class EmployeeController {
                 { $push: { educations: newEducation } }
             );
 
-            if(addEducationResult.nModified === 0) {
+            if (addEducationResult.nModified === 0) {
                 return res.status(404).json({ message: 'Education not adding or employee not found' })
             }
 
@@ -277,7 +279,7 @@ class EmployeeController {
                 { $pull: { educations: { _id: removedEducationId } } }
             );
 
-            if(removeEducationResult.nModified === 0) {
+            if (removeEducationResult.nModified === 0) {
                 return res.status(404).json({ message: 'Education not removed or employee not found' })
             }
 
@@ -294,13 +296,13 @@ class EmployeeController {
             const cvBuffer = Buffer.from(cv, 'base64');
 
             const updateResult = await Employee.updateOne(
-                { _id: _id},
+                { _id: _id },
                 { $set: { "cv": cvBuffer } }
             )
 
-            if(updateResult.nModified === 0)
+            if (updateResult.nModified === 0)
                 return res.status(404).json({ message: "cv not updated ro employee not found" });
-            
+
             return res.status(200).json({ message: "cv updated successfully" });
         } catch (error) {
             console.error("Error updating cv: " + error)
@@ -310,7 +312,7 @@ class EmployeeController {
 
     addFollowing = async (req, res) => {
         try {
-            const { company_id, employee_id} = req.body;
+            const { company_id, employee_id } = req.body;
             const followResult = await Employee.updateOne(
                 { _id: employee_id },
                 {
@@ -342,10 +344,10 @@ class EmployeeController {
                     }
                 }
             );
-    
+
             if (unfollowResult.nModified === 0)
                 return res.status(404).json({ message: "Employee not found or following not removed" });
-    
+
             return res.status(200).json({ message: "Following successfully removed" });
         } catch (error) {
             console.error("Error removing following: " + error);
@@ -355,9 +357,11 @@ class EmployeeController {
 
     getSomeEmployees = async (req, res) => {
         try {
-            const { project, skip, limit } = req.body;
+            const { project, skip, limit, filters } = req.body;
 
-            const employees = await Employee.find({}, project)
+            const employees = await Employee.find({
+                ...filters
+            }, project)
                 .skip(parseInt(skip))
                 .limit(parseInt(limit)).lean();
 
@@ -379,8 +383,9 @@ class EmployeeController {
     }
 
     getTotalEmployees = async (req, res) => {
+        const { filters } = req.body;
         try {
-            const count = await Employee.countDocuments();
+            const count = await Employee.countDocuments(filters);
             return res.status(200).json({ totalEmployees: count });
         } catch (error) {
             console.log(error);
@@ -391,7 +396,7 @@ class EmployeeController {
     getEmployeeById = async (req, res) => {
         const { employeeId } = req.body;
         try {
-            const employeeInfos = await Employee.findOne({ _id: employeeId }, { followings: 0, password: 0}).lean()
+            const employeeInfos = await Employee.findOne({ _id: employeeId }, { followings: 0, password: 0 }).lean()
             if (!employeeInfos)
                 return res.status(404).json({ message: 'Employee not found' });
 
@@ -410,7 +415,7 @@ class EmployeeController {
 
     getEmployeeProfilePhoto = async (employeeId) => {
         try {
-            const { profilePhoto } = await Employee.findOne({ _id: employeeId }, { _id: 0, profilePhoto: 1}).lean();
+            const { profilePhoto } = await Employee.findOne({ _id: employeeId }, { _id: 0, profilePhoto: 1 }).lean();
             let photoBase64 = null;
             if (profilePhoto) {
                 photoBase64 = profilePhoto.toString('base64');
@@ -426,7 +431,7 @@ class EmployeeController {
         try {
             const infos = await Employee.find({ _id: employeeId }, project);
 
-            if(!infos || infos.length === 0)
+            if (!infos || infos.length === 0)
                 return res.status(404).json({ message: 'Employee not found' });
 
             return res.status(200).json({ infos })
@@ -435,7 +440,29 @@ class EmployeeController {
             return res.status(500).json({ message: 'Internal Server Error' });
         }
     }
-    
+
+    getEducationDegreesNames = async (req, res) => {
+        const { searchEducation } = req.body;
+        try {
+            const degrees = await Employee.aggregate([
+                { $unwind: '$educations' },
+                { $match: { 'educations.degreeName': { $regex: searchEducation, $options: 'i' } } },
+                { $group: { _id: '$educations.degreeName' } }
+            ]);
+
+            const degreesNames = degrees.map(degree => degree._id);
+
+            if (!degreesNames || degreesNames.length === 0) {
+                return res.status(404).json({ error: 'No degree found' });
+            }
+
+            return res.status(200).json({ degrees: degreesNames });
+        } catch (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    };
+
 }
 
 

@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { getAllCompanyEmails, updateCompanyInfos } from '../../services/companyServices';
 import { useNavigate } from 'react-router-dom';
-
+import bcrypt from "bcryptjs"
 function SecureCompanyInfos(props) {
     const [isUpdateSecureInfos, setIsUpdateSecureInfos] = useState(false)
     
@@ -31,20 +31,28 @@ function SecureCompanyInfos(props) {
             const lowercaseEmails = arrayOfEmails.map(email => email.toLowerCase());
             return !lowercaseEmails.includes(lowercaseValue);
         }).required("type your new email"),
-        password: yup.string().oneOf([props.company.password, null], "incorrect Password").required("confirm your password first"),
-    })
+        password: yup.string().test('correct-password', 'Incorrect password', async function (value) {
+            const passwordMatch = await bcrypt.compare(value, props.company.password);
+            return passwordMatch;
+        }).required("confirm your password first"),
+    });
+    
 
     const updatePasswordSchema = yup.object().shape({
-        currentPassword: yup.string().oneOf([props.company.password, null], "incorrect Password").required("confirm your current password"),
+        currentPassword: yup.string().test('correct-password', 'Incorrect password', async function (value) {
+            const passwordMatch = await bcrypt.compare(value, props.company.password);
+            return passwordMatch;
+        }).required("confirm your current password"),
         newPassword: yup.string()
             .min(8, 'Password must be at least 8 characters long')
-            .matches(/^(?=.*[A-Z])(?=.*\d)/, '\nPassword must contain at least one uppercase letter and one number')
-            .test('not_prev_password', 'this is your previouse password', async function (value) {
-                return value != props.company.password;
+            .matches(/^(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter and one number')
+            .test('not_prev_password', 'This is your previous password', function (value) {
+                return value !== this.parent.currentPassword;
             })
-            .required('type your new password'),
-        confirmation: yup.string().oneOf([yup.ref("newPassword"), null], "incorrect password confirmation").required("confirm your new password"),
-    })
+            .required('Type your new password'),
+        confirmation: yup.string().oneOf([yup.ref("newPassword"), null], "Incorrect password confirmation").required("Confirm your new password"),
+    });
+    
 
     const { register: updateEmailRegister, handleSubmit: handleEmailSubmit, formState: { errors: emailUpdateErrors } } = useForm({
         resolver: yupResolver(updateEmailSchema)
@@ -68,7 +76,8 @@ function SecureCompanyInfos(props) {
     }
 
     const onSubmitPassword = async (data) => {
-        const formatedData = { "password": data.newPassword }
+        const hashedPassword = await bcrypt.hash(data.newPassword, 10)
+        const formatedData = { "password": hashedPassword }
 
         try {
             const response = await updateCompanyInfos(props.company.company_id, formatedData)
@@ -97,7 +106,7 @@ function SecureCompanyInfos(props) {
 
                     <div className='flex'>
                         <p className='font-bold text-default-500 w-[30%]'>Password</p>
-                        <p className='text-default-400'>{props.company.password}</p>
+                        <p className='text-default-400'>************</p>
                     </div>
                 </>
                 : <div className='flex md:flex-row flex-col justify-between w-[100%] md:gap-28 gap-14'>

@@ -2,6 +2,7 @@ const Company = require('../models/company');
 const { ObjectId } = require('mongodb');
 const NotificationController = require('./notificationController');
 const EmployeeController = require('./employeeController');
+const bcrypt = require('bcryptjs'); // Import bcryptjs
 
 class CompanyController {
     insertCompany = async (req, res) => {
@@ -26,13 +27,14 @@ class CompanyController {
             const photoBuffer = Buffer.from(profilePhoto, 'base64');
             const coverBuffer = Buffer.from(company_cover, 'base64');
             const fileBuffer = Buffer.from(file.blobObj, 'base64');
+            const hashedPassword = await bcrypt.hash(password, 10);
 
             const newCompany = new Company({
                 company_email: email,
                 city,
                 country,
                 industry,
-                password,
+                password: hashedPassword,
                 company_name: companyName,
                 description,
                 company_phone: phoneNumber,

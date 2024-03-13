@@ -6,7 +6,7 @@ import profile from '../../assets/profile.png'
 import { getSomeEmployees, getTotalEmployees } from '../../services/employeeServices';
 import { Spinner } from '@nextui-org/react';
 
-function ProfileList() {
+function ProfileList(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1)
   const [profiles, setProfiles] = useState([]);
@@ -26,11 +26,12 @@ function ProfileList() {
           "country": 1,
           "about": 1,
           "email": 1,
-        }, (currentPage - 1) * profilesPerPage, profilesPerPage).then(response => {
+        }, (currentPage - 1) * profilesPerPage, profilesPerPage, props.filters).then(response => {
           setProfiles(response)
           setIsLoadingProfiles(false)
         }).catch(error => {
-          console.error(error);
+          setProfiles([])
+          setIsLoadingProfiles(false)
         });
       } catch (error) {
         console.error(error)
@@ -39,7 +40,7 @@ function ProfileList() {
 
     const getEmployeesCount = async () => {
       try {
-        getTotalEmployees().then(response => {
+        getTotalEmployees(props.filters).then(response => {
           setTotalPages(Math.ceil(response / profilesPerPage))
         }).catch(error => {
           console.error(error);
@@ -52,7 +53,7 @@ function ProfileList() {
     getEmployeesCount()
     getEmployees()
 
-  }, [currentPage])
+  }, [currentPage, props.filters])
 
 
 
@@ -67,21 +68,26 @@ function ProfileList() {
         ? <div className='h-[200px] flex justify-center items-start mt-10'>
           <Spinner size='lg' />
         </div>
-        : <div className='flex items-center flex-col'>
-          <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6'>
-            {profiles.map((profile) => (
-              <div key={profile.id}>
-                <ProfileCard
-                  profile={profile} />
-              </div>
-            ))}
+        : profiles.length == 0
+          ? <div className='w-full flex justify-center pt-10 min-h-[200px]'>
+            No Profile Found
           </div>
-          <Pagination
-            total={totalPages}
-            current={currentPage}
-            onChange={handlePageChange}
-          />
-        </div>
+          : <div className='flex items-center flex-col'>
+            <div className='grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6 gap-y-8 my-6'>
+              {profiles.map((profile) => (
+                <div key={profile.id}>
+                  <ProfileCard
+                    profile={profile} />
+                </div>
+              ))}
+            </div>
+            <Pagination
+              total={totalPages}
+              current={currentPage}
+              onChange={handlePageChange}
+            />
+          </div>
+
       }
     </div>
   )

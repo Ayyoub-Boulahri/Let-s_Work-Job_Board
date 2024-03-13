@@ -26,6 +26,20 @@ export const getEmployeeByEmail = async (email) => {
     }
 }
 
+export const getDegreesNames = async (searchEducation) => {
+    if (searchEducation.trim().length < 2) {
+      return null;
+    }
+  
+    try {
+      const response = await axios.post(SERVERPOINT + '/api/employees/educationDegreesNames', { searchEducation }, { withCredentials: true });
+      if (response.status === 200)
+        return response.data.degrees
+    } catch (error) {
+      throw error;
+    }
+  }
+
 export const getAllEmployeeEmails = async () => {
     try {
         const response = await axios.get(SERVERPOINT + '/api/employees/emails', { withCredentials: true });
@@ -173,9 +187,9 @@ export const updateEmployeeCv = async (_id, cv) => {
     }
 }
 
-export const getSomeEmployees = async (project, skip, limit) => {
+export const getSomeEmployees = async (project, skip, limit, filters) => {
     try {
-        const response = await axios.post(SERVERPOINT + "/api/employees/getSomeEmployees", { project, skip, limit }, { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/employees/getSomeEmployees", { project, skip, limit, filters }, { withCredentials: true });
         if (response.status === 200)
             return response.data.employees;
     } catch (error) {
@@ -184,9 +198,9 @@ export const getSomeEmployees = async (project, skip, limit) => {
     }
 }
 
-export const getTotalEmployees = async () => {
+export const getTotalEmployees = async (filters) => {
     try {
-        const response = await axios.get(SERVERPOINT + "/api/employees/totalEmployees", { withCredentials: true });
+        const response = await axios.post(SERVERPOINT + "/api/employees/totalEmployees", { filters }, { withCredentials: true });
         if (response.status === 200) {
             return response.data.totalEmployees;
         }

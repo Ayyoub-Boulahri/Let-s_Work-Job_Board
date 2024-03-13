@@ -1,18 +1,27 @@
 const mongoose = require('mongoose');
 const Employee = require('../models/employee');
 const Company = require('../models/company');
+const bcrypt = require('bcryptjs');
 
 class AuthController {
   employeeLogin = async (req, res) => {
     const { email, password } = req.body;
     try {
-      const result = await Employee.findOne({ email, password });
+      // Retrieve the user record from the database based on the provided email
+      const user = await Employee.findOne({ email });
 
-      if (!result) {
+      if (!user) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
 
-      req.session.userId = result._id;
+      // Compare the hashed password stored in the database with the user-provided password
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      // If passwords match, proceed with the login process
+      req.session.userId = user._id;
       req.session.email = email;
       req.session.auth = true;
       req.session.typeUser = 'employee';
@@ -28,13 +37,22 @@ class AuthController {
     const { email, password } = req.body;
 
     try {
-      const result = await Company.findOne({ company_email: email, password: password, isApproved: true });
-      
-      if (!result) {
+      // Retrieve the user record from the database based on the provided email
+      const company = await Company.findOne({ company_email: email, isApproved: true });
+
+      if (!company) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
 
-      req.session.userId = result._id;  
+      // Compare the hashed password stored in the database with the user-provided password
+      const passwordMatch = await bcrypt.compare(password, company.password);
+
+      if (!passwordMatch) {
+        return res.status(401).json({ error: 'Invalid email or password' });
+      }
+
+      // If passwords match, proceed with the login process
+      req.session.userId = company._id;
       req.session.email = email;
       req.session.auth = true;
       req.session.typeUser = 'company';

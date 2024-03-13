@@ -13,6 +13,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import bcrypt from 'bcryptjs'
 
 function LoginInfos(props) {
   const [changeEmail, setChangeEmail] = useState(false);
@@ -32,13 +33,17 @@ function LoginInfos(props) {
 
   const navigate = useNavigate()
   const updatePasswordSchema = yup.object().shape({
-    currentPassword: yup.string().oneOf([props.userInfos.password, null], "incorrect Password").required("confirm your current password"),
+    currentPassword: yup.string().test('correct-password', 'Incorrect password', async function (value) {
+      const passwordMatch = await bcrypt.compare(value, props.userInfos.password);
+      return passwordMatch;
+    }).required("Confirm your current password"),
     newPassword: yup.string()
       .min(8, 'Password must be at least 8 characters long')
-      .matches(/^(?=.*[A-Z])(?=.*\d)/, '\nPassword must contain at least one uppercase letter and one number')
-      .required('type your new password'),
-    confirmation: yup.string().oneOf([yup.ref("newPassword"), null], "incorrect password confirmation").required("confirm your new password"),
-  })
+      .matches(/^(?=.*[A-Z])(?=.*\d)/, 'Password must contain at least one uppercase letter and one number')
+      .required('Type your new password'),
+    confirmation: yup.string().oneOf([yup.ref("newPassword"), null], "Incorrect password confirmation").required("Confirm your new password"),
+  });
+
 
   const updateEmailSchema = yup.object().shape({
     email: yup.string().email("Invalid Email").test('unique-email', 'Email already exists', async function (value) {
@@ -47,7 +52,10 @@ function LoginInfos(props) {
       const lowercaseEmails = arrayOfEmails.map(email => email.toLowerCase());
       return !lowercaseEmails.includes(lowercaseValue);
     }).required("type your new email"),
-    password: yup.string().oneOf([props.userInfos.password, null], "incorrect Password").required("confirm your password first"),
+    password: yup.string().test('correct-password', 'Incorrect password', async function (value) {
+      const passwordMatch = await bcrypt.compare(value, props.userInfos.password);
+      return passwordMatch;
+    })
   })
 
   const { register: updateEmailRegister, handleSubmit: handleEmailSubmit, formState: { errors: emailUpdateErrors } } = useForm({
@@ -59,7 +67,8 @@ function LoginInfos(props) {
   });
 
   const handleUpdatePassword = async (data) => {
-    const formatedData = { "password": data.newPassword }
+    const hashedPassword = await bcrypt.hash(data.newPassword, 10)
+    const formatedData = { "password": hashedPassword }
     try {
       const response = await updateEmployeeInfos(authInfo?.userId, formatedData)
       if (response.status === 200) {

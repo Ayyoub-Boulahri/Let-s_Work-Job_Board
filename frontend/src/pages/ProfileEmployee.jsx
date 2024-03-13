@@ -23,7 +23,7 @@ function ProfileEmployee() {
   const navigate = useNavigate();
   const { employee_id } = useParams()
   const [employeeInfos, setEmployeeInfos] = useState(null)
- 
+
 
   useEffect(() => {
     const typeUser = localStorage.getItem('typeUser');
@@ -88,7 +88,7 @@ function ProfileEmployee() {
                   <FaBirthdayCake size={16} />
                   {formatDate(employeeInfos.date_of_birth)}
                 </h1>
-                <CvModel first_name={employeeInfos.first_name} last_name={employeeInfos.last_name} cv={employeeInfos.cv}/>
+                <CvModel first_name={employeeInfos.first_name} last_name={employeeInfos.last_name} cv={employeeInfos.cv} />
 
               </div>
             </div>
@@ -110,56 +110,64 @@ function ProfileEmployee() {
 
                 {/* Educations */}
 
-                <div className='mt-2 flex flex-col gap-4'>
-                  <h1 className="font-bold text-default-600 text-[20px]">Educations</h1>
-                  {
-                    employeeInfos.educations.map((education, index) => (
-                      <div className='flex gap-6' key={index}>
-                        <h2 className="text-default-400 font-bold">{education.year}</h2>
-                        <div>
-                          <h3 className='text-default-700 font-bold'>{education.degreeName}</h3>
-                          <h1 className='text-default-400'>{education.school}</h1>
+                {employeeInfos.educations &&
+                  <div className='mt-2 flex flex-col gap-4'>
+                    <h1 className="font-bold text-default-600 text-[20px]">Educations</h1>
+                    {
+                      employeeInfos.educations.map((education, index) => (
+                        <div className='flex gap-6' key={index}>
+                          <h2 className="text-default-400 font-bold">{education.year}</h2>
+                          <div>
+                            <h3 className='text-default-700 font-bold'>{education.degreeName}</h3>
+                            <h1 className='text-default-400'>{education.school}</h1>
+                          </div>
                         </div>
-                      </div>
-                    ))
-                  }
-                </div>
+                      ))
+                    }
+                  </div>
+                }
               </div>
               <Divider className='my-4' />
 
               {/* Skills */}
 
-              <div className='flex flex-col gap-2  my-6'>
-                <h1 className="font-bold text-default-600 text-[20px]">Skills</h1>
-                <div className='flex gap-3 flex-wrap'>
+              {employeeInfos.skills &&
+                <div className='flex flex-col gap-2  my-6'>
+                  <h1 className="font-bold text-default-600 text-[20px]">Skills</h1>
+                  <div className='flex gap-3 flex-wrap'>
 
-                  {
-                    employeeInfos.skills.map(skill => (
-                      <div className="bg-zinc-800 text-white rounded-lg p-3 px-6">
-                        <h2 className="text-xs font-bold">{skill}</h2>
-                      </div>
-                    ))
-                  }
+                    {
+                      employeeInfos.skills.map(skill => (
+                        <div className="bg-zinc-800 text-white rounded-lg p-3 px-6">
+                          <h2 className="text-xs font-bold">{skill}</h2>
+                        </div>
+                      ))
+                    }
+                  </div>
                 </div>
-              </div>
+              }
 
               <Divider className='my-4' />
 
               {/* Experiences */}
 
-              <h1 className="font-bold text-default-600 text-[20px] mb-4">Experiences</h1>
-              <div className='flex flex-col gap-4'>
-                {
-                  employeeInfos.experiences.map(experience => (
-                    <div className="bg-default-50 text-white rounded-lg p-4 flex flex-col gap-2">
-                      <h2 className="text-xl font-bold">{experience.title}</h2>
-                      <p className="text-gray-300 font-semibold">{experience.company}</p>
-                      {(experience.date_debut || experience.date_fin) && <p className="text-gray-400 font-semibold text-small">{experience.date_debut} - {experience.date_fin}</p>}
-                      {experience.description && <p className="text-gray-500 text-small">{experience.description}</p>}
-                    </div>
-                  ))
-                }
-              </div>
+              {employeeInfos.experiences &&
+                <>
+                  <h1 className="font-bold text-default-600 text-[20px] mb-4">Experiences</h1>
+                  <div className='flex flex-col gap-4'>
+                    {
+                      employeeInfos.experiences.map(experience => (
+                        <div className="bg-default-50 text-white rounded-lg p-4 flex flex-col gap-2">
+                          <h2 className="text-xl font-bold">{experience.title}</h2>
+                          <p className="text-gray-300 font-semibold">{experience.company}</p>
+                          {(experience.date_debut || experience.date_fin) && <p className="text-gray-400 font-semibold text-small">{experience.date_debut} - {experience.date_fin}</p>}
+                          {experience.description && <p className="text-gray-500 text-small">{experience.description}</p>}
+                        </div>
+                      ))
+                    }
+                  </div>
+                </>
+              }
             </div>
           </div>
         </div>

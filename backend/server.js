@@ -11,8 +11,11 @@ const companiesRoutes = require('./routes/companiesRoutes')
 const jobOfferRoutes = require('./routes/jobOfferRoutes')
 const currenciesRoutes = require('./routes/currenciesRoutes')
 const notificationsRoutes = require('./routes/notificationsRoutes')
-const http = require('http'); // Import http module
-const socketIo = require('socket.io'); // Import socket.io
+const http = require('http');
+const socketIo = require('socket.io');
+const schedule = require('node-schedule');
+const JobOffer = require('./models/jobOffer'); // Import your JobOffer model
+const { trusted } = require('mongoose');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -61,6 +64,26 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     delete connectedUsers[userId];
   });
+});
+
+
+const updateJobStatusTask = schedule.scheduleJob('0 0 * * *', async () => {
+    try {
+        const currentDate = new Date();
+
+        // Find job offers where the delais_depot has passed and job_status is true
+        const expiredJobOffers = await JobOffer.updateMany(
+            {
+                delais_depot: { $lt: currentDate },
+                job_status: true
+            },
+            { $set: { job_status: false } }
+        );
+
+        console.log(`${expiredJobOffers.nModified} job offers updated.`);
+    } catch (error) {
+        console.error('Error updating job offers:', error);
+    }
 });
 
 // Use authentication routes
