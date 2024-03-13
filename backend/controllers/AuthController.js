@@ -13,12 +13,12 @@ class AuthController {
       if (!user) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
-
       // Compare the hashed password stored in the database with the user-provided password
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
         return res.status(401).json({ error: 'Invalid email or password' });
       }
+
 
       // If passwords match, proceed with the login process
       req.session.userId = user._id;

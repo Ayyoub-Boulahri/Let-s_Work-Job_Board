@@ -17,6 +17,10 @@ const schedule = require('node-schedule');
 const JobOffer = require('./models/jobOffer'); // Import your JobOffer model
 const { trusted } = require('mongoose');
 
+
+const bcrypt = require('bcryptjs');
+const Employee = require("./models/employee");
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
