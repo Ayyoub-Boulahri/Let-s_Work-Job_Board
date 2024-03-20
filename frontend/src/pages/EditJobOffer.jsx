@@ -153,19 +153,19 @@ const EditJobOffer = () => {
     return (
         <div className={`${styles.flexStart} ${styles.paddingX} lg:px-80 bg-section-dark-bg pt-36 xl:pb-4`}>
             <div className={`${styles.boxWidth} HeightTall`}>
-                <form onSubmit={handleSubmit(onSubmit)} className='bg-[#18181B] rounded-md px-6 py-4 flex flex-col gap-6'>
-                    <div className="flex gap-4 items-center">
-                        <h1 className='text-[20px] text-default-600 w-[20%]'>Title <span className="text-danger-500">*</span></h1>
+                <form onSubmit={handleSubmit(onSubmit)} className='bg-[#18181B] rounded-md sm:px-6 px-4 py-4 flex flex-col sm:gap-6 gap-4'>
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+                        <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Title <span className="text-danger-500">*</span></h1>
                         <input type="text" defaultValue={jobOffer?.title} {...register("title")} className={`bg-[#27272A] rounded-md p-2 ${errors.title ? "outline outline-2 outline-danger-300" : "outline-none"}  w-full`} placeholder='Enter the job title' />
                     </div>
 
-                    <div className="flex gap-4 items-center">
-                        <h1 className='text-[20px] text-default-600 w-[20%]'>Grade <span className="text-danger-500">*</span></h1>
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+                        <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Grade <span className="text-danger-500">*</span></h1>
                         <input type="text" defaultValue={jobOffer?.grade} {...register("grade")} className={`bg-[#27272A] rounded-md p-2 ${errors.grade ? "outline outline-2 outline-danger-300" : "outline-none"}  w-full`} placeholder='Enter the position grade' />
                     </div>
 
-                    <div className="flex gap-4 items-center">
-                        <h1 className='text-[20px] text-default-600 w-[20%]'>Job Type <span className="text-danger-500">*</span></h1>
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+                        <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Job Type <span className="text-danger-500">*</span></h1>
                         <select {...register("job_type")} className={`bg-[#27272A] rounded-md p-2 ${errors.job_type ? "outline outline-2 outline-danger-300" : "outline-none"} w-full`}>
                             {jobTypes.map((type, index) => (
                                 <option key={index} defaultValue={type} selected={type == jobOffer?.job_type}>{type}</option>
@@ -173,8 +173,8 @@ const EditJobOffer = () => {
                         </select>
                     </div>
 
-                    <div className="flex items-center">
-                        <h1 className='text-[20px] text-default-600 w-[22%]'>Salary <span className="text-danger-500">*</span></h1>
+                    <div className="flex sm:flex-row flex-col sm:gap-0 gap-2 sm:items-center">
+                    <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[22%]'>Salary <span className="text-danger-500">*</span></h1>
                         <div className="flex gap-4 w-full">
                             <Input
                                 className={`rounded-md ${errors.salary ? "outline outline-2 outline-danger-300" : "outline-none"}`}
@@ -207,18 +207,18 @@ const EditJobOffer = () => {
                         </div>
                     </div>
 
-                    <div className="flex gap-4 items-center">
-                        <h1 className='text-[20px] text-default-600 w-[20%]'>Deadline <span className="text-danger-500">*</span></h1>
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+                    <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Deadline <span className="text-danger-500">*</span></h1>
                         <Input type="date" size='sm' defaultValue={formatDateForInput(jobOffer?.delais_depot)} {...register("delais_depot")} min={minDate} className={`bg-[#27272A] rounded-md  ${errors.delais_depot ? "outline outline-2 outline-danger-300" : "outline-none"} w-full`} />
                     </div>
 
-                    <div className="flex flex-col gap-4 justify-center">
-                        <h1 className='text-[20px] text-default-600'>Description <span className="text-danger-500">*</span></h1>
+                    <div className="flex flex-col sm:gap-4 gap-2 justify-center">
+                    <h1 className='sm:text-[20px] text-[16px] text-default-600'>Description <span className="text-danger-500">*</span></h1>
                         <textarea {...register("description")} defaultValue={jobOffer?.description} cols="30" rows="10" className={`bg-[#27272A] rounded-md p-2 outline-none w-full ${errors.description ? "outline outline-2 outline-danger-300" : "outline-none"} resize-none`}></textarea>
                     </div>
 
-                    <div className="flex flex-col gap-4 justify-center">
-                        <h1 className='text-[20px] text-default-600'>Required Skills</h1>
+                    <div className="flex flex-col sm:gap-4 gap-2 justify-center">
+                    <h1 className='sm:text-[20px] text-[16px] text-default-600'>Required Skills</h1>
                         <div className="flex gap-4 items-center">
                             <Input onChange={handleInputChange} placeholder='enter your skill and find it' list="skills" size='sm' id="skillInput" value={skillInputValue} />
                             <datalist id="skills">

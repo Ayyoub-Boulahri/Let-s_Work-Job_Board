@@ -1,15 +1,11 @@
 import React from 'react'
 import { PaginationItemType } from "@nextui-org/react";
 import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { setAboutMe } from '../../stores/signUpStore';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { createEmployee } from '../../services/employeeServices';
-import checkAuthentication from '../../services/checkAuthentication';
-import { setAuthenticated } from '../../stores/authStore';
-import axios from 'axios';
 import { aboutSchema } from '../../schemas/employeeSchema';
 
 function AboutEmployee(props) {

@@ -139,20 +139,20 @@ const NewOffer = () => {
   return (
     <div className={`${styles.flexStart} ${styles.paddingX} lg:px-80 bg-section-dark-bg pt-36 xl:pb-4`}>
       <div className={`${styles.boxWidth} HeightTall`}>
-        <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className='bg-[#18181B] rounded-md px-6 py-4 flex flex-col gap-6'>
+        <form ref={formRef} onSubmit={handleSubmit(onSubmit)} className='bg-[#18181B] rounded-md sm:px-6 px-4 py-4 flex flex-col sm:gap-6 gap-4'>
 
-          <div className="flex gap-4 items-center">
-            <h1 className='text-[20px] text-default-600 w-[20%]'>Title <span className="text-danger-500">*</span></h1>
+          <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+            <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Title <span className="text-danger-500">*</span></h1>
             <input type="text" {...register("title")} className={`bg-[#27272A] rounded-md p-2 ${errors.title ? "outline outline-2 outline-danger-300" : "outline-none"}  w-full`} placeholder='Enter the job title' />
           </div>
 
-          <div className="flex gap-4 items-center">
-            <h1 className='text-[20px] text-default-600 w-[20%]'>Grade <span className="text-danger-500">*</span></h1>
+          <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+            <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Grade <span className="text-danger-500">*</span></h1>
             <input type="text" {...register("grade")} className={`bg-[#27272A] rounded-md p-2 ${errors.grade ? "outline outline-2 outline-danger-300" : "outline-none"}  w-full`} placeholder='Enter the position grade' />
           </div>
 
-          <div className="flex gap-4 items-center">
-            <h1 className='text-[20px] text-default-600 w-[20%]'>Job Type <span className="text-danger-500">*</span></h1>
+          <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+            <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Job Type <span className="text-danger-500">*</span></h1>
             <select  {...register("job_type")} className={`bg-[#27272A] rounded-md p-2 ${errors.job_type ? "outline outline-2 outline-danger-300" : "outline-none"}  w-full`}>
               <option value="Full-time" selected>Full-time</option>
               <option value="Contract">Contract</option>
@@ -161,8 +161,8 @@ const NewOffer = () => {
             </select>
           </div>
 
-          <div className="flex items-center">
-            <h1 className='text-[20px] text-default-600 w-[22%]'>Salary <span className="text-danger-500">*</span></h1>
+          <div className="flex sm:flex-row flex-col sm:gap-0 gap-2 sm:items-center">
+            <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[22%]'>Salary <span className="text-danger-500">*</span></h1>
             <div className="flex gap-4 w-full">
               <Input
                 className={`rounded-md ${errors.salary ? "outline outline-2 outline-danger-300" : "outline-none"}`}
@@ -185,7 +185,7 @@ const NewOffer = () => {
                 }
                 type="number"
               />
-              <h1 className='text-[20px] text-default-600'>per</h1>
+              <h1 className='sm:text-[20px] text-[16px] text-default-600'>per</h1>
               <select
                 {...register("pay_period")}
                 className="outline-none border-0 bg-[#27272A] p-2 rounded-md text-default-400 text-small"
@@ -198,18 +198,18 @@ const NewOffer = () => {
             </div>
           </div>
 
-          <div className="flex gap-4 items-center">
-            <h1 className='text-[20px] text-default-600 w-[20%]'>Deadline <span className="text-danger-500">*</span></h1>
+          <div className="flex sm:flex-row flex-col sm:gap-4 gap-2 sm:items-center">
+            <h1 className='sm:text-[20px] text-[16px] text-default-600 sm:w-[20%]'>Deadline <span className="text-danger-500">*</span></h1>
             <input type="date" {...register("delais_depot")} min={minDate} className={`bg-[#27272A] rounded-md p-2 ${errors.delais_depot ? "outline outline-2 outline-danger-300" : "outline-none"} w-full`} />
           </div>
 
-          <div className="flex flex-col gap-4 justify-center">
-            <h1 className='text-[20px] text-default-600'>Description <span className="text-danger-500">*</span></h1>
+          <div className="flex flex-col sm:gap-4 gap-2 justify-center">
+            <h1 className='sm:text-[20px] text-[16px] text-default-600'>Description <span className="text-danger-500">*</span></h1>
             <textarea {...register("description")} cols="30" rows="10" className={`bg-[#27272A] rounded-md p-2 outline-none w-full ${errors.description ? "outline outline-2 outline-danger-300" : "outline-none"} resize-none`}></textarea>
           </div>
 
-          <div className="flex flex-col gap-4 justify-center">
-            <h1 className='text-[20px] text-default-600'>Required Skills</h1>
+          <div className="flex flex-col sm:gap-4 gap-2 justify-center">
+            <h1 className='sm:text-[20px] text-[16px] text-default-600'>Required Skills</h1>
             <div className="flex gap-4 items-center">
               <Input onChange={handleInputChange} placeholder='enter your skill and find it' list="skills" size='sm' id="skillInput" value={skillInputValue} />
               <datalist id="skills">
@@ -224,7 +224,7 @@ const NewOffer = () => {
             </div>
           </div>
 
-          <div className="flex flex-col gap-4 justify-center">
+          <div className="flex flex-col sm:gap-4 gap-2 justify-center">
             <h1>Required Attachements</h1>
             <div className="flex gap-4 items-center">
               <Input onChange={(e) => setAttachInput(e.target.value)} placeholder='enter the attachment name' size='sm' value={attachInput} />
@@ -238,7 +238,7 @@ const NewOffer = () => {
             </div>
           </div>
 
-          <div className="flex justify-end gap-4">
+          <div className="flex justify-end sm:gap-4 gap-2">
             <button type="reset" className='bg-rose-500 px-4 py-2 rounded-md'>Cancel</button>
             <button type="submit" className='bg-primary-500 px-4 py-2 rounded-md'>Publish</button>
           </div>

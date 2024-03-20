@@ -1,8 +1,36 @@
 import React from 'react'
 import styles from '../style'
 import "../css/contactForm.css"
+import { useForm } from 'react-hook-form';
+import { supportMessagesSchema } from '../schemas/supportMessageSchema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { insertSupportMessage } from '../services/supportMessagesServices';
+import { ToastContainer, toast, Bounce } from 'react-toastify';
 
 function Contact() {
+
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(supportMessagesSchema),
+    });
+
+    const onSubmit = (data) => {
+        insertSupportMessage(data)
+            .then(() => {
+                document.getElementById("messageSupportForm").reset();
+                toast.success('Your Message send successfully', {
+                    position: "bottom-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+            })
+    }
+
     return (
         <div id="contact" className={`${styles.flexStart} bg-[#191E22] py-20 ${styles.paddingX} pt-10 xl:pb-6`}>
             <div className={`${styles.boxWidth}`}>
@@ -22,18 +50,19 @@ function Contact() {
                         <h2 className='text-gray-400 text-[16px]'><span className='font-bold text-[18px] mr-4'>Phone :</span> +212 0531254489</h2>
                     </div>
                     <div className='flex flex-col flex-1 w-full justify-center sm:pt-10'>
-                        <form className="flex flex-col gap-4 form">
-                            <input type="text" placeholder='Your Name' />
-                            <input type="text" placeholder='Your Email' />
-                            <input type="text" placeholder='Your Phone' />
-                            <textarea rows="8" placeholder='Tell us about your needs'></textarea>
+                        <form className="flex flex-col gap-4 form" id="messageSupportForm" onSubmit={handleSubmit(onSubmit)}>
+                            <input type="text" placeholder='Your Name' required {...register("name")} />
+                            <input type="email" placeholder='Your Email' required {...register("email")} />
+                            <input type="text" placeholder='Your Phone' required {...register("phone")} />
+                            <textarea rows="8" placeholder='Tell us about your needs' required {...register("description")} ></textarea>
                             <div className='flex justify-center'>
-                                <button className='w-fit bg-green-600 hover:bg-green-800 duration-300 px-4 py-2 text-[16px] rounded-sm'>Send</button>
+                                <button className='w-fit bg-green-600 hover:bg-green-800 duration-300 px-4 py-2 text-[16px] rounded-md'>Send</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
+            <ToastContainer />
         </div>
     )
 }

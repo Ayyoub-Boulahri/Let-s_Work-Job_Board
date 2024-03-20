@@ -91,7 +91,7 @@ function FilterPopUp(props) {
   return (
     <>
       <button onClick={onOpen}><RiListSettingsLine size={25} className="cursor-pointer hover:text-default-500 duration-300" /></button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} scrollBehavior={"inside"}>
+      <Modal isOpen={isOpen} placement='center' onOpenChange={onOpenChange} scrollBehavior={"inside"}>
         <ModalContent>
           {(onClose) => (
             <>

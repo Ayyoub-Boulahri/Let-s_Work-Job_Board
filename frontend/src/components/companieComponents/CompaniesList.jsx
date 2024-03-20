@@ -56,7 +56,7 @@ function CompaniesList(props) {
 
 
             {
-                visibleCompanies.length == 0
+                visibleCompanies?.length == 0
                     ? <div className='flex flex-col gap-6 items-center md:w-[50%]'>
                         <div>
                             No Company Found

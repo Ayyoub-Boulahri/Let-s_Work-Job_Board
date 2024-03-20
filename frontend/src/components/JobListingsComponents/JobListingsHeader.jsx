@@ -59,7 +59,7 @@ function JobListingsHeader() {
                 </Tab>
             </Tabs>
 
-            <button onClick={() => {navigate("/newOffer")}} className="rounded-full w-[50px] h-[50px] bg-primary-500 flex justify-center items-center fixed bottom-10 right-20">
+            <button onClick={() => {navigate("/newOffer")}} className="rounded-full w-[50px] h-[50px] bg-primary-500 flex justify-center items-center fixed sm:bottom-10 bottom-6 sm:right-20 right-6">
                 <FaPlus size={20}/>
             </button>
         </div>

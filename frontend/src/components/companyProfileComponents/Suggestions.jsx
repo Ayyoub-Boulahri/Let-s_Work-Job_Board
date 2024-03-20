@@ -15,7 +15,7 @@ function Suggestions(props) {
     }, [])
 
     return (
-        <div className='w-[40%] bg-[#191919] h-fit sticky rounded-lg px-4 pb-4'>
+        <div className='sm:w-[40%] bg-[#191919] h-fit sticky rounded-lg px-4 pb-4'>
             <h2 className='text-[18px] font-bold p-4 text-default-600'>
                 Suggestions
             </h2>

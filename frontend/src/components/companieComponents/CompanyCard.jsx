@@ -24,42 +24,57 @@ function CompanyCard(props) {
   }, [])
 
   return (
-    <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md m-3 company-card' onClick={() => navigate("/companies/company/" + props.id )}>
+    <div className='flex flex-col gap-6 py-4 px-6 bg-[#121212] card rounded-md mb-3 company-card' onClick={() => navigate("/companies/company/" + props.id )}>
+
+      {/* card header */}
       <div className='flex justify-between items-center'>
         <div className='flex gap-8 justify-start'>
           <Avatar radius='md' src={convertBufferToDataURL(props.logo)} size="lg" />
           <div>
-            <h1 className='font-bold text-default-600 text-[20px]'>{props.name}</h1>
-            <h4 className='font-semibold text-default-400'>{props.year}</h4>
+            <h1 className='font-bold text-default-600 md:text-[20px] text-[14px]'>{props.name}</h1>
+            <h4 className='font-semibold text-default-400 md:text-[18px] text-[12px]'>{props.year}</h4>
           </div>
         </div>
         <div className='flex flex-col justify-center items-center'>
-          <h1 className='font-bold text-primary-600 text-[18px]'>{formatNumFollowers(numFollowers)}</h1>
-          <h4 className='font-semibold text-default-400'>Followers</h4>
+          <h1 className='font-bold text-primary-600 md:text-[18px] text-[14px]'>{formatNumFollowers(numFollowers)}</h1>
+          <h4 className='font-semibold text-default-400 md:text-[18px] text-[14px]'>Followers</h4>
         </div>
       </div>
-      <div className='flex flex-col gap-4'>
-        <div className='flex md:flex-row flex-col md:gap-4 gap-2'>
+
+
+      {/* company infos */}
+      <div className='flex flex-col gap-4 text-[12px]'>
+
+        {/* some infos */}
+
+        <div className='flex md:flex-row flex-col md:gap-4 gap-1'>
           <div className='md:w-[32%] flex md:flex-col flex-row gap-20 md:gap-2'>
             <h1 className='font-bold'>Location</h1>
             <h4 className='font-semibold text-default-500'>{props.city} ({props.country})</h4>
           </div>
-          <div className='md:w-[32%] flex md:flex-col flex-row gap-10 md:gap-2'>
+          <div className='md:w-[32%] flex md:flex-col flex-row gap-12 md:gap-2'>
             <h1 className='font-bold'>Company Size </h1>
             <h4 className='font-semibold text-default-500'>{props.size}</h4>
           </div>
-          <div className='flex md:flex-col flex-row gap-20 md:gap-0'>
+          <div className='flex md:flex-col flex-row gap-20 md:gap-2'>
             <h1 className='font-bold'>Industry</h1>
             <h4 className='font-semibold text-default-500'>{props.industry}</h4>
           </div>
         </div>
+
+        {/* company description */}
+
         <div>
           <h1 className='font-bold'>Description</h1>
-          <div className='line-clamp-3 text-small text-default-400'>
+          <div className='line-clamp-3 md:text-small text-default-400 text-[12px]'>
             {props.description}
           </div>
         </div>
+
+
       </div>
+
+
     </div>
   )
 }

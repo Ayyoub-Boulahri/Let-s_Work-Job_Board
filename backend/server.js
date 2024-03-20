@@ -11,10 +11,11 @@ const companiesRoutes = require('./routes/companiesRoutes')
 const jobOfferRoutes = require('./routes/jobOfferRoutes')
 const currenciesRoutes = require('./routes/currenciesRoutes')
 const notificationsRoutes = require('./routes/notificationsRoutes')
+const supportMessagesRoutes = require('./routes/supportMessagesRoutes')
 const http = require('http');
 const socketIo = require('socket.io');
 const schedule = require('node-schedule');
-const JobOffer = require('./models/jobOffer'); // Import your JobOffer model
+const JobOffer = require('./models/jobOffer'); 
 const { trusted } = require('mongoose');
 
 
@@ -101,7 +102,14 @@ app.use('/api/companies', companiesRoutes(io, connectedUsers))
 app.use('/api/jobOffers', jobOfferRoutes(io, connectedUsers))
 app.use('/api/currencies', currenciesRoutes)
 app.use('/api/notifications', notificationsRoutes)
+app.use('/api/supportMessages', supportMessagesRoutes)
+
 
 server.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+// for the test in phone
+// server.listen(PORT, "192.168.1.13", () => {
+//   console.log(`Server is running on http://192.168.1.13:${PORT}`);
+// });

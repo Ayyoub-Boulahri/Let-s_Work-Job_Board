@@ -125,7 +125,7 @@ function Company() {
         {
           !companyInfos
             ? <div className='h-[1000px] flex justify-center items-start'><Spinner size='lg' /> </div>
-            : <div className='my-[12px] bg-[#121212] p-4 rounded-md'>  {/* CONTAINER */}
+            : <div className='sm:my-[12px] bg-[#121212] sm:p-4 rounded-md'>  {/* CONTAINER */}
               <div className='bg-image rounded-md' style={{ backgroundImage: `url(${convertBufferToDataURL(companyInfos.company_cover)})`, backgroundSize: "cover", backgroundPosition: "center" }}>
                 {/* Cover Photo */}
                 <div className='h-[200px] relative'
@@ -151,11 +151,11 @@ function Company() {
                 {/* Profile Section */}
                 <div className='flex flex-col justify-end h-[100px] bg-[#191919] rounded-b-md'>
                   {/* Profile Picture and Info */}
-                  <div className="flex items-center justify-between gap-4 px-6 pb-4">
-                    <div className="flex items-center gap-6">
+                  <div className="flex sm:items-center justify-between gap-4 px-6 pb-4">
+                    <div className="flex sm:flex-row flex-col sm:items-center sm:gap-6 gap-2">
                       <div className='relative'>
                         <div
-                          className='flex items-center justify-center relative w-24 h-24'
+                          className='flex items-center justify-center relative sm:w-24 sm:h-24 w-20 h-20'
                           onMouseEnter={() => setIsProfilePhotoHovered(true)}
                           onMouseLeave={() => setIsProfilePhotoHovered(false)}
                         >
@@ -182,7 +182,7 @@ function Company() {
                         />
                       </div>
                       <div className="flex flex-col">
-                        <h1 className="text-3xl font-bold text-white">{companyInfos.company_name}</h1>
+                        <h1 className="sm:text-3xl text-xl font-bold text-white ">{companyInfos.company_name}</h1>
                         {authInfo.typeUser == "company"
                           ? <FollowersModel followersCount={companyInfos.followersCount} company_id={companyInfos._id} />
                           : <h1 className='font-bold text-primary-600 text-[18px]'>{formatNumFollowers(companyInfos.followersCount)}&nbsp;&nbsp;<span className='font-semibold text-default-400'>followers</span></h1>
@@ -192,7 +192,7 @@ function Company() {
 
                     {
                       authInfo.typeUser == "employee" &&
-                      <div className="flex items-center justify-between">
+                      <div className="flex sm:items-center items-end justify-between">
                         <Button startContent={isFollowed ? <MdNotificationsActive /> : <MdNotificationAdd />} className={`${isFollowed ? "bg-rose-600 " : "bg-primary-400"} font-bold`} onClick={handleFollow}>
                           {isFollowed ? "Following" : "Follow"}
                         </Button>
@@ -207,9 +207,9 @@ function Company() {
               </div>
 
               {/* Description Section */}
-              <div className=" mt-4 flex gap-4">
+              <div className="mt-4 flex sm:flex-row flex-col gap-4">
 
-                <div className={`${authInfo.typeUser == "employee" ? "w-[60%]" : "w-[100%]"} bg-[#191919] rounded-lg px-4 pb-4 h-fit`}>
+                <div className={`${authInfo.typeUser == "employee" ? "sm:w-[60%] w-[100%]" : "w-[100%]"} bg-[#191919] rounded-lg px-4 pb-4 h-fit`}>
                   <div className='flex justify-between p-2 rounded-md gap-2'>
                     <button className={`w-[50%] flex justify-center  ${isAbout && 'selected'} ${authInfo.typeUser === "company" && 'w-full'} p-4 font-bold text-default-600`} onClick={() => {
                       setIsAbout(true)

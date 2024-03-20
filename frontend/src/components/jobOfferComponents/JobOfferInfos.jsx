@@ -118,7 +118,7 @@ function JobOfferInfos(props) {
                         </div>
                         <div className='flex'>
                             <p className='font-bold text-default-500 w-[30%]'>Address</p>
-                            <p className='text-default-400'>{props.job_offer.company[0].address}</p>
+                            <p className='text-default-400 w-[70%]'>{props.job_offer.company[0].address}</p>
                         </div>
                     </div>
 
