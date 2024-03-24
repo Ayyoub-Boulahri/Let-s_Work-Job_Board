@@ -484,6 +484,23 @@ class CompanyController {
         }
     }
 
+    getTotalRequests = async (req, res) => {
+        try {
+            const { searchTxt, filters } = req.body;
+    
+            const count = await Company.countDocuments({
+                "company_name": { $regex: searchTxt, $options: 'i' },
+                ...filters,
+                isApproved: false
+            });
+    
+            return res.status(200).json({ totalCompanies: count });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ error: 'Internal Server Error' });
+        }
+    }
+    
+   
 }
-
 module.exports = new CompanyController();

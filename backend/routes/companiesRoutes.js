@@ -18,6 +18,8 @@ module.exports = function (io, connectedUsers) {
     router.put('/update/profilePhoto', CompanyController.updateCompanyProfilePhoto)
     router.put('/update/coverPhoto', CompanyController.updateCompanyCoverPhoto)
     router.post('/follow/getFollowers', CompanyController.getCompanyFollowers)
+    router.post('/totalRequest',CompanyController.getTotalRequests);
+    
 
     return router;
 };
