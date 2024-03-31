@@ -4,11 +4,12 @@ import { convertBufferToDataURL, formatDate } from "../../services/convertFuncti
 import { MdPageview } from "react-icons/md";
 import { Pagination } from "@nextui-org/react";
 import { Input } from "@nextui-org/react";
+import { EyeIcon } from "../UIComponents/EyeIcon";
 import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { MdClear } from "react-icons/md";
-import { getSomeCompanies,getTotalRequests,updateCompanyInfos } from "../../services/RequestsServices";
-import CvModel from "./CvModel";
+import { getSomeCompanies,getTotalRequests,updateCompanyInfos, deleteRequest } from "../../services/RequestsServices";
+import DeleteRequestModel from "./DeleteRequestModel";
 
 import { FaUserCheck } from "react-icons/fa";
 
@@ -20,41 +21,40 @@ function RequestsTable(props) {
         "In Progress": "warning",
     };
 
-
     const headerColumns = ["company", "country", "city", "certificat", "approuve", "Actions"]
     const [companies, setCompanies] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1)
     const [searchText, setSearchText] = useState("")
     const [isAccepted,setIsAccepted] = useState(false);
+    const [deleted, setDeleted] = useState(false); 
     const navigate = useNavigate()
     const companiesPerTime = 4
 
     useEffect(() => {
-        getTotalCompanies()
-        getMoreCompanies()
-    }, [ currentPage, searchText, isAccepted])
+        getTotalCompanies();
+        getMoreCompanies();
+    }, [currentPage, searchText, isAccepted, deleted]); 
 
     const handleAccept = async (_id) => {
         try {
             const response = await updateCompanyInfos(_id, { isApproved: true });
             console.log(response.data); 
-            setIsAccepted((prev)=>!prev);
+            setIsAccepted(prev => !prev);
         } catch (error) {
             console.error("Error accepting company:", error);
         }
     };
 
     const getMoreCompanies = async () => {
-        getSomeCompanies({},((currentPage - 1) * companiesPerTime),companiesPerTime,searchText,{"isApproved":false})
+        getSomeCompanies({}, ((currentPage - 1) * companiesPerTime), companiesPerTime, searchText, { isApproved: false })
             .then((response) => setCompanies(response))
             .catch((response) => setCompanies([]))
     }
 
     const getTotalCompanies = async () => {
-        getTotalRequests(searchText,{"isApproved":false})
+        getTotalRequests(searchText, { isApproved: false })
             .then((response) => setTotalPages(Math.ceil(response / companiesPerTime)))
-
     }
 
     if (companies.length === 0 && !searchText) {
@@ -142,26 +142,20 @@ function RequestsTable(props) {
                                 </TableCell>
                                 <TableCell>
                                     <div>
-
                                         <FaUserCheck color="green" size="22" onClick={() => handleAccept(company._id)} />
-                                        
                                     </div>
                                 </TableCell>
-                                <TableCell>{/* 
+                                <TableCell>
                                     <div className="relative flex items-center gap-2">
                                         <Tooltip content="Details">
-                                            <span onClick={() => navigate("/jobs/job/" + company._id)} className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                                            <span  onClick={() => navigate("/companies/company/" + company.company._id)} className="text-lg text-default-400 cursor-pointer active:opacity-50">
                                                 <EyeIcon />
                                             </span>
                                         </Tooltip>
-                                        {
-                                            company.Offer_status != "Accept" && company.Offer_status != "Rejected"
-                                            &&
-                                            <Tooltip color="danger" content="remove applyment">
-                                                <DeletePostulationModel jobOfferId={company._id} employeeId={authInfo?.userId} setIsModified={setIsModified} />
-                                            </Tooltip>
-                                        }
-                                    </div>*/}
+                                        <Tooltip color="danger" content="remove applyment">
+                                            <DeleteRequestModel companyId={company._id} setDeleted={setDeleted}/>
+                                        </Tooltip>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))
@@ -169,12 +163,10 @@ function RequestsTable(props) {
                 </TableBody>
             </Table>
             <div className='flex justify-center mt-6'>
-                
                 <Pagination showControls total={totalPages} initialPage={1} page={currentPage} onChange={setCurrentPage} />
             </div>
         </>
-
     );
 }
 
-export default RequestsTable
+export default RequestsTable;

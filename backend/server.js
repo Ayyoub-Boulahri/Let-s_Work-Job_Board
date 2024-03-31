@@ -15,7 +15,7 @@ const supportMessagesRoutes = require('./routes/supportMessagesRoutes')
 const http = require('http');
 const socketIo = require('socket.io');
 const schedule = require('node-schedule');
-const JobOffer = require('./models/jobOffer'); 
+const JobOffer = require('./models/jobOffer');
 const { trusted } = require('mongoose');
 
 
@@ -29,7 +29,7 @@ app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://192.168.1.13:5173'],
+  origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
   credentials: true,
 }));
 
@@ -47,12 +47,12 @@ const server = http.createServer(app);
 // Initialize Socket.io
 const io = socketIo(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://192.168.1.13:5173'],
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
     methods: ["GET", "POST", "PUT"],
     credentials: true
   },
-  allowEIO3: true, 
-  maxHttpBufferSize: 1e8, 
+  allowEIO3: true,
+  maxHttpBufferSize: 1e8,
   pingInterval: 10000,
   pingTimeout: 5000
 });
@@ -73,22 +73,22 @@ io.on('connection', (socket) => {
 
 
 const updateJobStatusTask = schedule.scheduleJob('0 0 * * *', async () => {
-    try {
-        const currentDate = new Date();
+  try {
+    const currentDate = new Date();
 
-        // Find job offers where the delais_depot has passed and job_status is true
-        const expiredJobOffers = await JobOffer.updateMany(
-            {
-                delais_depot: { $lt: currentDate },
-                job_status: true
-            },
-            { $set: { job_status: false } }
-        );
+    // Find job offers where the delais_depot has passed and job_status is true
+    const expiredJobOffers = await JobOffer.updateMany(
+      {
+        delais_depot: { $lt: currentDate },
+        job_status: true
+      },
+      { $set: { job_status: false } }
+    );
 
-        console.log(`${expiredJobOffers.nModified} job offers updated.`);
-    } catch (error) {
-        console.error('Error updating job offers:', error);
-    }
+    console.log(`${expiredJobOffers.nModified} job offers updated.`);
+  } catch (error) {
+    console.error('Error updating job offers:', error);
+  }
 });
 
 // Use authentication routes
@@ -110,6 +110,7 @@ server.listen(PORT, () => {
 });
 
 // for the test in phone
-// server.listen(PORT, "192.168.1.13", () => {
-//   console.log(`Server is running on http://192.168.1.13:${PORT}`);
+
+// server.listen(PORT, "192.168.135.86", () => {
+//   console.log(`Server is running on http://192.168.135.86:${PORT}`);
 // });

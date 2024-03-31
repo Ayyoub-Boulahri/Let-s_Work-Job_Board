@@ -90,7 +90,7 @@ const FileUploader = (props) => {
                         className="hidden"
                         onChange={handleFile}
                         ref={fileInputRef}
-                        accept={typeUser == "employee" ? ".pdf" : ".pdf, .doc, .docx, image/*"}
+                        accept={".pdf"}
                     />
                 </div>
             </div>

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import styles from '../style'
 import { getSomeCompanies } from '../services/RequestsServices'
 import RequestsTable from '../components/requestsComponents/RequestsTable'
-
+import "../css/height.css"
 
 function Requests() {
   

@@ -5,7 +5,7 @@ import { convertBase64ToUrlFile } from '../../services/convertFunctions';
 
 
 
-function CvModel(props) {
+function CertificateModel(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
     return (
@@ -17,10 +17,10 @@ function CvModel(props) {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1 text-[20px]">{props.first_name + " " + props.last_name + " CV"}</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1 text-[20px]">{props.company_name} Certificate</ModalHeader>
                             <ModalBody className="popupModel">
                                 <div className='flex gap-4 items-center'>
-                                    <iframe src={convertBase64ToUrlFile(props.cv)} className='w-full h-screen sm:flex hidden'/>
+                                    <iframe src={convertBase64ToUrlFile(props.certificate)} className='w-full h-screen sm:flex hidden'/>
                                 </div>
 
                             </ModalBody>
@@ -28,9 +28,9 @@ function CvModel(props) {
                                 <Button variant='light' color="danger" onPress={onClose}>
                                     Close
                                 </Button>
-                                <a href={convertBase64ToUrlFile(props.cv)} download={props.first_name + "_" + props.last_name + "_CV"}>
+                                <a href={convertBase64ToUrlFile(props.certificate)} download={props.company_name + " Certificate"}>
                                     <Button color="primary">
-                                        Download Cv
+                                        Download certificate
                                     </Button>
                                 </a>
                             </ModalFooter>
@@ -43,4 +43,4 @@ function CvModel(props) {
     )
 }
 
-export default CvModel
+export default CertificateModel
