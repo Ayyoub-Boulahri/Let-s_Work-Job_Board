@@ -46,6 +46,15 @@ function RequestsTable(props) {
         }
     };
 
+    const handleDelete = async (_id) => {
+        try {
+            const response = await deleteRequest(_id);
+            setDeleted(prev => !prev); 
+        } catch (error) {
+            console.error("Error deleting company:", error);
+        }
+    };
+
     const getMoreCompanies = async () => {
         getSomeCompanies({}, ((currentPage - 1) * companiesPerTime), companiesPerTime, searchText, { isApproved: false })
             .then((response) => setCompanies(response))
@@ -153,7 +162,7 @@ function RequestsTable(props) {
                                             </span>
                                         </Tooltip>
                                         <Tooltip color="danger" content="remove applyment">
-                                            <DeleteRequestModel companyId={company._id} setDeleted={setDeleted}/>
+                                            <DeleteRequestModel companyId={company._id} onClick={() => handleDelete(company._id)} />
                                         </Tooltip>
                                     </div>
                                 </TableCell>
