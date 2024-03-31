@@ -36,6 +36,23 @@ export const updateCompanyInfos = async (_id, infos) => {
     }
 }
 
+export const deleteRequest = async (companyId) => {
+    try {
+        const response = await axios.delete(SERVERPOINT + '/api/companies/deleteCompanyById', { data: { _id: companyId } }, { withCredentials: true })
+        if (response.status === 200) {
+            console.log("delete successfully")
+            return true;
+        } else {
+            console.error('Failed to delete company:', response.error);
+            return false
+        }
+    } catch (error) {
+        console.error('Error deleting company:', error);
+        throw error;
+    }
+}
+
+
 
 
 
