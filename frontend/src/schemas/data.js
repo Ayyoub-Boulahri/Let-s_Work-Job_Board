@@ -19,6 +19,6 @@ export const datePostedOptions = [
 export const jobTypes = ["Full-time", "Contract", "Part-time", "Temporary"];
 
 // for the test in phone
-// export const SERVERPOINT = 'http://192.168.1.13:5000';
+// export const SERVERPOINT = 'http://192.168.135.86:5000';
 
 export const SERVERPOINT = 'http://localhost:5000';

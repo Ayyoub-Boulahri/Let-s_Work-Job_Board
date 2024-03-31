@@ -8,7 +8,7 @@ import { CiSearch } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { MdClear } from "react-icons/md";
 import { getSomeCompanies,getTotalRequests,updateCompanyInfos } from "../../services/RequestsServices";
-import CvModel from "./CvModel";
+import CertificateModel from "./CertificateModel";
 
 import { FaUserCheck } from "react-icons/fa";
 
@@ -126,7 +126,7 @@ function RequestsTable(props) {
                                     <User
                                         avatarProps={{ radius: "lg", src: convertBufferToDataURL(company.company_photo) }}
                                         name={company.company_name}
-                                        description="tst"
+                                        description={company.company_email}
                                         className="cursor-pointer"
                                         onClick={() => navigate("/companies/company/" + company.company._id)}
                                     />
@@ -138,12 +138,12 @@ function RequestsTable(props) {
                                     <span className="flex p-2" >{company.city}</span>
                                 </TableCell>
                                 <TableCell className="text-default-500">
-                                    <CvModel cv={company.certificat.file}></CvModel>
+                                    <CertificateModel certificate={company.certificat.file} company_name={company.company_name}></CertificateModel>
                                 </TableCell>
                                 <TableCell>
                                     <div>
 
-                                        <FaUserCheck color="green" size="22" onClick={() => handleAccept(company._id)} />
+                                        <FaUserCheck className="cursor-pointer" color="green" size="22" onClick={() => handleAccept(company._id)} />
                                         
                                     </div>
                                 </TableCell>
