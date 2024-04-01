@@ -4,7 +4,6 @@ import { FaFile } from "react-icons/fa6";
 import { convertBase64ToUrlFile } from '../../services/convertFunctions';
 
 
-
 function CertificateModel(props) {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { MdClear } from "react-icons/md";
 import { getSomeCompanies,getTotalRequests,updateCompanyInfos, deleteRequest } from "../../services/RequestsServices";
 import DeleteRequestModel from "./DeleteRequestModel";
+import CertificateModel from "./CertificateModel";
 
 import { FaUserCheck } from "react-icons/fa";
 
@@ -34,6 +35,7 @@ function RequestsTable(props) {
     useEffect(() => {
         getTotalCompanies();
         getMoreCompanies();
+        
     }, [currentPage, searchText, isAccepted, deleted]); 
 
     const handleAccept = async (_id) => {
@@ -46,19 +48,15 @@ function RequestsTable(props) {
         }
     };
 
-    const handleDelete = async (_id) => {
-        try {
-            const response = await deleteRequest(_id);
-            setDeleted(prev => !prev); 
-        } catch (error) {
-            console.error("Error deleting company:", error);
-        }
-    };
-
     const getMoreCompanies = async () => {
         getSomeCompanies({}, ((currentPage - 1) * companiesPerTime), companiesPerTime, searchText, { isApproved: false })
             .then((response) => setCompanies(response))
-            .catch((response) => setCompanies([]))
+            .catch((response) => {
+                setCompanies([]);
+                if(currentPage > 1) {
+                    setCurrentPage(prev => prev -1)
+                }
+            })
     }
 
     const getTotalCompanies = async () => {
@@ -135,7 +133,7 @@ function RequestsTable(props) {
                                     <User
                                         avatarProps={{ radius: "lg", src: convertBufferToDataURL(company.company_photo) }}
                                         name={company.company_name}
-                                        description="tst"
+                                        description={company.company_email}
                                         className="cursor-pointer"
                                         onClick={() => navigate("/companies/company/" + company.company._id)}
                                     />
@@ -147,7 +145,7 @@ function RequestsTable(props) {
                                     <span className="flex p-2" >{company.city}</span>
                                 </TableCell>
                                 <TableCell className="text-default-500">
-                                    <CvModel cv={company.certificat.file}></CvModel>
+                                    <CertificateModel cv={company.certificat.file}></CertificateModel>
                                 </TableCell>
                                 <TableCell>
                                     <div>
@@ -162,7 +160,7 @@ function RequestsTable(props) {
                                             </span>
                                         </Tooltip>
                                         <Tooltip color="danger" content="remove applyment">
-                                            <DeleteRequestModel companyId={company._id} onClick={() => handleDelete(company._id)} />
+                                            <DeleteRequestModel companyId={company._id} setDeleted={setDeleted} />
                                         </Tooltip>
                                     </div>
                                 </TableCell>
