@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import JobRequestsHeader from '../components/JobRequestsComponents/JobRequestsHeader'
+import JobRequestsHeader from '../components/jobRequestsComponents/JobRequestsHeader'
 import styles from '../style'
 import { useNavigate } from 'react-router-dom';
 import handleLogout from '../services/handleLogout';

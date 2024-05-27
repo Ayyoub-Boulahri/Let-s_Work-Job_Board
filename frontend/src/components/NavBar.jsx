@@ -9,7 +9,7 @@ import { useEffect } from 'react';
 import SignUpForm from './SignUpForm';
 import { Provider } from 'react-redux';
 import { signUpStore } from '../stores/signUpStore';
-import NotificationDropdown from './navbarComponents/notificationDropdown';
+import NotificationDropdown from './navbarComponents/NotificationDropdown';
 import AvatarDropdown from './navbarComponents/AvatarDropdown';
 import { Link, useNavigate } from 'react-router-dom';
 import checkAuthentication from '../services/checkAuthentication';

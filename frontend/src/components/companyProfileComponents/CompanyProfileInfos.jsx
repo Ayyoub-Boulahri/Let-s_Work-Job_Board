@@ -6,7 +6,7 @@ import { companyInfosSchema } from '../../schemas/companyShema';
 import { useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import CompanyInformations from './companyInformations';
+import CompanyInformations from './CompanyInformations';
 import CompanyDescription from './CompanyDescription';
 import SecureCompanyInfos from './SecureCompanyInfos';
 

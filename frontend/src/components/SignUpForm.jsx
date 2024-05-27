@@ -15,7 +15,7 @@ import FileUploader from './sign_up/FileUploader';
 import AboutEmployee from './sign_up/AboutEmployee';
 import CompanyInfos from './sign_up/CompanyInfos';
 import CompanyDesc from './sign_up/CompanyDesc';
-import SignUpComplete from './sign_up/signUpComplete';
+import SignUpComplete from './sign_up/SignUpComplete';
 import { initCompany, initEmployee } from '../stores/signUpStore';
 import CompanyPhotoUpload from './sign_up/CompanyPhotoUpload';
 import EmployeePhotoUpload from './sign_up/EmployeePhotoUpload';
