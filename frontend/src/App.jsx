@@ -16,6 +16,17 @@ import ProfileEmployee from './pages/ProfileEmployee'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import Error404Page from './pages/Error404Page'
 import EditJobOffer from './pages/EditJobOffer'
+import React, { useEffect, useState } from 'react'
+import styles from '../../style'
+import CompanyLeading from '../../components/companieComponents/CompanyLeading'
+import SearchSection from '../../components/companieComponents/SearchSection'
+import { Divider } from "@nextui-org/react";
+import { useNavigate } from 'react-router-dom';
+import handleLogout from '../../services/handleLogout';
+import { useDispatch} from 'react-redux';
+import { setLoginOut } from '../../stores/authStore';
+import "../../css/height.css"
+
 
 function App() {
   const client = new QueryClient()
@@ -51,16 +62,7 @@ function App() {
 export default App
 
 
-import React, { useEffect, useState } from 'react'
-import styles from '../style'
-import CompanyLeading from '../components/companieComponents/CompanyLeading'
-import SearchSection from '../components/companieComponents/SearchSection'
-import { Divider } from "@nextui-org/react";
-import { useNavigate } from 'react-router-dom';
-import handleLogout from '../services/handleLogout';
-import { useDispatch} from 'react-redux';
-import { setLoginOut } from '../stores/authStore';
-import "../css/height.css"
+
 
 function Companies() {
   const navigate = useNavigate()
