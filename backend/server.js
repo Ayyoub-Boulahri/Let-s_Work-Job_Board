@@ -17,8 +17,6 @@ const socketIo = require('socket.io');
 const schedule = require('node-schedule');
 const JobOffer = require('./models/jobOffer');
 const { trusted } = require('mongoose');
-
-
 const bcrypt = require('bcryptjs');
 const Employee = require("./models/employee");
 
@@ -28,19 +26,23 @@ const PORT = process.env.PORT || 5000;
 app.use(express.json({ limit: '100mb' }));
 app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
+
 app.use(cors({
-  origin: ['https://job-board-pfe.onrender.com','http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
+  origin: ['https://job-board-pfe.onrender.com', 'http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
   credentials: true,
 }));
 
-// Use express-session middleware for managing sessions
 app.use(session({
   secret: 'secret_key',
+  resave: false,
+  saveUninitialized: false,
   cookie: {
     sameSite: 'Lax',
-    maxAge: 3600 * 24 * 60 * 60,
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: process.env.NODE_ENV === 'production',
   },
 }));
+
 
 const server = http.createServer(app);
 
