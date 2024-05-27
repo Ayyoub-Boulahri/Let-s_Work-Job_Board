@@ -4,7 +4,6 @@ import Profile from './pages/profile'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import Jobs from './pages/Jobs'
-import Companies from './pages/companies'
 import { Provider } from 'react-redux';
 import { authStore } from './stores/authStore'
 import Company from './pages/company'
