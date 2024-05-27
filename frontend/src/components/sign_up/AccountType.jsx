@@ -15,7 +15,7 @@ function AccountType() {
             <div onClick={() => {dispatch(setEmployee())}} 
                 className={`bg-[#161B22] rounded-md py-6 px-10 flex items-center flex-col text-center card ${typeUser == "employee" && "activeCard"} transition-transform duration-300 ease-in-out`}>
                 <div className='w-full flex justify-center mb-4'><MdOutlineWork size={40} color='#F33A6A' /></div>
-                <h1 className='font-bold'>Continue As Employee</h1>
+                <h1 className='font-bold'>Continue As candidate</h1>
             </div>
 
             <Divider className="my-4 bg-[#3D3D3D] h-100 sm:flex hidden" orientation='vertical' />

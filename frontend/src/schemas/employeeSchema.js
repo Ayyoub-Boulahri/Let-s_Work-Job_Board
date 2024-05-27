@@ -15,5 +15,5 @@ export const PersonnelInfosSchema = yup.object().shape({
 });
 
 export const aboutSchema = yup.object().shape({
-    aboutMe: yup.string().min(400, "Your description must be at least 400 characters").required()
+    aboutMe: yup.string().min(10, "Your description must be at least 10 characters").required()
 });

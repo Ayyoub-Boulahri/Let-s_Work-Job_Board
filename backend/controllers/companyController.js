@@ -139,7 +139,7 @@ class CompanyController {
         }
     }
 
-    getFollowersNumber = async (req, res) => {
+     getFollowersNumber = async (req, res) => {
         try {
             const { id } = req.query;
             const companyId = new ObjectId(id)

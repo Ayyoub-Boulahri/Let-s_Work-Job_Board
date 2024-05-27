@@ -29,7 +29,7 @@ function JobRequestsTable(props) {
     const [searchText, setSearchText] = useState("")
     const [isModified, setIsModified] = useState(0)
     const navigate = useNavigate()
-    const jobRequestsPerTime = 2
+    const jobRequestsPerTime = 6
 
     useEffect(() => {
 

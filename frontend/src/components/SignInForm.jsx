@@ -110,20 +110,20 @@ function SignInForm() {
                         </div>
                     </div>
                     <div className='flex flex-row justify-between gap-6'>
-                        <button className="sign" onClick={() => handleLogin("employee")}>As Employee</button>
+                        <button className="sign" onClick={() => handleLogin("employee")}>As Candidate</button>
                         <button className="sign" onClick={() => handleLogin("company")}>As Company</button>
                     </div>
-                    <div className="social-message">
+                    {/* <div className="social-message">
                         <div className="line"></div>
                         <p className="message">Login with social accounts</p>
                         <div className="line"></div>
-                    </div>
-                    <div className="social-icons">
+                    </div> */}
+                    {/* <div className="social-icons">
                         <button className="w-full px-4 py-2 border flex justify-center my-3 gap-2 border-slate-200 dark:border-slate-700 rounded-lg text-slate-700 dark:text-slate-200 hover:border-slate-400 dark:hover:border-slate-500 hover:text-slate-900 dark:hover:text-slate-300 hover:shadow transition duration-150">
                             <img className="w-6 h-6" src="https://www.svgrepo.com/show/475656/google-color.svg" loading="lazy" alt="google logo" />
                             <span className='text-center'>Login with Google</span>
                         </button>
-                    </div>
+                    </div> */}
                     {/* <p className="signup">Don't have an account?
                         <a rel="noopener noreferrer" href="#" className=""> Sign up</a>
                     </p> */}

@@ -85,7 +85,7 @@ function JobOffer() {
                     <p className='font-semibold text-default-400'>{jobOffer?.grade}</p>
                     <p className='font-semibold text-default-400'>{formatDate(jobOffer?.date_publication)}</p>
                     <p className='font-semibold text-red-600'>{formatDate(jobOffer?.delais_depot)}</p>
-                    <p className='font-bold text-[18px] text-green-600'>{jobOffer?.salary} {jobOffer?.pay_currency} {jobOffer?.currency}/ {jobOffer?.pay_period}</p>
+                    <p className='font-bold text-[18px] text-green-600'>{jobOffer?.salary} {jobOffer?.currency}/ {jobOffer?.pay_period}</p>
                   </div>
 
                 </div>
