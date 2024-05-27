@@ -47,7 +47,7 @@ const server = http.createServer(app);
 // Initialize Socket.io
 const io = socketIo(server, {
   cors: {
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
+    origin: ['https://job-board-pfe.onrender.com','http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
     methods: ["GET", "POST", "PUT"],
     credentials: true
   },

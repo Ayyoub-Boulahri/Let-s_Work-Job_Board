@@ -21,4 +21,5 @@ export const jobTypes = ["Full-time", "Contract", "Part-time", "Temporary"];
 // for the test in phone
 // export const SERVERPOINT = 'http://192.168.135.86:5000';
 
-export const SERVERPOINT = 'http://localhost:5000';
+export const SERVERPOINT = 'https://job-board-pfe.onrender.com';
+// export const SERVERPOINT = 'http://localhost:5000';
