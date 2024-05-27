@@ -46,7 +46,6 @@ function SignInForm() {
                 localStorage.setItem('auth', true);
                 localStorage.setItem('email', authInfo.email);
                 localStorage.setItem('userId', authInfo.userId);
-
                 if (type == "employee") {
                     localStorage.setItem('typeUser', "employee");
                     // window.location.href = "/jobs"
