@@ -28,7 +28,7 @@ app.use(express.urlencoded({ limit: '100mb', extended: true }));
 
 
 app.use(cors({
-  origin: ['https://job-board-pfe.onrender.com', 'http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
+  origin: ['https://job-board-pfe.vercel.app', 'http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
   credentials: true,
 }));
 
@@ -51,7 +51,7 @@ const server = http.createServer(app);
 // Initialize Socket.io
 const io = socketIo(server, {
   cors: {
-    origin: ['https://job-board-pfe.onrender.com','http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
+    origin: ['https://job-board-pfe.vercel.app','http://localhost:5173', 'http://localhost:5174', 'http://192.168.135.86:5173', 'http://192.168.135.86:5174'],
     methods: ["GET", "POST", "PUT"],
     credentials: true
   },
